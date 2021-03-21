@@ -40,7 +40,9 @@ typedef enum	e_modes
 typedef struct	s_history
 {
 	char				*command;
+	char				*cache;
 	size_t				len;
+	size_t				cache_len;
 	struct s_history	*prev;
 	struct s_history	*next;
 }				t_history;
@@ -52,7 +54,6 @@ typedef struct	s_shell
 	t_history	*hist_ptr;
 	t_history	*hist_curr;
 }				t_shell;
-
 
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
