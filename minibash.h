@@ -25,8 +25,6 @@
 #define DEL "\x7f"
 #define CTRLD "\04"
 
-int was_signal;
-
 // terminal modes
 typedef enum	e_modes
 {
@@ -35,6 +33,14 @@ typedef enum	e_modes
 	WAS_SIGN,
 	NO_SIGN
 }				t_modes;
+
+// envp list
+typedef struct	s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}				t_env;
 
 // history, doubly linked list
 typedef struct	s_history
@@ -53,16 +59,43 @@ typedef struct	s_shell
 	t_history	*history;
 	t_history	*hist_ptr;
 	t_history	*hist_curr;
+	ssize_t		read_len;
+	t_env		*env;
 }				t_shell;
 
+// utils
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_putchar(int c);
 size_t	ft_strlen(const char *s);
-void	ft_putendl_fd(char *s, int fd);
+void	ft_bzero(void *s, size_t n);
+void	*ft_memset(void *b, int c, size_t len);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strchr(const char *s, int c);
+char		*ft_itoa(int n);
+int			ft_atoi(const char *str);
 
+// errors
 void lite_error(char *comment);
 void free_shell(t_shell **shell);
 void free_error(char *comment, t_shell **shell);
+
+// readline
+void ft_readline(char **envp, char **argv, t_shell *shell);
+void set_mode(int type);
+void prompt(void);
+void init_hist(t_shell *shell);
+void handle_up(t_shell *shell);
+void handle_down(t_shell *shell);
+void handle_del(t_shell *shell);
+void handle_execute(t_shell *shell, char **envp, char **argv);
+
+// signals
+void set_signals(void);
+int *signal_tracker(void);
+
+// envp
+void		envp_to_list(char **envp, t_shell *shell);
 
 #endif
