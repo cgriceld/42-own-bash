@@ -5,9 +5,9 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 LIBS = -ltermcap
 
-SRC = entry_point.c error.c utils.c readline/readline.c readline/handle_keys.c \
+SRC = entry_point.c error.c utils/utils.c utils/ft_split.c readline/readline.c readline/handle_keys.c \
 		readline/signals.c readline/utils_readline.c readline/handle_execute.c \
-		envp/create_lst.c
+		readline/run_external.c envp/envp_to_list.c envp/envp_to_arr.c envp/envp_get_value.c
 
 OBJ = $(SRC:.s=.o)
 

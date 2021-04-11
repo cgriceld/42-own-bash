@@ -1,4 +1,4 @@
-#include "minibash.h"
+#include "../minibash.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -198,4 +198,28 @@ char		*ft_itoa(int n)
 	if (sign < 0)
 		*--str = '-';
 	return (str);
+}
+
+void	ft_twodarr_free(char ***arr, size_t len)
+{
+	char **tmp;
+
+	tmp = *arr;
+	while (len--)
+	{
+		if (tmp[len])
+			free(tmp[len]);
+	}
+	free(tmp);
+	*arr = NULL;
+}
+
+size_t	ft_twodarr_len(char **arr)
+{
+	size_t len;
+
+	len = 0;
+	while (*arr++)
+		len++;
+	return (len);
 }

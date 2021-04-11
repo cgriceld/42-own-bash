@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 // errors
 #define WRONG_ARGS "wrong input arguments, should be : ./minishell"
@@ -24,6 +25,13 @@
 #define RIGHT "\e[D"
 #define DEL "\x7f"
 #define CTRLD "\04"
+
+// external commands paths
+#define FULL_PATH 1
+#define SHORT_PATH 0
+
+// global variable, exit code of last command
+int ret_status;
 
 // terminal modes
 typedef enum	e_modes
@@ -61,6 +69,7 @@ typedef struct	s_shell
 	t_history	*hist_curr;
 	ssize_t		read_len;
 	t_env		*env;
+	size_t		env_size;
 }				t_shell;
 
 // utils
@@ -75,6 +84,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 char		*ft_itoa(int n);
 int			ft_atoi(const char *str);
+char		**ft_split(char const *s, char c);
+void	ft_twodarr_free(char ***arr, size_t len);
+size_t	ft_twodarr_len(char **arr);
 
 // errors
 void lite_error(char *comment);
@@ -82,14 +94,16 @@ void free_shell(t_shell **shell);
 void free_error(char *comment, t_shell **shell);
 
 // readline
-void ft_readline(char **envp, char **argv, t_shell *shell);
+void ft_readline(t_shell *shell);
 void set_mode(int type);
 void prompt(void);
 void init_hist(t_shell *shell);
 void handle_up(t_shell *shell);
 void handle_down(t_shell *shell);
 void handle_del(t_shell *shell);
-void handle_execute(t_shell *shell, char **envp, char **argv);
+void handle_execute(t_shell *shell);
+void		deal_cache(t_shell *shell);
+void			find_external(t_shell *shell);
 
 // signals
 void set_signals(void);
@@ -97,5 +111,7 @@ int *signal_tracker(void);
 
 // envp
 void		envp_to_list(char **envp, t_shell *shell);
+char		**envp_to_arr(t_shell *shell);
+char	*envp_get_value(t_shell *shell, char *match);
 
 #endif

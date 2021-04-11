@@ -25,8 +25,10 @@ void free_shell(t_shell **shell)
 	{
 		tmpe = (*shell)->env;
 		(*shell)->env = (*shell)->env->next;
-		free(tmpe->key);
-		free(tmpe->value);
+		if (tmpe->key)
+			free(tmpe->key);
+		if (tmpe->value)
+			free(tmpe->value);
 		free(tmpe);
 	}
 	free(*shell);

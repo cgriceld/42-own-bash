@@ -24,6 +24,7 @@ static void	envp_lstfill(char *envp, t_env *curr, t_shell *shell)
 	if (!curr->value)
 		free_error(strerror(errno), &shell);
 	curr->next = NULL;
+	shell->env_size++;
 }
 
 void		envp_to_list(char **envp, t_shell *shell)
@@ -33,6 +34,7 @@ void		envp_to_list(char **envp, t_shell *shell)
 	shell->env = (t_env *)malloc(sizeof(t_env));
 	if (!shell->env)
 		free_error(strerror(errno), &shell);
+	shell->env_size = 0;
 	envp_lstfill(*envp, shell->env, shell);
 	tmp = shell->env;
 	envp++;

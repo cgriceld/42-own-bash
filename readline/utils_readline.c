@@ -4,7 +4,7 @@ void set_mode(int type)
 {
 	struct termios term;
 
-	tcgetattr(0, &term);
+	tcgetattr(0, &term); // can return -1
 	!type ? (term.c_lflag &= ~(ECHO | ICANON)) : (term.c_lflag |= (ECHO | ICANON));
 	tcsetattr(0, TCSANOW, &term);
 }

@@ -12,19 +12,22 @@ int main(int argc, char **argv, char **envp)
 	int		res;
 	int		status;
 
-	char* arglist[] = {"/bin/ls", "-la", NULL};
+	char* arglist[] = {"/bin/ls", "-l", "-a", NULL};
 	pid = fork();
 	if (!pid) // child process
 	{
+		printf("before errno : %d\n", errno);
 		res = execve("/bin/ls", arglist, envp);
-		if (res < 0)
-			printf("%s\n", strerror(errno));
+		printf("res : %d\n", res);
+		printf("after errno : %d\n", errno);
+		//if (res < 0)
+			//printf("%s\n", strerror(errno));
 		exit(res);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		printf("%d\n", WEXITSTATUS(status));
+		printf("exit status : %d\n", WEXITSTATUS(status));
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 		return (1);

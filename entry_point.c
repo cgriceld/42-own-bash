@@ -17,15 +17,16 @@ static void	prepare(int argc, t_shell **shell)
 	init_hist(*shell);
 }
 
-int			main(int argc, char **argv, char **envp)
+int			main(int argc, char __attribute__((unused)) **argv, char **envp)
 {
 	t_shell	*shell;
 
+	ret_status = 0;
 	prepare(argc, &shell);
 	envp_to_list(envp, shell);
 	tgetent(NULL, getenv("TERM")); // can return -1 in error
 	set_signals();
-	ft_readline(envp, argv, shell);
+	ft_readline(shell);
 	free_shell(&shell);
-	return (0);
+	return (ret_status);
 }

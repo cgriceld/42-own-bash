@@ -18,7 +18,7 @@ static void	write_symbol(t_shell *shell, char *str)
 	shell->hist_ptr->len++;
 }
 
-static void	handle_read(t_shell *shell, char **envp, char **argv, char *str)
+static void	handle_read(t_shell *shell, char *str)
 {
 	if (!ft_strncmp(str, LEFT, 10) || !ft_strncmp(str, RIGHT, 10))
 		return;
@@ -29,9 +29,21 @@ static void	handle_read(t_shell *shell, char **envp, char **argv, char *str)
 	else if (!ft_strncmp(str, DEL, 10))
 		handle_del(shell);
 	else if (!ft_strncmp(str, "\n", 10))
-		handle_execute(shell, envp, argv);
+		handle_execute(shell);
 	else
 		write_symbol(shell, str);
+}
+
+void		deal_cache(t_shell *shell)
+{
+	char *tmp;
+
+	tmp = shell->hist_ptr->command;
+	shell->hist_ptr->command = ft_strdup(shell->hist_ptr->cache);
+	free(tmp);
+	free(shell->hist_ptr->cache);
+	shell->hist_ptr->cache = NULL;
+	shell->hist_ptr->len = shell->hist_ptr->cache_len;
 }
 
 static void	ctrlc(t_shell *shell)
@@ -39,31 +51,14 @@ static void	ctrlc(t_shell *shell)
 	char *tmp;
 
 	if ((shell->hist_ptr != shell->hist_curr) && shell->hist_ptr->cache)
-	{
-		tmp = shell->hist_ptr->command;
-		shell->hist_ptr->command = ft_strdup(shell->hist_ptr->cache);
-		free(tmp);
-		free(shell->hist_ptr->cache);
-		shell->hist_ptr->cache = NULL;
-		shell->hist_ptr->len = shell->hist_ptr->cache_len;
-	}
+		deal_cache(shell);
 	tmp = shell->hist_curr->command;
 	init_hist(shell);
 	free(tmp);
 	shell->hist_ptr = shell->hist_curr;
 }
 
-// static void	ctrlc(t_shell *shell)
-// {
-// 	char *tmp;
-
-// 	tmp = shell->hist_curr->command;
-// 	init_hist(shell);
-// 	free(tmp);
-// 	shell->hist_ptr = shell->hist_curr;
-// }
-
-void		ft_readline(char **envp, char **argv, t_shell *shell)
+void		ft_readline(t_shell *shell)
 {
 	char str[10];
 
@@ -83,7 +78,7 @@ void		ft_readline(char **envp, char **argv, t_shell *shell)
 		if (*signal_tracker())
 			ctrlc(shell);
 		*signal_tracker() = 0;
-		handle_read(shell, envp, argv, str);
+		handle_read(shell, str);
 	}
 	printf("\n");
 }
