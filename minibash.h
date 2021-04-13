@@ -114,4 +114,9 @@ void		envp_to_list(char **envp, t_shell *shell);
 char		**envp_to_arr(t_shell *shell);
 char	*envp_get_value(t_shell *shell, char *match);
 
+//builtins
+int	print_pwd(t_shell *shell);
+int	cd(t_shell *shell);
+char*	pwd(t_shell *shell);
+int	put_the_params(t_env env, char *buf, const char *param);
 #endif

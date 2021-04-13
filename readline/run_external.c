@@ -44,6 +44,7 @@ static void	check_external(char *comm, t_shell *shell, char **arr_env, int flag)
 	ft_twodarr_free(&arr_env, shell->env_size);
 }
 
+
 void			find_external(t_shell *shell)
 {
 	struct stat	s;
@@ -60,6 +61,7 @@ void			find_external(t_shell *shell)
 	tmp = envp_get_value(shell, "PATH");
 	if (!tmp) // unset PATH
 	{
+		// printf
 		printf("%s%s%s\n", "-minibash: ", shell->hist_curr->command, ": command not found");
 		ret_status = 127;
 		return;
@@ -88,8 +90,10 @@ void			find_external(t_shell *shell)
 	}
 	ft_twodarr_free(&split, ft_twodarr_len(split));
 	if (ft_strchr(shell->hist_curr->command, '/'))
+		// printf
 		printf("%s%s%s\n", "-minibash: ", shell->hist_curr->command, ": No such file or directory");
 	else
+		// printf
 		printf("%s%s%s\n", "-minibash: ", shell->hist_curr->command, ": command not found");
 	ret_status = 127;
 }
