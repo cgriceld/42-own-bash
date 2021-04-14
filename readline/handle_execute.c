@@ -9,7 +9,7 @@ static int	is_builtin(t_shell *shell)
 	else if (!ft_strncmp(shell->hist_curr->command, "pwd", shell->hist_curr->len))
 		return (print_pwd(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "env", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
+		return (env(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "unset", shell->hist_curr->len))
 		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
 	else if (!ft_strncmp(shell->hist_curr->command, "export", shell->hist_curr->len))

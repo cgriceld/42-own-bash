@@ -1,19 +1,5 @@
 #include "../minibash.h"
 
-int	put_the_params(t_env env, char *buf, const char *param)
-{
-	char *tmp;
-	int len;
-
-	len = ft_strlen(param);
-	while (ft_strncmp(env.key, param, len) != 0)
-		env = *env.next;
-	tmp = env.value;
-	env.value = buf;
-	//free(tmp);
-	return 0;
-}
-
 char	*pwd(t_shell *shell)
 {
 	char *buf;
@@ -23,7 +9,7 @@ char	*pwd(t_shell *shell)
 	size = 0;
 	buf = getcwd(buf, size);
 	//положить полный путь в в текущий эеваермент
-	put_the_params(*shell->env, buf, "PWD");
+	put_the_value(shell->env, buf, "PWD");
 	return (buf);
 }
 

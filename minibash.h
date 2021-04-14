@@ -118,5 +118,7 @@ char	*envp_get_value(t_shell *shell, char *match);
 int	print_pwd(t_shell *shell);
 int	cd(t_shell *shell);
 char*	pwd(t_shell *shell);
-int	put_the_params(t_env env, char *buf, const char *param);
+int	put_the_value(t_env *env, char *buf, const char *param);
+char	*search_for_value(t_env *env, const char *param);
+int env(t_shell *shell);
 #endif
