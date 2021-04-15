@@ -68,10 +68,7 @@ void		ft_readline(t_shell *shell)
 	while (ft_strncmp(str, CTRLD, 10))
 	{
 		if (!ft_strncmp(str, "\n", 10) && !*signal_tracker())
-		{
-			printf("\n");
 			prompt();
-		}
 		ft_bzero(str, 10);
 		set_mode(NOT_CANON);
 		read_len = read(0, str, 10);

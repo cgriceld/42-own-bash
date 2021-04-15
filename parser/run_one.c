@@ -3,6 +3,7 @@
 static void run_builtin(t_seq *tmp_seq)
 {
 	write(1, tmp_seq->run, ft_strlen(tmp_seq->run));
+	printf("\n");
 }
 
 static void exec_error(char *run)
