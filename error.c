@@ -1,12 +1,12 @@
 #include "minibash.h"
 
-void lite_error(char *comment)
+void		lite_error(char *comment)
 {
 	printf("\n%s\n", comment);
 	exit(EXIT_FAILURE);
 }
 
-void free_shell(t_shell **shell)
+static void	free_hist_env(t_shell **shell)
 {
 	t_history	*tmph;
 	t_env		*tmpe;
@@ -31,11 +31,31 @@ void free_shell(t_shell **shell)
 			free(tmpe->value);
 		free(tmpe);
 	}
-	free(*shell);
 }
 
-void free_error(char *comment, t_shell **shell)
+void		free_seq(t_shell **shell)
 {
-	free_shell(shell);
-	lite_error(comment);
+	t_seq *tmp;
+
+	while ((*shell)->seq)
+	{
+		tmp = (*shell)->seq;
+		(*shell)->seq = (*shell)->seq->next;
+		if (tmp->run)
+			free(tmp->run);
+		if (tmp->args)
+			ft_twodarr_free(&tmp->args, ft_twodarr_len(tmp->args));
+		free(tmp);
+	}
+}
+
+void		free_error(char *comment, t_shell **shell)
+{
+	if ((*shell)->history || (*shell)->env)
+		free_hist_env(shell);
+	if ((*shell)->seq)
+		free_seq(shell);
+	free(*shell);
+	if (comment)
+		lite_error(comment);
 }

@@ -12,16 +12,15 @@ int main(int argc, char **argv, char **envp)
 	int		res;
 	int		status;
 
-	char* arglist[] = {"/bin/ls", "-l", "-a", NULL};
+	char* arglist[] = {"ls", NULL};
 	pid = fork();
 	if (!pid) // child process
 	{
-		printf("before errno : %d\n", errno);
-		res = execve("/bin/ls", arglist, envp);
+		res = execve("ls", arglist, envp);
 		printf("res : %d\n", res);
-		printf("after errno : %d\n", errno);
-		//if (res < 0)
-			//printf("%s\n", strerror(errno));
+		printf("errno : %d\n", errno);
+		if (res < 0)
+			printf("%s\n", strerror(errno));
 		exit(res);
 	}
 	else

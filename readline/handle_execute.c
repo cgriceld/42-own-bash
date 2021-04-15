@@ -1,25 +1,5 @@
 #include "../minibash.h"
 
-static int	is_builtin(t_shell *shell)
-{
-	if (!ft_strncmp(shell->hist_curr->command, "echo", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else if (!ft_strncmp(shell->hist_curr->command, "cd", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else if (!ft_strncmp(shell->hist_curr->command, "pwd", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else if (!ft_strncmp(shell->hist_curr->command, "env", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else if (!ft_strncmp(shell->hist_curr->command, "unset", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else if (!ft_strncmp(shell->hist_curr->command, "export", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else if (!ft_strncmp(shell->hist_curr->command, "exit", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
-	else
-		return (-1);
-}
-
 void		handle_execute(t_shell *shell)
 {
 	char *tmp;
@@ -38,8 +18,7 @@ void		handle_execute(t_shell *shell)
 	}
 	if (shell->hist_curr->len)
 	{
-		if (is_builtin(shell) == -1)
-			find_external(shell);
+		parser(shell);
 		shell->hist_curr->next = (t_history *)malloc(sizeof(t_history));
 		if (!shell->hist_curr->next)
 			free_error(strerror(errno), &shell);

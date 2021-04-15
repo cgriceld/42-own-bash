@@ -14,6 +14,9 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+#define PIPE 0b00000001
+#define ZERO 0b00000000
+
 // errors
 #define WRONG_ARGS "wrong input arguments, should be : ./minishell"
 
@@ -61,15 +64,24 @@ typedef struct	s_history
 	struct s_history	*next;
 }				t_history;
 
+// splitted command with its argumnents
+typedef struct	s_seq
+{
+	char			*run;
+	char			**args;
+	unsigned char	info;
+	struct s_seq	*next;
+}				t_seq;
+
 // shell struct with main info
 typedef struct	s_shell
 {
 	t_history	*history;
 	t_history	*hist_ptr;
 	t_history	*hist_curr;
-	ssize_t		read_len;
 	t_env		*env;
 	size_t		env_size;
+	t_seq		*seq;
 }				t_shell;
 
 // utils
@@ -87,11 +99,12 @@ int			ft_atoi(const char *str);
 char		**ft_split(char const *s, char c);
 void	ft_twodarr_free(char ***arr, size_t len);
 size_t	ft_twodarr_len(char **arr);
+char	*ft_strtrim(char const *s1, char const *set);
 
 // errors
 void lite_error(char *comment);
-void free_shell(t_shell **shell);
 void free_error(char *comment, t_shell **shell);
+void		free_seq(t_shell **shell);
 
 // readline
 void ft_readline(t_shell *shell);
@@ -113,5 +126,17 @@ int *signal_tracker(void);
 void		envp_to_list(char **envp, t_shell *shell);
 char		**envp_to_arr(t_shell *shell);
 char	*envp_get_value(t_shell *shell, char *match);
+
+// parser
+void parser(t_shell *shell);
+void	free_split(char ***split, t_shell *shell);
+int	init_seq(t_seq **seq);
+void parse_pipe(t_seq *tmp_seq, t_shell *shell);
+void	parse_one(t_seq *tmp_seq, t_shell *shell);
+int			is_builtin(char *s);
+
+// executer
+int run_one(t_seq *tmp_seq, t_shell *shell);
+int run_pipe(t_seq *tmp_seq, t_shell *shell);
 
 #endif

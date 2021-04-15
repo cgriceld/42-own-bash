@@ -8,6 +8,7 @@ static void	prepare(int argc, t_shell **shell)
 	if (!*shell)
 		lite_error(strerror(errno));
 	(*shell)->env = NULL;
+	(*shell)->seq = NULL;
 	(*shell)->history = (t_history *)malloc(sizeof(t_history));
 	if (!(*shell)->history)
 		free_error(strerror(errno), shell);
@@ -27,6 +28,6 @@ int			main(int argc, char __attribute__((unused)) **argv, char **envp)
 	tgetent(NULL, getenv("TERM")); // can return -1 in error
 	set_signals();
 	ft_readline(shell);
-	free_shell(&shell);
+	free_error(NULL, &shell);
 	return (ret_status);
 }
