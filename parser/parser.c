@@ -40,6 +40,8 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 		if (tmp_seq->info & PIPE)
 		{
 			ret_status = run_pipe(tmp_seq, shell);
+			if (ret_status == 255)
+				ret_status = 127;
 			printf("%d\n", ret_status);
 			while (tmp_seq->info & PIPE)
 				tmp_seq = tmp_seq->next;
@@ -49,6 +51,8 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 		else if (!(tmp_seq->info & ZERO))
 		{
 			ret_status = run_one(tmp_seq, shell);
+			if (ret_status == 255)
+				ret_status = 127;
 			printf("%d\n", ret_status);
 		}
 		tmp_seq = tmp_seq->next;
@@ -67,6 +71,7 @@ void		parser(t_shell *shell)
 		parse_pipe(tmp_seq, shell);
 	else
 		parse_one(tmp_seq, shell);
-	run(tmp_seq, shell);
+	if (!(shell->seq->info & SYNTAX_ERR))
+		run(tmp_seq, shell);
 	free_seq(&shell);
 }

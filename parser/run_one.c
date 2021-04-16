@@ -7,6 +7,18 @@ static int run_builtin(t_seq *tmp_seq)
 	return (0);
 }
 
+static void handle_errno(char *comm)
+{
+	if (errno == ENOENT)
+	{
+		write(2, "-minibash: ", ft_strlen("-minibash: "));
+		write(2, comm, ft_strlen(comm));
+		write(2, ": command not found\n", ft_strlen(": command not found\n"));
+	}
+	else
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+}
+
 static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 {
 	int res;
@@ -16,16 +28,7 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 	{
 		res = execve(tmp_seq->run, tmp_seq->args, arr_env);
 		if (res < 0)
-		{
-			if (errno == ENOENT)
-			{
-				write(2, "-minibash: ", ft_strlen("-minibash: "));
-				write(2, tmp_seq->run, ft_strlen(tmp_seq->run));
-				write(2, ": command not found\n", ft_strlen(": command not found\n"));
-			}
-			else
-				write(2, strerror(errno), ft_strlen(strerror(errno)));
-		}
+			handle_errno(tmp_seq->run);
 		exit(res);
 	}
 	else
@@ -46,7 +49,7 @@ static int run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 	pid = fork();
 	if (pid < 0)
 	{
-		printf("%s\n", strerror(errno));
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
 		ft_twodarr_free(&arr_env, shell->env_size);
 		return (errno);
 	}

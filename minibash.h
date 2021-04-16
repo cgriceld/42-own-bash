@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 
 #define PIPE 0b00000001
+#define SYNTAX_ERR 0b00000010
 #define ZERO 0b00000000
 
 // errors
@@ -28,10 +29,6 @@
 #define RIGHT "\e[D"
 #define DEL "\x7f"
 #define CTRLD "\04"
-
-// external commands paths
-#define FULL_PATH 1
-#define SHORT_PATH 0
 
 // global variable, exit code of last command
 int ret_status;
@@ -100,6 +97,7 @@ char		**ft_split(char const *s, char c);
 void	ft_twodarr_free(char ***arr, size_t len);
 size_t	ft_twodarr_len(char **arr);
 char	*ft_strtrim(char const *s1, char const *set);
+size_t		ft_numchstr(char *s, char ch);
 
 // errors
 void lite_error(char *comment);

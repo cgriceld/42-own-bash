@@ -241,3 +241,16 @@ char	*ft_strtrim(char const *s1, char const *set)
 		s1--;
 	return (ft_substr(trimstart, 0, s1 - trimstart + 1));
 }
+
+size_t		ft_numchstr(char *s, char ch)
+{
+	size_t i;
+
+	i = 0;
+	while (*s)
+	{
+		if (*s++ == ch)
+			i++;
+	}
+	return (i);
+}

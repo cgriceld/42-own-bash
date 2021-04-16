@@ -14,3 +14,14 @@ ls -la wrong | grep min | grep shell | wc
 grep min | wc | ls -la wrong
 grep | wc | ls -la wrong
 grep | ls -la wrong | wc
+
+|ls
+| ls
+ls     |
+     ls     |
+   |    ls     |
+ls|||||||
+     ls|||||||
+  ls|||||||     
+    ls||||  pwd|||     
+ls|   ls  |  |    
