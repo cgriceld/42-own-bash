@@ -39,14 +39,18 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 		ret_status = 0;
 		if (tmp_seq->info & PIPE)
 		{
-			run_pipe(tmp_seq, shell);
+			ret_status = run_pipe(tmp_seq, shell);
+			printf("%d\n", ret_status);
 			while (tmp_seq->info & PIPE)
 				tmp_seq = tmp_seq->next;
 			tmp_seq = tmp_seq->next;
 			continue;
 		}
 		else if (!(tmp_seq->info & ZERO))
-			run_one(tmp_seq, shell);
+		{
+			ret_status = run_one(tmp_seq, shell);
+			printf("%d\n", ret_status);
+		}
 		tmp_seq = tmp_seq->next;
 	}
 }

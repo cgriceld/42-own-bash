@@ -1,23 +1,13 @@
 #include "../minibash.h"
 
-static void run_builtin(t_seq *tmp_seq)
+static int run_builtin(t_seq *tmp_seq)
 {
 	write(1, tmp_seq->run, ft_strlen(tmp_seq->run));
 	printf("\n");
+	return (0);
 }
 
-static void exec_error(char *run)
-{
-	if (errno == ENOENT)
-	{
-		printf("%s%s%s\n", "-minibash: ", run, ": command not found");
-		ret_status = 127;
-	}
-	else
-		printf("%s\n", strerror(errno));
-}
-
-static void run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env)
+static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 {
 	int res;
 	int status;
@@ -26,23 +16,30 @@ static void run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env)
 	{
 		res = execve(tmp_seq->run, tmp_seq->args, arr_env);
 		if (res < 0)
-			exec_error(tmp_seq->run);
+		{
+			if (errno == ENOENT)
+			{
+				write(2, "-minibash: ", ft_strlen("-minibash: "));
+				write(2, tmp_seq->run, ft_strlen(tmp_seq->run));
+				write(2, ": command not found\n", ft_strlen(": command not found\n"));
+			}
+			else
+				write(2, strerror(errno), ft_strlen(strerror(errno)));
+		}
 		exit(res);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		if (!ret_status)
-		{
-			if (WIFEXITED(status))
-				ret_status = WEXITSTATUS(status);
-			else
-				ret_status = 1;
-		}
+		ft_twodarr_free(&arr_env, shell->env_size);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else
+			return (1);
 	}
 }
 
-static void run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
+static int run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 {
 	pid_t pid;
 
@@ -50,20 +47,17 @@ static void run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 	if (pid < 0)
 	{
 		printf("%s\n", strerror(errno));
-		ret_status = errno;
 		ft_twodarr_free(&arr_env, shell->env_size);
-		return;
+		return (errno);
 	}
 	else
-		run_execve(pid, tmp_seq, arr_env);
-	ft_twodarr_free(&arr_env, shell->env_size);
+		return (run_execve(pid, tmp_seq, arr_env, shell));
 }
 
 int run_one(t_seq *tmp_seq, t_shell *shell)
 {
 	if (is_builtin(tmp_seq->run))
-		run_builtin(tmp_seq);
+		return (run_builtin(tmp_seq));
 	else
-		run_external(tmp_seq, shell, envp_to_arr(shell));
-	return (ret_status);
+		return (run_external(tmp_seq, shell, envp_to_arr(shell)));
 }
