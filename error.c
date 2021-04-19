@@ -33,18 +33,24 @@ static void	free_hist_env(t_shell **shell)
 	}
 }
 
-void		free_seq(t_shell **shell)
+void		free_seq(t_seq **seq)
 {
 	t_seq *tmp;
 
-	while ((*shell)->seq)
+	while (*seq)
 	{
-		tmp = (*shell)->seq;
-		(*shell)->seq = (*shell)->seq->next;
+		tmp = *seq;
+		*seq = (*seq)->next;
 		if (tmp->run)
 			free(tmp->run);
 		if (tmp->args)
 			ft_twodarr_free(&tmp->args, ft_twodarr_len(tmp->args));
+		if (tmp->output)
+			free(tmp->output);
+		if (tmp->input)
+			free(tmp->input);
+		if (tmp->pipe)
+			free_seq(&tmp->pipe);
 		free(tmp);
 	}
 }
@@ -54,7 +60,7 @@ void		free_error(char *comment, t_shell **shell)
 	if ((*shell)->history || (*shell)->env)
 		free_hist_env(shell);
 	if ((*shell)->seq)
-		free_seq(shell);
+		free_seq(&(*shell)->seq);
 	free(*shell);
 	if (comment)
 		lite_error(comment);

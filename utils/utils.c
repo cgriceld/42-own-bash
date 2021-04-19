@@ -44,6 +44,26 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (join);
 }
 
+char	*ft_strjoin_space(char const *s1, char const *s2)
+{
+	char	*join;
+	char	*tmp;
+
+	if (!s1 || !s2)
+		return (NULL);
+	join = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
+	if (!join)
+		return (NULL);
+	tmp = join;
+	while (*s1)
+		*tmp++ = *s1++;
+	*tmp++ = ' ';
+	while (*s2)
+		*tmp++ = *s2++;
+	*tmp = '\0';
+	return (join);
+}
+
 int		ft_putchar(int c)
 {
 	write(1, &c, 1);
@@ -253,4 +273,23 @@ size_t		ft_numchstr(char *s, char ch)
 			i++;
 	}
 	return (i);
+}
+
+char	*ft_strchrset(char *s, char *set)
+{
+	char *tmp;
+
+	tmp = s;
+	while (*s && !ft_strchr(set, *s))
+		s++;
+	return (!*s ? NULL : s);
+}
+
+int		ft_strempty(char *s)
+{
+	while (*s == ' ')
+		s++;
+	if (*s == '\0')
+		return (1);
+	return (0);
 }

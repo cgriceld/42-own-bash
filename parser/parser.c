@@ -13,6 +13,9 @@ int	init_seq(t_seq **seq)
 		return (1);
 	(*seq)->run = NULL;
 	(*seq)->args = NULL;
+	(*seq)->pipe = NULL;
+	(*seq)->input = NULL;
+	(*seq)->output = NULL;
 	(*seq)->info &= ZERO;
 	(*seq)->next = NULL;
 	return (0);
@@ -36,25 +39,24 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 {
 	while (tmp_seq)
 	{
-		ret_status = 0;
-		if (tmp_seq->info & PIPE)
+		if (tmp_seq->pipe || (tmp_seq->info & PIPE))
 		{
-			ret_status = run_pipe(tmp_seq, shell);
+			if (tmp_seq->pipe)
+				ret_status = run_pipe(tmp_seq->pipe, shell);
+			else
+				ret_status = run_pipe(tmp_seq, shell);
 			if (ret_status == 255)
 				ret_status = 127;
 			printf("%d\n", ret_status);
-			while (tmp_seq->info & PIPE)
-				tmp_seq = tmp_seq->next;
+			if (tmp_seq->info & PIPE)
+				break;
 			tmp_seq = tmp_seq->next;
 			continue;
 		}
-		else if (!(tmp_seq->info & ZERO))
-		{
-			ret_status = run_one(tmp_seq, shell);
-			if (ret_status == 255)
-				ret_status = 127;
-			printf("%d\n", ret_status);
-		}
+		ret_status = run_one(tmp_seq, shell);
+		if (ret_status == 255)
+			ret_status = 127;
+		printf("%d\n", ret_status);
 		tmp_seq = tmp_seq->next;
 	}
 }
@@ -66,12 +68,13 @@ void		parser(t_shell *shell)
 	if (init_seq(&shell->seq))
 		free_error(strerror(errno), &shell);
 	tmp_seq = shell->seq;
-	//if (ft_strchr(trim, ';'))
-	if (ft_strchr(shell->hist_curr->command, '|'))
-		parse_pipe(tmp_seq, shell);
+	if (ft_strchr(shell->hist_curr->command, ';'))
+		parse_split(tmp_seq, shell, ';', shell->hist_curr->command);
+	else if (ft_strchr(shell->hist_curr->command, '|'))
+		parse_split(tmp_seq, shell, '|', shell->hist_curr->command);
 	else
 		parse_one(tmp_seq, shell);
 	if (!(shell->seq->info & SYNTAX_ERR))
 		run(tmp_seq, shell);
-	free_seq(&shell);
+	free_seq(&shell->seq);
 }

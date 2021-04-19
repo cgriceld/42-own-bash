@@ -67,10 +67,30 @@ static void find_path(t_seq *tmp_seq, t_shell *shell)
 		full_or_wrong(tmp_seq, shell);
 }
 
+static int check_redirect(t_seq *tmp_seq, t_shell *shell)
+{
+	if (ft_strempty(tmp_seq->run))
+	{
+		free(tmp_seq->run);
+		tmp_seq->run = NULL;
+		return (1);
+	}
+	if ((tmp_seq->info & REDIR_OUT) && ft_strempty(tmp_seq->output))
+		return (syntax_error(shell, '>'));
+	return (0);
+}
+
 void	parse_one(t_seq *tmp_seq, t_shell *shell)
 {
 	struct stat	s;
 
+	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "><")) || \
+		ft_strchrset(shell->hist_curr->command, "><"))
+	{
+		parse_redirect(tmp_seq, shell);
+		if (check_redirect(tmp_seq, shell))
+			return;
+	}
 	if (!tmp_seq->run)
 		tmp_seq->args = ft_split(shell->hist_curr->command, ' ');
 	else

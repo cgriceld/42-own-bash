@@ -13,10 +13,14 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
+#define ZERO 0b00000000
 #define PIPE 0b00000001
 #define SYNTAX_ERR 0b00000010
-#define ZERO 0b00000000
+#define REDIR_OUT 0b00000100
+#define REDIR_APPEND 0b00001000
+#define REDIR_IN 0b00010000
 
 // errors
 #define WRONG_ARGS "wrong input arguments, should be : ./minishell"
@@ -67,6 +71,9 @@ typedef struct	s_seq
 	char			*run;
 	char			**args;
 	unsigned char	info;
+	char			*input;
+	char			*output;
+	struct s_seq	*pipe;
 	struct s_seq	*next;
 }				t_seq;
 
@@ -98,11 +105,14 @@ void	ft_twodarr_free(char ***arr, size_t len);
 size_t	ft_twodarr_len(char **arr);
 char	*ft_strtrim(char const *s1, char const *set);
 size_t		ft_numchstr(char *s, char ch);
+char	*ft_strchrset(char *s, char *set);
+char	*ft_strjoin_space(char const *s1, char const *s2);
+int		ft_strempty(char *s);
 
 // errors
 void lite_error(char *comment);
 void free_error(char *comment, t_shell **shell);
-void		free_seq(t_shell **shell);
+void		free_seq(t_seq **seq);
 
 // readline
 void ft_readline(t_shell *shell);
@@ -129,9 +139,11 @@ char	*envp_get_value(t_shell *shell, char *match);
 void parser(t_shell *shell);
 void	free_split(char ***split, t_shell *shell);
 int	init_seq(t_seq **seq);
-void parse_pipe(t_seq *tmp_seq, t_shell *shell);
+void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str);
 void	parse_one(t_seq *tmp_seq, t_shell *shell);
 int			is_builtin(char *s);
+void	parse_redirect(t_seq *tmp_seq, t_shell *shell);
+int syntax_error(t_shell *shell, char sym);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
