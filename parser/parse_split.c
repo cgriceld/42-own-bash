@@ -67,10 +67,14 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 				free_error(strerror(errno), &shell);
 			else
 				parse_split(tmp_seq->pipe, shell, '|', tmp_seq->run);
+			if (shell->seq->info & SYNTAX_ERR)
+				return;
 			tmp_seq = tmp_seq->next;
 			continue;
 		}
 		parse_one(tmp_seq, shell);
+		if (shell->seq->info & SYNTAX_ERR)
+			return;
 		tmp_seq = tmp_seq->next;
 	}
 }
