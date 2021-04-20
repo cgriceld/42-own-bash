@@ -8,12 +8,11 @@ char	*pwd(t_shell *shell)
 	buf = NULL;
 	size = 0;
 	buf = getcwd(buf, size);
-	//положить полный путь в в текущий эеваермент
-	put_the_value(shell->env, buf, "PWD");
+	envp_set_value(shell->env, "PWD", buf);
 	return (buf);
 }
 
- int	print_pwd(t_shell *shell)
+ int	builtins_pwd(t_shell *shell)
 {
 	char *buf;
 
@@ -21,7 +20,7 @@ char	*pwd(t_shell *shell)
 	buf = pwd(shell);
 	if (!buf)
 		return (-1);
-	write(1, buf, ft_strlen(buf));
+	printf("%s", buf);
 	free(buf);
 	return (0);
 }

@@ -113,12 +113,14 @@ int *signal_tracker(void);
 void		envp_to_list(char **envp, t_shell *shell);
 char		**envp_to_arr(t_shell *shell);
 char	*envp_get_value(t_shell *shell, char *match);
+int envp_set_value(t_env *env, char *param, char *value);
 
 //builtins
-int	print_pwd(t_shell *shell);
-int	cd(t_shell *shell);
-char*	pwd(t_shell *shell);
-int	put_the_value(t_env *env, char *buf, const char *param);
-char	*search_for_value(t_env *env, const char *param);
-int env(t_shell *shell);
+int	builtins_pwd(t_shell *shell);
+int	builtins_cd(t_shell *shell);
+int builtins_env(t_shell *shell);
+int	builtins_echo(t_shell *shell);
+int builtins_unset_value(t_shell *shell);
+int builtins_exit(t_shell *shell);
+int builtins_export(t_shell *shell);
 #endif

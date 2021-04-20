@@ -3,7 +3,7 @@
 static int	is_builtin(t_shell *shell)
 {
 	if (!ft_strncmp(shell->hist_curr->command, "echo", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
+		return (print_echo(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "cd", shell->hist_curr->len))
 		return (cd(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "pwd", shell->hist_curr->len))
@@ -11,11 +11,11 @@ static int	is_builtin(t_shell *shell)
 	else if (!ft_strncmp(shell->hist_curr->command, "env", shell->hist_curr->len))
 		return (env(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "unset", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
+		return (unset_value(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "export", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
+		return (builtins_export(shell));
 	else if (!ft_strncmp(shell->hist_curr->command, "exit", shell->hist_curr->len))
-		return (write(1, shell->hist_curr->command, shell->hist_curr->len));
+		return (to_exit(shell));
 	else
 		return (-1);
 }
