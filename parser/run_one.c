@@ -1,9 +1,22 @@
 #include "../minibash.h"
 
-static int run_builtin(t_seq *tmp_seq)
+static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 {
-	write(1, tmp_seq->run, ft_strlen(tmp_seq->run));
-	printf("\n");
+	if (!ft_strncmp(shell->hist_curr->command, "echo", shell->hist_curr->len))
+		return (builtins_echo(shell));
+	else if (!ft_strncmp(shell->hist_curr->command, "cd", shell->hist_curr->len))
+		return (builtins_cd(shell));
+	else if (!ft_strncmp(shell->hist_curr->command, "pwd", shell->hist_curr->len))
+		return (builtins_pwd(shell));
+	else if (!ft_strncmp(shell->hist_curr->command, "env", shell->hist_curr->len))
+		return (builtins_env(shell));
+	else if (!ft_strncmp(shell->hist_curr->command, "unset", shell->hist_curr->len))
+		return (builtins_unset_value(shell));
+	else if (!ft_strncmp(shell->hist_curr->command, "export", shell->hist_curr->len))
+		return (builtins_export(shell));
+	else if (!ft_strncmp(shell->hist_curr->command, "exit", shell->hist_curr->len))
+		return (builtins_exit(shell));
+	//printf("\n");
 	return (0);
 }
 
@@ -95,7 +108,7 @@ int run_one(t_seq *tmp_seq, t_shell *shell)
 			return (redirect_in(tmp_seq, shell));
 	}
 	if (is_builtin(tmp_seq->run))
-		return (run_builtin(tmp_seq));
+		return (run_builtin(tmp_seq, shell));
 	else
 		return (run_external(tmp_seq, shell, envp_to_arr(shell)));
 }
