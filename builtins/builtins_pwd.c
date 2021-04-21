@@ -22,6 +22,7 @@ char	*pwd(t_shell *shell)
 		return (-1);
 	printf("%s", buf);
 	free(buf);
+	printf("\n");
 	return (0);
 }
 

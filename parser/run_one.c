@@ -2,19 +2,19 @@
 
 static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 {
-	if (!ft_strncmp(shell->hist_curr->command, "echo", shell->hist_curr->len))
+	if (!ft_strncmp(tmp_seq->run, "echo", ft_strlen(tmp_seq->run)))
 		return (builtins_echo(shell));
-	else if (!ft_strncmp(shell->hist_curr->command, "cd", shell->hist_curr->len))
+	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
 		return (builtins_cd(shell));
-	else if (!ft_strncmp(shell->hist_curr->command, "pwd", shell->hist_curr->len))
+	else if (!ft_strncmp(tmp_seq->run, "pwd", ft_strlen(tmp_seq->run)))
 		return (builtins_pwd(shell));
-	else if (!ft_strncmp(shell->hist_curr->command, "env", shell->hist_curr->len))
+	else if (!ft_strncmp(tmp_seq->run, "env", ft_strlen(tmp_seq->run)))
 		return (builtins_env(shell));
-	else if (!ft_strncmp(shell->hist_curr->command, "unset", shell->hist_curr->len))
+	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
 		return (builtins_unset_value(shell));
-	else if (!ft_strncmp(shell->hist_curr->command, "export", shell->hist_curr->len))
+	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
 		return (builtins_export(shell));
-	else if (!ft_strncmp(shell->hist_curr->command, "exit", shell->hist_curr->len))
+	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
 		return (builtins_exit(shell));
 	//printf("\n");
 	return (0);

@@ -28,6 +28,8 @@ int builtins_export(t_shell *shell)
 
 	//параметр после парсинга
 	char *value;
+
+
 	char *param;
 	param = ft_strdup("LOGNAME=abc");
 	value = ft_strdup("LOGNAME=abc");
