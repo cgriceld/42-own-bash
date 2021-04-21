@@ -54,3 +54,6 @@ split affects history?
 break in recursive split if syntax error
 don't parse futher if encounter syntax error
 protect write
+file with name ls in same directory
+
+если есть слеш и стат не ругается, то он уже полный

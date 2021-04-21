@@ -14,16 +14,18 @@ static void try_redirect(t_seq *tmp_seq, t_shell *shell, char **end, char sym)
 	{
 		tmp_seq->output = ft_strtrim(ft_substr(tmp_seq->run, \
 							start - tmp_seq->run, *end - start), " ");
+		if (!tmp_seq->output)
+			free_error(strerror(errno), &shell);
 		tmp_seq->info |= REDIR_OUT;
 	}
 	else if (sym == '<')
 	{
 		tmp_seq->input = ft_strtrim(ft_substr(tmp_seq->run, \
 							start - tmp_seq->run, *end - start), " ");
+		if (!tmp_seq->input)
+			free_error(strerror(errno), &shell);
 		tmp_seq->info |= REDIR_IN;
 	}
-	if (!tmp_seq->output)
-		free_error(strerror(errno), &shell);
 }
 
 static int join_args(char **space_join, char *start, char *end, t_seq *tmp_seq)

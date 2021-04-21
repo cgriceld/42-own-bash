@@ -1,9 +1,22 @@
 #include "../minibash.h"
 
-static int run_builtin(t_seq *tmp_seq)
+static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 {
-	write(1, tmp_seq->run, ft_strlen(tmp_seq->run));
-	printf("\n");
+	if (!ft_strncmp(tmp_seq->run, "echo", ft_strlen(tmp_seq->run)))
+		return (builtins_echo(shell));
+	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
+		return (builtins_cd(shell));
+	else if (!ft_strncmp(tmp_seq->run, "pwd", ft_strlen(tmp_seq->run)))
+		return (builtins_pwd(shell));
+	else if (!ft_strncmp(tmp_seq->run, "env", ft_strlen(tmp_seq->run)))
+		return (builtins_env(shell));
+	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
+		return (builtins_unset_value(shell));
+	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
+		return (builtins_export(shell));
+	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
+		return (builtins_exit(shell));
+	//printf("\n");
 	return (0);
 }
 
@@ -34,8 +47,16 @@ static int redirect_out(t_seq *tmp_seq, t_shell *shell)
 
 static int redirect_in(t_seq *tmp_seq, t_shell *shell)
 {
-	int fd;
+	int			fd;
+	struct stat	s;
 
+	if (stat(tmp_seq->input, &s))
+	{
+		write(2, "-minibash: ", ft_strlen("-minibash: "));
+		write(2, tmp_seq->input, ft_strlen(tmp_seq->input));
+		write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+		return (1);
+	}
 	fd = open(tmp_seq->input, O_RDONLY, 0644);
 	if (fd < 0)
 		free_error(strerror(errno), &shell);
@@ -54,6 +75,8 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 	{
 		if (tmp_seq->output)
 			redirect_out(tmp_seq, shell);
+		if (tmp_seq->input && redirect_in(tmp_seq, shell))
+			exit(1);
 		res = execve(tmp_seq->run, tmp_seq->args, arr_env);
 		if (res < 0)
 			handle_errno(tmp_seq->run);
@@ -95,7 +118,7 @@ int run_one(t_seq *tmp_seq, t_shell *shell)
 			return (redirect_in(tmp_seq, shell));
 	}
 	if (is_builtin(tmp_seq->run))
-		return (run_builtin(tmp_seq));
+		return (run_builtin(tmp_seq, shell));
 	else
 		return (run_external(tmp_seq, shell, envp_to_arr(shell)));
 }

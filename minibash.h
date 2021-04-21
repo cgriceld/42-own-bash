@@ -134,6 +134,7 @@ int *signal_tracker(void);
 void		envp_to_list(char **envp, t_shell *shell);
 char		**envp_to_arr(t_shell *shell);
 char	*envp_get_value(t_shell *shell, char *match);
+int envp_set_value(t_env *env, char *param, char *value);
 
 // parser
 void parser(t_shell *shell);
@@ -149,4 +150,13 @@ int syntax_error(t_shell *shell, char sym);
 int run_one(t_seq *tmp_seq, t_shell *shell);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
 
+//builtins
+char	*pwd(t_shell *shell);
+int	builtins_pwd(t_shell *shell);
+int	builtins_cd(t_shell *shell);
+int builtins_env(t_shell *shell);
+int	builtins_echo(t_shell *shell);
+int builtins_unset_value(t_shell *shell);
+int builtins_exit(t_shell *shell);
+int builtins_export(t_shell *shell);
 #endif

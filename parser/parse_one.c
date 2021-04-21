@@ -77,6 +77,8 @@ static int check_redirect(t_seq *tmp_seq, t_shell *shell)
 	}
 	if ((tmp_seq->info & REDIR_OUT) && ft_strempty(tmp_seq->output))
 		return (syntax_error(shell, '>'));
+	if ((tmp_seq->info & REDIR_IN) && ft_strempty(tmp_seq->input))
+		return (syntax_error(shell, '<'));
 	return (0);
 }
 
