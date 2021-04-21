@@ -48,6 +48,8 @@ ls l > file3.txt -a
 ls l > file3.txt -a ; ls > file3.txt
 ls < f2.txt | grep min
 
+/..
+
 errors in stderr
 case sensitivity of commands
 split affects history?

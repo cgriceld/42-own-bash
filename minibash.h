@@ -149,6 +149,8 @@ int syntax_error(t_shell *shell, char sym);
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
+int redirect_out(t_seq *tmp_seq, t_shell *shell);
+int redirect_in(t_seq *tmp_seq, t_shell *shell);
 
 //builtins
 char	*pwd(t_shell *shell);

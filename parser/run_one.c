@@ -20,55 +20,37 @@ static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 	return (0);
 }
 
-static void handle_errno(char *comm)
+static void handle_errno(char *comm, int errno_save)
 {
-	if (errno == ENOENT)
+	write(2, "-minibash: ", 11);
+	write(2, comm, ft_strlen(comm));
+	if (errno_save == ENOENT)
 	{
-		write(2, "-minibash: ", ft_strlen("-minibash: "));
-		write(2, comm, ft_strlen(comm));
-		write(2, ": command not found\n", ft_strlen(": command not found\n"));
+		if (ft_strchr(comm, '/'))
+			write(2, ": No such file or directory\n", 28);
+		else
+			write(2, ": command not found\n", 20);
+		exit(127);
+	}
+	else if (errno_save == ENOTDIR)
+	{
+		write(2, ": Not a directory\n", 18);
+		exit(126);
+	}
+	else if (errno_save == EACCES)
+	{
+		write(2, ": Permission denied\n", 20);
+		exit(126);
 	}
 	else
-		write(2, strerror(errno), ft_strlen(strerror(errno)));
-}
-
-static int redirect_out(t_seq *tmp_seq, t_shell *shell)
-{
-	int fd;
-
-	fd = open(tmp_seq->output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		free_error(strerror(errno), &shell);
-	if (tmp_seq->run)
-		dup2(fd, 1);
-	close(fd);
-	return (0);
-}
-
-static int redirect_in(t_seq *tmp_seq, t_shell *shell)
-{
-	int			fd;
-	struct stat	s;
-
-	if (stat(tmp_seq->input, &s))
 	{
-		write(2, "-minibash: ", ft_strlen("-minibash: "));
-		write(2, tmp_seq->input, ft_strlen(tmp_seq->input));
-		write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-		return (1);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		exit(errno_save);
 	}
-	fd = open(tmp_seq->input, O_RDONLY, 0644);
-	if (fd < 0)
-		free_error(strerror(errno), &shell);
-	if (tmp_seq->run)
-		dup2(fd, 0);
-	close(fd);
-	return (0);
 }
 
 static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 {
-	int res;
 	int status;
 
 	if (!pid)
@@ -77,10 +59,9 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 			redirect_out(tmp_seq, shell);
 		if (tmp_seq->input && redirect_in(tmp_seq, shell))
 			exit(1);
-		res = execve(tmp_seq->run, tmp_seq->args, arr_env);
-		if (res < 0)
-			handle_errno(tmp_seq->run);
-		exit(res);
+		if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)
+			handle_errno(tmp_seq->run, errno);
+		exit(0);
 	}
 	else
 	{

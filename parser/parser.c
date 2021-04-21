@@ -45,8 +45,6 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 				ret_status = run_pipe(tmp_seq->pipe, shell);
 			else
 				ret_status = run_pipe(tmp_seq, shell);
-			if (ret_status == 255)
-				ret_status = 127;
 			printf("%d\n", ret_status);
 			if (tmp_seq->info & PIPE)
 				break;
@@ -54,8 +52,6 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 			continue;
 		}
 		ret_status = run_one(tmp_seq, shell);
-		if (ret_status == 255)
-			ret_status = 127;
 		printf("%d\n", ret_status);
 		tmp_seq = tmp_seq->next;
 	}

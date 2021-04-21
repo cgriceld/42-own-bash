@@ -9,7 +9,8 @@ SRC = entry_point.c error.c utils/utils.c utils/ft_split.c \
 	readline/handle_execute.c readline/handle_keys.c \
 	readline/readline.c readline/signals.c readline/utils_readline.c \
 	parser/parse_one.c parser/parse_split.c parser/parser.c \
-	parser/parse_redirect.c parser/run_one.c parser/run_pipe.c\
+	parser/parse_redirect.c parser/run_one.c parser/run_pipe.c \
+	parser/run_redirect.c \
 	envp/envp_to_list.c envp/envp_to_arr.c envp/envp_get_value.c \
 	builtins/builtins_*.c envp/envp_set_value.c
 

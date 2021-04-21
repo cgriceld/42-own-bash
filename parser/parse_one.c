@@ -99,8 +99,8 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 		tmp_seq->args = ft_split(tmp_seq->run, ' ');
 	if (!tmp_seq->args)
 		free_error(strerror(errno), &shell);
-	if (is_builtin(tmp_seq->args[0]) || !stat(tmp_seq->args[0], &s) || \
-		!envp_get_value(shell, "PATH"))
+	if (is_builtin(tmp_seq->args[0]) || !envp_get_value(shell, "PATH") || \
+		ft_strchr(tmp_seq->args[0], '/'))
 		full_or_wrong(tmp_seq, shell);
 	else
 		find_path(tmp_seq, shell);
