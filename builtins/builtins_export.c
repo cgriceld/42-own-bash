@@ -23,12 +23,14 @@ int builtins_export(t_shell *shell)
 {
 	t_env *export;
 	t_env *tmp;
-	char **split;
-	int count;
+//	char **split;
+//	int count;
 
 	//параметр после парсинга
+	char *value;
 	char *param;
 	param = ft_strdup("LOGNAME=abc");
+	value = ft_strdup("LOGNAME=abc");
 	//param = NULL;
 
 	if (!param)

@@ -9,7 +9,7 @@ int		builtins_cd(t_shell *shell)
 	param = NULL;
 //	param = "builtins";
 //	param = "/Users/sbrenton";
-	(void)*shell;
+ (void)*shell;
 	old_path = pwd(shell);
 	if (!old_path)
 		return (-1);
@@ -22,6 +22,7 @@ int		builtins_cd(t_shell *shell)
 		printf("cd: %s: No such file or directory\n", param);
 		return (-1);
 	}
+	// добавитесли нет
 	envp_set_value(shell->env, old_path, "OLDPWD");
 	envp_set_value(shell->env, path, "PWD");
 	return (0);

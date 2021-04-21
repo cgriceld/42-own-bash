@@ -116,6 +116,7 @@ char	*envp_get_value(t_shell *shell, char *match);
 int envp_set_value(t_env *env, char *param, char *value);
 
 //builtins
+char	*pwd(t_shell *shell);
 int	builtins_pwd(t_shell *shell);
 int	builtins_cd(t_shell *shell);
 int builtins_env(t_shell *shell);
