@@ -1,16 +1,13 @@
 #include "../minibash.h"
 
-int		builtins_cd(t_shell *shell)
+int		builtins_cd(t_shell *shell, t_seq *tmp_seq)
 {
 	char *path;
 	char *old_path;
 	char *param;
 
-	param = NULL;
-//	param = "builtins";
-//	param = "/Users/sbrenton";
- (void)*shell;
-	old_path = pwd(shell);
+	param = tmp_seq->args[0];
+	old_path = pwd(shell, tmp_seq);
 	if (!old_path)
 		return (-1);
 	if (!param)
@@ -22,9 +19,8 @@ int		builtins_cd(t_shell *shell)
 		printf("cd: %s: No such file or directory\n", param);
 		return (-1);
 	}
-	// добавитесли нет
-
-	envp_set_value(shell->env, old_path, "OLDPWD");
+	if (envp_set_value(shell->env, old_path, "OLDPWD") != 0)
+		envp_new_value(shell, ft_strdup("OLDPWD"), NULL);
 	envp_set_value(shell->env, path, "PWD");
 	return (0);
 }

@@ -151,12 +151,13 @@ int run_one(t_seq *tmp_seq, t_shell *shell);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
 
 //builtins
-char	*pwd(t_shell *shell);
-int	builtins_pwd(t_shell *shell);
-int	builtins_cd(t_shell *shell);
-int builtins_env(t_shell *shell);
-int	builtins_echo(t_shell *shell);
-int builtins_unset_value(t_shell *shell);
-int builtins_exit(t_shell *shell);
-int builtins_export(t_shell *shell);
+char	*pwd(t_shell *shell, t_seq *tmp_seq);
+int	builtins_pwd(t_shell *shell, t_seq *tmp_seq);
+int	builtins_cd(t_shell *shell, t_seq *tmp_seq);
+int builtins_env(t_shell *shell, t_seq *tmp_seq);
+int	builtins_echo(t_shell *shell, t_seq *tmp_seq);
+int builtins_unset_value(t_shell *shell, t_seq *tmp_seq);
+int builtins_exit(t_shell *shell, t_seq *tmp_seq);
+int builtins_export(t_shell *shell, t_seq *tmp_seq);
+int envp_new_value(t_shell *shell, char *param, char *value);
 #endif

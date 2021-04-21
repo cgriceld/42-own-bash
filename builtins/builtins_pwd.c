@@ -12,7 +12,7 @@ char	*pwd(t_shell *shell)
 	return (buf);
 }
 
- int	builtins_pwd(t_shell *shell)
+ int	builtins_pwd(t_shell *shell, t_seq *tmp_seq)
 {
 	char *buf;
 

@@ -1,10 +1,10 @@
 #include "../minibash.h"
 
-int builtins_env(t_shell *shell)
+int builtins_env(t_shell *shell, t_seq *tmp_seq)
 {
 	t_env *tmp;
 
-	_=/usr/bin/env
+	envp_set_value(shell->env, "_", ft_strdup("shell->env"));
 	tmp = shell->env;
 	while (tmp)
 	{

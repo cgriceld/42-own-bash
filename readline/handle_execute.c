@@ -5,8 +5,6 @@ void		handle_execute(t_shell *shell)
 	char *tmp;
 
 	printf("\n");
-//	if (shell->hist_ptr->len)
-//		printf("\n");
 	ret_status = 0; // new command
 	if (shell->hist_ptr != shell->hist_curr)
 	{

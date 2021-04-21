@@ -3,19 +3,19 @@
 static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 {
 	if (!ft_strncmp(tmp_seq->run, "echo", ft_strlen(tmp_seq->run)))
-		return (builtins_echo(shell));
+		return (builtins_echo(shell, tmp_seq));
 	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
-		return (builtins_cd(shell));
+		return (builtins_cd(shell, tmp_seq));
 	else if (!ft_strncmp(tmp_seq->run, "pwd", ft_strlen(tmp_seq->run)))
-		return (builtins_pwd(shell));
+		return (builtins_pwd(shell, tmp_seq));
 	else if (!ft_strncmp(tmp_seq->run, "env", ft_strlen(tmp_seq->run)))
-		return (builtins_env(shell));
+		return (builtins_env(shell, tmp_seq));
 	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
-		return (builtins_unset_value(shell));
+		return (builtins_unset_value(shell, tmp_seq));
 	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
-		return (builtins_export(shell));
+		return (builtins_export(shell, tmp_seq));
 	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
-		return (builtins_exit(shell));
+		return (builtins_exit(shell, tmp_seq));
 	//printf("\n");
 	return (0);
 }

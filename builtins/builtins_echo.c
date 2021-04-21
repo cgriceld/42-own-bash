@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
- int	builtins_echo(t_shell *shell)
+ int	builtins_echo(t_shell *shell, t_seq *tmp_seq)
 {
 	//	эти переменные будут взяты из парса
 	char *buf;

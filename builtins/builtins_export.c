@@ -19,7 +19,10 @@ int print_export(t_shell *shell)
 	return (0);
 }
 
-int builtins_export(t_shell *shell)
+
+
+
+int builtins_export(t_shell *shell, t_seq *tmp_seq)
 {
 	t_env *export;
 	t_env *tmp;
@@ -56,16 +59,16 @@ int builtins_export(t_shell *shell)
 
 		if (envp_set_value(shell->env, param, value) == 0)
 			return (0);
-		export = (t_env *)malloc(sizeof(t_env));
-		if (!export)
-			free_error(strerror(errno), &shell);
-		export->next = NULL;
-		export->key = param;
-		export->value = value;
-		tmp = shell->env;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = export;
+//		export = (t_env *)malloc(sizeof(t_env));
+//		if (!export)
+//			free_error(strerror(errno), &shell);
+//		export->next = NULL;
+//		export->key = param;
+//		export->value = value;
+//		tmp = shell->env;
+//		while (tmp->next)
+//			tmp = tmp->next;
+//		tmp->next = export;
 	}
 	return (0);
 }

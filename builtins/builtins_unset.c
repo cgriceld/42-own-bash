@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-int builtins_unset_value(t_shell *shell)
+int builtins_unset_value(t_shell *shell, t_seq *tmp_seq)
 {
 	t_env *env;
 	t_env *previous;
@@ -23,6 +23,6 @@ int builtins_unset_value(t_shell *shell)
 	previous->next = env->next;
 	this->next = NULL;
 	free(this);
-	// понятьу что нет утечек
+	// понять у что нет утечек
 	return (0);
 }
