@@ -23,6 +23,7 @@ int		builtins_cd(t_shell *shell)
 		return (-1);
 	}
 	// добавитесли нет
+
 	envp_set_value(shell->env, old_path, "OLDPWD");
 	envp_set_value(shell->env, path, "PWD");
 	return (0);

@@ -4,6 +4,7 @@ int builtins_env(t_shell *shell)
 {
 	t_env *tmp;
 
+	_=/usr/bin/env
 	tmp = shell->env;
 	while (tmp)
 	{
