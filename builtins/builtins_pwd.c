@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-char	*pwd(t_shell *shell)
+char	*pwd(t_shell *shell, t_seq *tmp_seq)
 {
 	char *buf;
 	size_t size;
@@ -17,7 +17,7 @@ char	*pwd(t_shell *shell)
 	char *buf;
 
 	(void)*shell;
-	buf = pwd(shell);
+	buf = pwd(shell, tmp_seq);
 	if (!buf)
 		return (-1);
 	printf("%s", buf);
