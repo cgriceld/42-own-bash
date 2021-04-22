@@ -293,3 +293,16 @@ int		ft_strempty(char *s)
 		return (1);
 	return (0);
 }
+
+int ft_in_set(const char *set, char ch)
+{
+	int i = 0;
+
+	while (set[i] != 0)
+	{
+		if (set[i] == ch)
+			return 1;
+		i++;
+	}
+	return 0;
+}

@@ -4,7 +4,7 @@ int builtins_env(t_shell *shell, t_seq *tmp_seq)
 {
 	t_env *tmp;
 
-	envp_set_value(shell->env, "_", "shell->env");
+	printf("%d\n", envp_set_value(shell->env, "_", ft_strdup("/usr/bin/env")));
 	tmp = shell->env;
 	while (tmp)
 	{
@@ -12,6 +12,5 @@ int builtins_env(t_shell *shell, t_seq *tmp_seq)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	//printf("\n");
 	return (0);
 }

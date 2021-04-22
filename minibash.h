@@ -37,6 +37,9 @@
 // global variable, exit code of last command
 int ret_status;
 
+// global variable, to know is OLDPWD initilased;
+int is_oldpwd;
+
 // terminal modes
 typedef enum	e_modes
 {
@@ -108,6 +111,7 @@ size_t		ft_numchstr(char *s, char ch);
 char	*ft_strchrset(char *s, char *set);
 char	*ft_strjoin_space(char const *s1, char const *s2);
 int		ft_strempty(char *s);
+int ft_in_set(const char *set, char ch);
 
 // errors
 void lite_error(char *comment);
