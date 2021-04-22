@@ -4,7 +4,7 @@ int builtins_env(t_shell *shell, t_seq *tmp_seq)
 {
 	t_env *tmp;
 
-	envp_set_value(shell->env, "_", ft_strdup("shell->env"));
+	envp_set_value(shell->env, "_", "shell->env");
 	tmp = shell->env;
 	while (tmp)
 	{
