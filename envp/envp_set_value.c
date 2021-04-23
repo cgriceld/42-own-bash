@@ -1,10 +1,12 @@
 #include "../minibash.h"
 
-int envp_set_value(t_env *env, char *param, char *value)
+int envp_set_value(t_shell *shell, char *param, char *value)
 {
+	t_env *env;
 	char *tmp;
 	int len;
 
+	env = shell->env;
 	len = ft_strlen(param);
 	while (ft_strncmp(env->key, param, len) != 0 && env->next)
 		env = env->next;

@@ -8,7 +8,7 @@ char	*pwd(t_shell *shell, t_seq *tmp_seq)
 	buf = NULL;
 	size = 0;
 	buf = getcwd(buf, size);
-	envp_set_value(shell->env, "PWD", buf);
+	envp_set_value(shell, "PWD", buf);
 	return (buf);
 }
 

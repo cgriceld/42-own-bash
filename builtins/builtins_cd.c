@@ -24,8 +24,8 @@ void update_pwd(t_shell *shell, char *path, char *old_path, t_seq *tmp_seq)
 	path = pwd(shell, tmp_seq);
 	if (ft_strncmp(old_path, path, ft_strlen(old_path + 1)) != 0)
 	{
-		envp_set_value(shell->env, "OLDPWD", old_path);
-		envp_set_value(shell->env, "PWD", path);
+		envp_set_value(shell, "OLDPWD", old_path);
+		envp_set_value(shell, "PWD", path);
 	}
 }
 
