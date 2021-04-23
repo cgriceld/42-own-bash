@@ -93,17 +93,23 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 		if (check_redirect(tmp_seq, shell))
 			return;
 	}
-	parse_quotes(tmp_seq, shell);
-	if (!tmp_seq->run)
-		tmp_seq->args = ft_split(shell->hist_curr->command, ' ');
+	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "'\"")) || \
+		ft_strchrset(shell->hist_curr->command, "'\""))
+		parse_quotes(tmp_seq, shell);
 	else
-		tmp_seq->args = ft_split(tmp_seq->run, ' ');
-	if (!tmp_seq->args)
-		free_error(strerror(errno), &shell);
+	{
+		if (!tmp_seq->run)
+			tmp_seq->args = ft_split(shell->hist_curr->command, ' ');
+		else
+			tmp_seq->args = ft_split(tmp_seq->run, ' ');
+		if (!tmp_seq->args)
+			free_error(strerror(errno), &shell);
+	}
 	if (is_builtin(tmp_seq->args[0]) || !envp_get_value(shell, "PATH") || \
 		ft_strchr(tmp_seq->args[0], '/'))
 		full_or_wrong(tmp_seq, shell);
 	else
 		find_path(tmp_seq, shell);
 }
-// or run is quoted, add mask
+
+int	do_path()

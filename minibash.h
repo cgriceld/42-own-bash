@@ -90,6 +90,7 @@ typedef struct	s_quo
 	int			single_q;
 	int			double_q;
 	int			after_space;
+	int			split_len;
 	t_quo_split	*split;
 	char		*start;
 	char		*end;
@@ -164,6 +165,10 @@ int			is_builtin(char *s);
 void	parse_redirect(t_seq *tmp_seq, t_shell *shell);
 int syntax_error(t_shell *shell, char sym);
 void parse_quotes(t_seq *tmp_seq, t_shell *shell);
+int init_quo_split(t_quo_split **new);
+void free_quotes(t_quo **quo);
+void error_quotes(t_quo **quo, t_shell **shell);
+void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);

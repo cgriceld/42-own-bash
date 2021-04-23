@@ -14,14 +14,14 @@ int main(int argc, char **argv, char **envp)
 	int		status;
 	int fd;
 
-	char* arglist[] = {"ls/", "l", "-a", NULL};
+	char* arglist[] = {"/bin/ls", "-l-a", NULL};
 	pid = fork();
 	if (!pid) // child process
 	{
 		// fd = open("file1.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 		// dup2(fd, 1);
 		// close(fd);
-		res = execve("ls/", arglist, envp);
+		res = execve("/bin/ls", arglist, envp);
 		// printf("res : %d\n", res);
 		// printf("errno : %d\n", errno);
 		if (res < 0)

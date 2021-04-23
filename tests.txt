@@ -65,6 +65,7 @@ ls ''
 echo " hi '$PWD'"
 echo \" $PWD \"
 >\>
+pwd | > | ls
 ls $PWD -l
 
 errors in stderr
