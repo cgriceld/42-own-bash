@@ -19,7 +19,7 @@ char	*pwd(t_shell *shell, t_seq *tmp_seq)
 	(void)*shell;
 	buf = pwd(shell, tmp_seq);
 	if (!buf)
-		return (-1);
+		return (1);
 	printf("%s", buf);
 	free(buf);
 	printf("\n");
