@@ -19,56 +19,47 @@ int print_export(t_shell *shell)
 	return (0);
 }
 
-
-
-
 int builtins_export(t_shell *shell, t_seq *tmp_seq)
 {
-	t_env *export;
-	t_env *tmp;
-//	char **split;
-//	int count;
 
-	//параметр после парсинга
 	char *value;
-
-
 	char *param;
-	param = ft_strdup("LOGNAME=abc");
-	value = ft_strdup("LOGNAME=abc");
-	//param = NULL;
+	int len;
+	int i;
+	int n;
 
-	if (!param)
-		print_export(shell);
-	else
+	if (tmp_seq->args[1] == 0)
+		return (print_export(shell));
+	i = 1;
+	while (tmp_seq->args[i] != 0)
 	{
-		//надо учесть что может быть несколько значений и сделать цикл
-		//как вариант сделать разделить по равно, но не сплитом 2 сплита или один
-//		split = ft_split(param);
-//		count = 0;
-//		while (split[count] != NULL)
-//			count ++;
-//		if (count > 2)
-//		{
-//			while (count--)
-//				free(split[count]);
-//			free(split);
-//			return (-1);
-//		}
-
-
+				value = NULL;
+				param = NULL;
+				if (tmp_seq->args[i][0] == '=')
+				{
+					printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
+					return (1);
+				}
+				len = ft_strlen(tmp_seq->args[i]);
+				n = 0;
+				while (tmp_seq->args[i][n] != '=' && len > 0)
+				{
+					n++;
+					len--;
+				}
+				if (len > 0)
+				{
+					tmp_seq->args[i][n] = 0;
+					value = ft_strdup(&(tmp_seq->args[i][n + 1]));
+				}
+		param = ft_strdup(tmp_seq->args[i]);
+		if (value == NULL && envp_get_value(shell, param) != NULL)
+			return (0);
 		if (envp_set_value(shell->env, param, value) == 0)
 			return (0);
-//		export = (t_env *)malloc(sizeof(t_env));
-//		if (!export)
-//			free_error(strerror(errno), &shell);
-//		export->next = NULL;
-//		export->key = param;
-//		export->value = value;
-//		tmp = shell->env;
-//		while (tmp->next)
-//			tmp = tmp->next;
-//		tmp->next = export;
+		else
+			envp_new_value(shell, param, value);
+		i++;
 	}
 	return (0);
 }

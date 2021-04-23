@@ -4,11 +4,17 @@ int builtins_env(t_shell *shell, t_seq *tmp_seq)
 {
 	t_env *tmp;
 
-	printf("%d\n", envp_set_value(shell->env, "_", ft_strdup("/usr/bin/env")));
+	if (envp_get_value(shell, "PATH") == NULL)
+	{
+		printf("env: No such file or directory\n");
+		return (127);
+	}
 	tmp = shell->env;
 	while (tmp)
 	{
-		if (tmp->value)
+		if (ft_strlen(tmp->key) == 1 & tmp->key[0] == '_')
+			printf("%s=/usr/bin/env\n", tmp->key);
+		else if (tmp->value)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
