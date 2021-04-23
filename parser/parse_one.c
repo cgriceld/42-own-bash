@@ -93,6 +93,7 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 		if (check_redirect(tmp_seq, shell))
 			return;
 	}
+	parse_quotes(tmp_seq, shell);
 	if (!tmp_seq->run)
 		tmp_seq->args = ft_split(shell->hist_curr->command, ' ');
 	else
@@ -105,3 +106,4 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 	else
 		find_path(tmp_seq, shell);
 }
+// or run is quoted, add mask

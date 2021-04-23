@@ -1,0 +1,93 @@
+#include "../minibash.h"
+
+static int init_quo_split(t_quo_split **new)
+{
+	*new = (t_quo_split *)malloc(sizeof(t_quo_split));
+	if (!*new)
+		return (1);
+	(*new)->arg = NULL;
+	(*new)->next = NULL;
+	return (0);
+}
+
+static void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+{
+	char *tmp;
+
+	if (quo->after_space && tmp_split->arg && !init_quo_split(&tmp_split->next))
+	{
+		tmp_split->next->arg = ft_strtrim(ft_substr(\
+		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\"");
+	}
+	else if (!quo->after_space)
+	{
+		tmp = tmp_split->arg;
+		tmp_split->arg = ft_strjoin(tmp_split->arg, ft_strtrim(ft_substr(\
+		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\""));
+		free(tmp);
+	}
+	else if (quo->after_space && !tmp_split->arg)
+	{
+		tmp_split->arg = ft_substr( \
+		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start);
+	}
+}
+
+static void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+{
+	char *tmp;
+
+	while (*quo->end && *quo->end != '\'')
+		quo->end++;
+	if (*quo->end == '\'')
+		join_args(tmp_seq, shell, quo, tmp_split);
+	quo->end++;
+}
+
+static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+{
+	quo->end = tmp_seq->run;
+	while (*quo->end)
+	{
+		while (*quo->end && *quo->end == ' ')
+			quo->end++;
+		quo->start = quo->end;
+		while (*quo->end && *quo->end != ' ' && *quo->end != '\'')
+			quo->end++;
+		if (*quo->end == ' ' || !*quo->end)
+		{
+			if (*quo->end == ' ')
+				quo->after_space = 1;
+			join_args(tmp_seq, shell, quo, tmp_split);
+		}
+		else if (*quo->end == '\'')
+		{
+			quo->end++;
+			parse_singleq(tmp_seq, shell, quo, tmp_split);
+			quo->after_space = 0;
+		}
+		if (tmp_split->next)
+			tmp_split = tmp_split->next;
+	}
+}
+
+void parse_quotes(t_seq *tmp_seq, t_shell *shell)
+{
+	t_quo		*quo;
+	t_quo_split	*tmp_split;
+
+	if (!tmp_seq->run)
+		tmp_seq->run = ft_strtrim(shell->hist_curr->command, " ");
+	quo = (t_quo *)malloc(sizeof(t_quo));
+	if (!quo)
+		free_error(strerror(errno), &shell);
+	quo->single_q = 0;
+	quo->double_q = 0;
+	quo->after_space = 1;
+	if (init_quo_split(&quo->split))
+		free_error(strerror(errno), &shell);// + free quo
+	tmp_split = quo->split;
+	find_quotes(tmp_seq, shell, quo, tmp_split);
+}
+
+// free on errors

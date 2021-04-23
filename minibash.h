@@ -77,6 +77,24 @@ typedef struct	s_seq
 	struct s_seq	*next;
 }				t_seq;
 
+// list analog of tmp_seq->args
+typedef struct	s_quo_split
+{
+	char				*arg;
+	struct s_quo_split	*next;
+}				t_quo_split;
+
+// quotes structure
+typedef struct	s_quo
+{
+	int			single_q;
+	int			double_q;
+	int			after_space;
+	t_quo_split	*split;
+	char		*start;
+	char		*end;
+}				t_quo;
+
 // shell struct with main info
 typedef struct	s_shell
 {
@@ -145,6 +163,7 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell);
 int			is_builtin(char *s);
 void	parse_redirect(t_seq *tmp_seq, t_shell *shell);
 int syntax_error(t_shell *shell, char sym);
+void parse_quotes(t_seq *tmp_seq, t_shell *shell);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);

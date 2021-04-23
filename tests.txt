@@ -47,8 +47,25 @@ ls -l > file3.txt -a
 ls l > file3.txt -a
 ls l > file3.txt -a ; ls > file3.txt
 ls < f2.txt | grep min
+ls -l '-'a
 
 /..
+
+echo " hi \"  "
+echo "  "hi"  "
+echo 'hi \'''
+ls ";" -la
+echo \   $PWD
+l\s
+\p\w\d
+   " ls |   " \; pwd
+'ls' > f1.txt -la
+'l''s'
+ls ''
+echo " hi '$PWD'"
+echo \" $PWD \"
+>\>
+ls $PWD -l
 
 errors in stderr
 case sensitivity of commands
@@ -59,3 +76,4 @@ protect write
 file with name ls in same directory
 
 если есть слеш и стат не ругается, то он уже полный
+пустой редирект между пайпами
