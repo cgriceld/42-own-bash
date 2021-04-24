@@ -1,21 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_export.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
+/*   Updated: 2021/04/24 18:22:42 by lesia            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minibash.h"
+
+//int print_export(t_shell *shell)
+//{
+//	t_env *tmp;
+//
+//	tmp = shell->env;
+//	while (tmp)
+//	{
+//		if (ft_strncmp(tmp->key, "_", 2) != 0)
+//		{
+//			printf("declare -x %s", tmp->key);
+//			if (tmp->value)
+//				printf(" =\"%s\"", tmp->value);
+//			printf("\n");
+//		}
+//		tmp = tmp->next;
+//	}
+//	return (0);
+//}
 
 int print_export(t_shell *shell)
 {
 	t_env *tmp;
+	t_list *key_sort;
+	t_list *sort_start;
 
+	sort_start = NULL;
 	tmp = shell->env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, "_", 2) != 0)
-		{
-			printf("declare -x %s", tmp->key);
-			if (tmp->value)
-				printf(" =\"%s\"", tmp->value);
-			printf("\n");
-		}
+		sort_start = put_to_sort_list(ft_strdup(tmp->key), sort_start);
 		tmp = tmp->next;
 	}
+	key_sort = sort_start;
+	while (key_sort)
+	{
+		if (((char *)key_sort->content)[0] < 'a' || ((char *)key_sort->content)[0] > 'z')
+		{
+			if (ft_strncmp((char *)key_sort->content, "_", 2) != 0)
+			{
+				printf("declare -x %s", (char *)(key_sort->content));
+				if (envp_get_value(shell, key_sort->content) != NULL)
+					printf(" =\"%s\"", envp_get_value(shell, key_sort->content));
+				printf("\n");
+			}
+		}
+		key_sort = key_sort->next;
+	}
+	key_sort = sort_start;
+	while (key_sort)
+	{
+		if (((char *)key_sort->content)[0] >= 'a' && ((char *)key_sort->content)[0] <= 'z')
+		{
+			if (ft_strncmp((char *)key_sort->content, "_", 2) != 0)
+			{
+				printf("declare -x %s", (char *)(key_sort->content));
+				if (envp_get_value(shell, key_sort->content) != NULL)
+					printf(" =\"%s\"", envp_get_value(shell, key_sort->content));
+				printf("\n");
+			}
+		}
+		key_sort = key_sort->next;
+	}
+	ft_lstclear(&sort_start, free);
 	return (0);
 }
 
@@ -49,7 +108,7 @@ int builtins_export(t_shell *shell, t_seq *tmp_seq)
 	int i;
 	int n;
 
-	if (tmp_seq->args[1] == 0)
+	if (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n')
 		return (print_export(shell));
 	i = 1;
 	while (tmp_seq->args[i] != 0)
@@ -57,6 +116,7 @@ int builtins_export(t_shell *shell, t_seq *tmp_seq)
 		value = NULL;
 		param = NULL;
 		if (tmp_seq->args[i][0] == '=')
+	//	(tmp_seq->args[i][0] >= 'а' && tmp_seq->args[i][0] <= 'я'))
 		{
 			printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
 				return (1);

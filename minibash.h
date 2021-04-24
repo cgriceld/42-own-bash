@@ -91,6 +91,13 @@ typedef struct	s_shell
 	t_seq		*seq;
 }				t_shell;
 
+struct		s_list
+{
+	void			*content;
+	struct s_list	*next;
+};
+typedef struct s_list	t_list;
+
 // utils
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -112,6 +119,11 @@ char	*ft_strchrset(char *s, char *set);
 char	*ft_strjoin_space(char const *s1, char const *s2);
 int		ft_strempty(char *s);
 int ft_in_set(const char *set, char ch);
+t_list *put_to_sort_list(char *content, t_list *start);
+t_list		*ft_lstnew(void *content);
+void		ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstclear(t_list **lst, void (*del)(void *));
+void	ft_lstdelone(t_list *lst, void (*del)(void *));
 
 // errors
 void lite_error(char *comment);
