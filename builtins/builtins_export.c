@@ -6,30 +6,13 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/04/24 18:22:42 by lesia            ###   ########.fr       */
+/*   Updated: 2021/04/24 18:23:28 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-//int print_export(t_shell *shell)
-//{
-//	t_env *tmp;
-//
-//	tmp = shell->env;
-//	while (tmp)
-//	{
-//		if (ft_strncmp(tmp->key, "_", 2) != 0)
-//		{
-//			printf("declare -x %s", tmp->key);
-//			if (tmp->value)
-//				printf(" =\"%s\"", tmp->value);
-//			printf("\n");
-//		}
-//		tmp = tmp->next;
-//	}
-//	return (0);
-//}
+// поправить по норме!!!
 
 int print_export(t_shell *shell)
 {
@@ -121,19 +104,6 @@ int builtins_export(t_shell *shell, t_seq *tmp_seq)
 			printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
 				return (1);
 		}
-//		len = ft_strlen(tmp_seq->args[i]);
-//		n = 0;
-//		while (tmp_seq->args[i][n] != '=' && len > 0)
-//		{
-//			n++;
-//			len--;
-//		}
-//		if (len > 0)
-//		{
-//			tmp_seq->args[i][n] = 0;
-//			value = ft_strdup(&(tmp_seq->args[i][n + 1]));
-//		}
-//		param = ft_strdup(tmp_seq->args[i]);
 		pair_param_value(tmp_seq, i, &param, &value);
 		if (value == NULL && envp_get_value(shell, param) != NULL)
 		{

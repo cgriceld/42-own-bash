@@ -1,1 +1,5 @@
 /minishell.dSYM/
+.gitignore
+minishell
+minishell.dSYM
+.idea/
