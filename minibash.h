@@ -21,6 +21,10 @@
 #define REDIR_OUT 0b00000100
 #define REDIR_APPEND 0b00001000
 #define REDIR_IN 0b00010000
+#define QUOTED 0b00100000
+#define SINGLE 0b00100000
+#define DOUBLED 0b01000000
+#define ESCAPED 0b10000000
 
 // errors
 #define WRONG_ARGS "wrong input arguments, should be : ./minishell"
@@ -169,6 +173,8 @@ int init_quo_split(t_quo_split **new);
 void free_quotes(t_quo **quo);
 void error_quotes(t_quo **quo, t_shell **shell);
 void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
+int is_ignored(char *start, char *ptr, t_shell *shell);
+int precheck_quotes(t_shell *shell);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);

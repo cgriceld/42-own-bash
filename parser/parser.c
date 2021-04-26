@@ -60,13 +60,18 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 void		parser(t_shell *shell)
 {
 	t_seq	*tmp_seq;
+	char *sym;
 
 	if (init_seq(&shell->seq))
 		free_error(strerror(errno), &shell);
 	tmp_seq = shell->seq;
-	if (ft_strchr(shell->hist_curr->command, ';'))
+	if (precheck_quotes(shell))
+		return;
+	sym = ft_strchr(shell->hist_curr->command, ';');
+	if (sym && !is_ignored(shell->hist_curr->command, sym, shell))
 		parse_split(tmp_seq, shell, ';', shell->hist_curr->command);
-	else if (ft_strchr(shell->hist_curr->command, '|'))
+	sym = ft_strchr(shell->hist_curr->command, '|');
+	if (sym && is_ignored(shell->hist_curr->command, sym, shell))
 		parse_split(tmp_seq, shell, '|', shell->hist_curr->command);
 	else
 		parse_one(tmp_seq, shell);

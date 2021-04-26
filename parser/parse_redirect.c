@@ -50,18 +50,22 @@ static void find_redirect(t_seq *tmp_seq, t_shell *shell, char **space_join, cha
 		start = end;
 		while (*end && *end != '>' && *end != '<')
 			end++;
-		if (*end)
+		if (*end && !is_ignored(tmp_seq->run, end, shell))
 		{
 			if (join_args(space_join, start, end, tmp_seq))
 				free_error(strerror(errno), &shell);
 			try_redirect(tmp_seq, shell, &end, *end);
-			end++;
 		}
 		else
 		{
+			if (*end)
+				end++;
 			if (join_args(space_join, start, end, tmp_seq))
 				free_error(strerror(errno), &shell);
+			continue;
 		}
+		if (*end)
+			end++;
 	}
 }
 

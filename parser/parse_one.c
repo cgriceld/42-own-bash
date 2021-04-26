@@ -7,9 +7,9 @@ static void upd_path(t_seq *tmp_seq, char *comm)
 	tmp = tmp_seq->run;
 	tmp_seq->run = ft_strdup(comm);
 	free(tmp);
-	tmp = tmp_seq->args[0];
-	tmp_seq->args[0] = ft_strdup(comm);
-	free(tmp);
+	// tmp = tmp_seq->args[0];
+	// tmp_seq->args[0] = ft_strdup(comm);
+	// free(tmp);
 }
 
 static void concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *tmp)
@@ -46,7 +46,7 @@ static void full_or_wrong(t_seq *tmp_seq, t_shell *shell)
 	char *tmp;
 
 	tmp = tmp_seq->run;
-	tmp_seq->run = ft_strdup(shell->seq->args[0]);
+	tmp_seq->run = ft_strdup(tmp_seq->args[0]);
 	free(tmp);
 	if (!tmp_seq->run)
 		free_error(strerror(errno), &shell);
@@ -69,16 +69,16 @@ static void find_path(t_seq *tmp_seq, t_shell *shell)
 
 static int check_redirect(t_seq *tmp_seq, t_shell *shell)
 {
+	if ((tmp_seq->info & REDIR_OUT) && ft_strempty(tmp_seq->output))
+		return (syntax_error(shell, '>'));
+	if ((tmp_seq->info & REDIR_IN) && ft_strempty(tmp_seq->input))
+		return (syntax_error(shell, '<'));
 	if (ft_strempty(tmp_seq->run))
 	{
 		free(tmp_seq->run);
 		tmp_seq->run = NULL;
 		return (1);
 	}
-	if ((tmp_seq->info & REDIR_OUT) && ft_strempty(tmp_seq->output))
-		return (syntax_error(shell, '>'));
-	if ((tmp_seq->info & REDIR_IN) && ft_strempty(tmp_seq->input))
-		return (syntax_error(shell, '<'));
 	return (0);
 }
 
@@ -111,5 +111,3 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 	else
 		find_path(tmp_seq, shell);
 }
-
-int	do_path()

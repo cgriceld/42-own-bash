@@ -50,7 +50,7 @@ ls < f2.txt | grep min
 ls -l '-'a
 
 /..
-
+echo " \"\"\"  "
 echo " hi \"  "
 echo "  "hi"  "
 echo 'hi \'''
@@ -78,3 +78,6 @@ file with name ls in same directory
 
 если есть слеш и стат не ругается, то он уже полный
 пустой редирект между пайпами
+
+echo " a ' b " c ' d "e" f' g" h' j"
+' "" '

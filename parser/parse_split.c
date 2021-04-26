@@ -45,6 +45,7 @@ static int precheck_syntax(t_shell *shell, char sym, size_t len, char *str)
 void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 {
 	char **split;
+	char *symb;
 
 	split = ft_split(str, sym);
 	if (!split)
@@ -61,7 +62,8 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 		return;
 	while (tmp_seq)
 	{
-		if (ft_strchr(tmp_seq->run, '|'))
+		symb = ft_strchr(tmp_seq->run, '|');
+		if (symb && !is_ignored(tmp_seq->run, symb, shell))
 		{
 			if (init_seq(&tmp_seq->pipe))
 				free_error(strerror(errno), &shell);

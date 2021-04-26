@@ -16,8 +16,23 @@ static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 		return (builtins_export(shell));
 	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
 		return (builtins_exit(shell));
-	//printf("\n");
 	return (0);
+}
+
+static void handle_eacces(char *comm)
+{
+	struct stat s;
+
+	if (!ft_strchr(comm, '/'))
+	{
+		write(2, ": command not found\n", 20);
+		exit(127);
+	}
+	if (!stat(comm, &s) && S_ISDIR(s.st_mode))
+		write(2, ": is a directory\n", 17);
+	else
+		write(2, ": Permission denied\n", 20);
+	exit(126);
 }
 
 static void handle_errno(char *comm, int errno_save)
@@ -38,10 +53,7 @@ static void handle_errno(char *comm, int errno_save)
 		exit(126);
 	}
 	else if (errno_save == EACCES)
-	{
-		write(2, ": Permission denied\n", 20);
-		exit(126);
-	}
+		handle_eacces(comm);
 	else
 	{
 		write(2, strerror(errno), ft_strlen(strerror(errno)));
