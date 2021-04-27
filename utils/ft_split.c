@@ -11,8 +11,13 @@ static int	ft_getwords(char const *s, const char c)
 			s++;
 		if (*s && *s++ != c)
 			words++;
-		while (*s && *s != c)
-			s++;
+		while (*s)
+		{
+			if (*s != c || (*s == c && *(s - 1) == '\\'))
+				s++;
+			else
+				break;
+		}
 	}
 	return (words);
 }
@@ -36,8 +41,13 @@ static int	ft_putwords(char const *s, char c, int words, char **split)
 		while (*s && *s == c)
 			s++;
 		start = s;
-		while (*s && *s != c)
-			s++;
+		while (*s)
+		{
+			if (*s != c || (*s == c && *(s - 1) == '\\'))
+				s++;
+			else
+				break;
+		}
 		letters = s - start;
 		split[w] = (char *)malloc(letters + 1);
 		if (!split[w])

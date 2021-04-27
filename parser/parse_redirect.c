@@ -50,7 +50,7 @@ static void find_redirect(t_seq *tmp_seq, t_shell *shell, char **space_join, cha
 		start = end;
 		while (*end && *end != '>' && *end != '<')
 			end++;
-		if (*end && !is_ignored(tmp_seq->run, end, shell))
+		if (*end)
 		{
 			if (join_args(space_join, start, end, tmp_seq))
 				free_error(strerror(errno), &shell);

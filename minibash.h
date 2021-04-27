@@ -109,6 +109,7 @@ typedef struct	s_shell
 	t_env		*env;
 	size_t		env_size;
 	t_seq		*seq;
+	int			sep[2];
 }				t_shell;
 
 // utils
@@ -131,6 +132,7 @@ size_t		ft_numchstr(char *s, char ch);
 char	*ft_strchrset(char *s, char *set);
 char	*ft_strjoin_space(char const *s1, char const *s2);
 int		ft_strempty(char *s);
+char	*ft_strjoin_sym(char const *s1, char const *s2, char sym);
 
 // errors
 void lite_error(char *comment);
@@ -174,7 +176,7 @@ void free_quotes(t_quo **quo);
 void error_quotes(t_quo **quo, t_shell **shell);
 void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int is_ignored(char *start, char *ptr, t_shell *shell);
-int precheck_quotes(t_shell *shell);
+int precheck_syntax(t_shell *shell);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
