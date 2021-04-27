@@ -91,8 +91,7 @@ typedef struct	s_quo_split
 // quotes structure
 typedef struct	s_quo
 {
-	int			single_q;
-	int			double_q;
+	unsigned char flag;
 	int			after_space;
 	int			split_len;
 	t_quo_split	*split;
@@ -177,6 +176,7 @@ void error_quotes(t_quo **quo, t_shell **shell);
 void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int is_ignored(char *start, char *ptr, t_shell *shell);
 int precheck_syntax(t_shell *shell);
+void manage_quotes(char *str, unsigned char *flag);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);

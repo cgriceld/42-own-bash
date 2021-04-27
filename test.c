@@ -38,40 +38,41 @@
 // 	}
 // }
 
-int quo_syntax(char *str)
-{
-	int doubled;
-	int single;
+// int quo_syntax(char *str)
+// {
+// 	int doubled;
+// 	int single;
 
-	doubled = 0;
-	single = 0;
-	while (*str)
-	{
-		if (*str == '\"')
-		{
-			if (*(str - 1) == '\\' && !single && doubled)
-				continue;
-			if (!single && doubled)
-				doubled--;
-			else if (!single)
-				doubled++;
-		}
-		else if (*str == '\'')
-		{
-			if (!doubled && single)
-				single--;
-			else if (!doubled)
-				single++;
-		}
-		str++;
-	}
-	if (doubled || single)
-		return (1);
-	return (0);
-}
+// 	doubled = 0;
+// 	single = 0;
+// 	while (*str)
+// 	{
+// 		if (*str == '\"')
+// 		{
+// 			if (*(str - 1) == '\\' && !single && doubled)
+// 				continue;
+// 			if (!single && doubled)
+// 				doubled--;
+// 			else if (!single)
+// 				doubled++;
+// 		}
+// 		else if (*str == '\'')
+// 		{
+// 			if (!doubled && single)
+// 				single--;
+// 			else if (!doubled)
+// 				single++;
+// 		}
+// 		str++;
+// 	}
+// 	if (doubled || single)
+// 		return (1);
+// 	return (0);
+// }
 
 int main(void)
 {
-	printf("%d\n", quo_syntax("\" \\\" \""));
+	if (!(0 % 2))
+		printf("%s\n", "ok");
 	return (0);
 }

@@ -68,14 +68,14 @@ void		parser(t_shell *shell)
 		return;
 	if (ft_strchr(shell->hist_curr->command, ';'))
 	{
-		if (shell->seq->info & QUOTED)
+		if (shell->seq->info & QUOTED && tmp_seq->run)
 			parse_split(tmp_seq, shell, ';', tmp_seq->run);
 		else
 			parse_split(tmp_seq, shell, ';', shell->hist_curr->command);
 	}
 	else if (ft_strchr(shell->hist_curr->command, '|'))
 	{
-		if (shell->seq->info & QUOTED)
+		if (shell->seq->info & QUOTED && tmp_seq->run)
 			parse_split(tmp_seq, shell, '|', tmp_seq->run);
 		else
 			parse_split(tmp_seq, shell, '|', shell->hist_curr->command);

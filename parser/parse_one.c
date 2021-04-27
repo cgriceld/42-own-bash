@@ -86,17 +86,17 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 {
 	struct stat	s;
 
-	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "><")) || \
-		ft_strchrset(shell->hist_curr->command, "><"))
-	{
-		parse_redirect(tmp_seq, shell);
-		if (check_redirect(tmp_seq, shell))
-			return;
-	}
-	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "'\"")) || \
-		ft_strchrset(shell->hist_curr->command, "'\""))
-		parse_quotes(tmp_seq, shell);
-	else
+	// if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "><")) || \
+	// 	ft_strchrset(shell->hist_curr->command, "><"))
+	// {
+	// 	parse_redirect(tmp_seq, shell);
+	// 	if (check_redirect(tmp_seq, shell))
+	// 		return;
+	// }
+	// if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "'\"\\")) || \
+	// 	ft_strchrset(shell->hist_curr->command, "'\"\\"))
+	// 	parse_quotes(tmp_seq, shell);
+	//else
 	{
 		if (!tmp_seq->run)
 			tmp_seq->args = ft_split(shell->hist_curr->command, ' ');

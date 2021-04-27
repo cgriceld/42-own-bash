@@ -65,7 +65,7 @@ static int quo_syntax_return(unsigned char flag)
 	return (0);
 }
 
-static void manage_quotes(char *str, unsigned char *flag)
+void manage_quotes(char *str, unsigned char *flag)
 {
 	if (*str == '"')
 	{
@@ -101,6 +101,23 @@ static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 		shell->sep[0]++;
 }
 
+static int even_escaped(t_shell *shell, char *str)
+{
+	int res;
+
+	res = 0;
+	str--;
+	while (str != shell->seq->run && *str == '\\')
+	{
+		res++;
+		str--;
+	}
+	if (!(res % 2))
+		return (1);
+	else
+		return (0);
+}
+
 static int quo_syntax(char *str, unsigned char flag, t_shell *shell)
 {
 	char *start;
@@ -118,8 +135,11 @@ static int quo_syntax(char *str, unsigned char flag, t_shell *shell)
 			// 	str++;
 			// 	continue;
 			// }
-			if (!(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '\\' \
-				&& *(str - 2) == '\\')
+			// if (!(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '\\' \
+			// 	&& *(str - 2) == '\\')
+			// 	manage_separator(shell, &start, str, ' ');
+			if (!(flag & DOUBLED) && !(flag & SINGLE) && \
+				(*(str - 1) == '\\' && even_escaped(shell, str)))
 				manage_separator(shell, &start, str, ' ');
 			else if (((flag & SINGLE) && *(str - 1) != '\\') || \
 				((flag & DOUBLED) && *(str - 1) != '\\'))
@@ -142,7 +162,7 @@ int precheck_syntax(t_shell *shell)
 	int res;
 	unsigned char flag;
 
-	if (ft_strchrset(shell->hist_curr->command, "'\"\\"))
+	if (ft_strchrset(shell->hist_curr->command, "'\";|"))
 	{
 		shell->seq->info |= QUOTED;
 		flag = ZERO;
