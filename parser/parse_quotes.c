@@ -32,10 +32,12 @@ static void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_spli
 		quo->end++;
 	if (*quo->end == '\'')
 		join_args(tmp_seq, shell, quo, tmp_split);
+	if (tmp_split->next)
+		tmp_split = tmp_split->next;
 	quo->after_space = 0;
-	quo->end++;
-	if (*quo->end == ' ')
-		quo->after_space = 1;
+	//quo->end++;
+	// if (*quo->end == ' ')
+	// 	quo->after_space = 1;
 }
 
 static void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
@@ -44,23 +46,35 @@ static void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split
 	while (*quo->end && !ft_strchr(" \\'", *quo->end))
 		quo->end++;
 	if (*quo->end == '\'')
+	{
+		join_args(tmp_seq, shell, quo, tmp_split);
+		if (tmp_split->next)
+			tmp_split = tmp_split->next;
+		quo->after_space = 0;
+		quo->start = quo->end;
 		parse_singleq(tmp_seq, shell, quo, tmp_split);
+	}
 	else if (*quo->end == '\\')
 	{
 		parse_escape(tmp_seq, shell, quo, tmp_split);
 		quo->after_space = 0;
-		quo->end++;
-		if (*quo->end == ' ')
-			quo->after_space = 1;
+		// quo->end++;
+		// if (*quo->end == ' ')
+		// 	quo->after_space = 1;
 	}
 	else if (*quo->end == ' ')
+	{
 		join_args(tmp_seq, shell, quo, tmp_split);
+		quo->after_space = 1;
+	}
 }
 
 static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
 	while (*quo->end)
 	{
+		if (*quo->end == ' ')
+			quo->after_space = 1;
 		while (*quo->end && *quo->end == ' ')
 			quo->end++;
 		quo->start = quo->end;
@@ -72,15 +86,27 @@ static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split 
 				quo->after_space = 1;
 			join_args(tmp_seq, shell, quo, tmp_split);
 		}
-		else if (*quo->end == '\\')
-			parse_escape(tmp_seq, shell, quo, tmp_split);
-		else if (*quo->end == '\'')
-			parse_singleq(tmp_seq, shell, quo, tmp_split);
+		else if (*quo->end == '\\' || *quo->end == '\'')
+		{
+			if (quo->start != quo->end)
+			{
+				join_args(tmp_seq, shell, quo, tmp_split);
+				if (tmp_split->next)
+					tmp_split = tmp_split->next;
+				quo->after_space = 0;
+				quo->start = quo->end;
+			}
+			if (*quo->end == '\\')
+				parse_escape(tmp_seq, shell, quo, tmp_split);
+			else if (*quo->end == '\'')
+				parse_singleq(tmp_seq, shell, quo, tmp_split);
+		}
 		while (tmp_split->next)
 		{
 			tmp_split = tmp_split->next;
 			quo->split_len++;
 		}
+		quo->end++;
 	}
 }
 
