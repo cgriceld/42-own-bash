@@ -39,8 +39,6 @@ static void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *t
 // if already check close match, no check for \0 ?
 static void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
-	char *tmp;
-
 	quo->end++;
 	while (*quo->end && *quo->end != '\'')
 		quo->end++;
@@ -106,6 +104,41 @@ static void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split
 	// }
 }
 
+static void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+{
+	quo->end++;
+	while (*quo->end)
+	{
+		if (*quo->end == '\\')
+		{
+			if (quo->start != quo->end)
+			{
+				join_args(tmp_seq, shell, quo, tmp_split);
+				if (tmp_split->next)
+					tmp_split = tmp_split->next;
+				quo->after_space = 0;
+				quo->start = quo->end;
+			}
+			parse_escape(tmp_seq, shell, quo, tmp_split);
+		}
+		if (*quo->end == '"')
+		{
+			if (*(quo->end - 1) == '\\' && quo->last_slash)
+				quo->last_slash = 0;
+			else
+			{
+				join_args(tmp_seq, shell, quo, tmp_split);
+				if (tmp_split->next)
+					tmp_split = tmp_split->next;
+				quo->after_space = 0;
+				quo->end++;
+				break;
+			}
+		}
+		quo->end++;
+	}
+}
+
 static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
 	while (*quo->end)
@@ -124,9 +157,15 @@ static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split 
 			join_args(tmp_seq, shell, quo, tmp_split);
 			quo->after_space = 1;
 		}
-		else if (*quo->end == '\\' || *quo->end == '\'')
+		else if (*quo->end == '\\' || *quo->end == '\'' || *quo->end == '"')
 		{
 			if (*quo->end == '\'' && *(quo->end - 1) == '\\' && quo->last_slash)
+			{
+				quo->last_slash = 0;
+				quo->end++;
+				continue;
+			}
+			if (*quo->end == '"' && *(quo->end - 1) == '\\' && quo->last_slash)
 			{
 				quo->last_slash = 0;
 				quo->end++;
@@ -144,6 +183,8 @@ static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split 
 				parse_escape(tmp_seq, shell, quo, tmp_split);
 			else if (*quo->end == '\'')
 				parse_singleq(tmp_seq, shell, quo, tmp_split);
+			else if (*quo->end == '"')
+				parse_doubleq(tmp_seq, shell, quo, tmp_split);
 			while (tmp_split->next)
 			{
 				tmp_split = tmp_split->next;
@@ -156,6 +197,7 @@ static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split 
 			tmp_split = tmp_split->next;
 			quo->split_len++;
 		}
+		quo->end++;
 	}
 }
 
