@@ -97,6 +97,8 @@ typedef struct	s_quo
 	t_quo_split	*split;
 	char		*start;
 	char		*end;
+	int			slashes;
+	int			last_slash;
 }				t_quo;
 
 // shell struct with main info
@@ -132,6 +134,7 @@ char	*ft_strchrset(char *s, char *set);
 char	*ft_strjoin_space(char const *s1, char const *s2);
 int		ft_strempty(char *s);
 char	*ft_strjoin_sym(char const *s1, char const *s2, char sym);
+char *ft_genstr(char sym, int num);
 
 // errors
 void lite_error(char *comment);
@@ -176,7 +179,7 @@ void error_quotes(t_quo **quo, t_shell **shell);
 void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int is_ignored(char *start, char *ptr, t_shell *shell);
 int precheck_syntax(t_shell *shell);
-void manage_quotes(char *str, unsigned char *flag);
+void manage_quotes(char *str, unsigned char *flag, t_shell *shell);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);

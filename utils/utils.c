@@ -15,6 +15,8 @@ char	*ft_strdup(const char *s1)
 	char *dup;
 	char *tmp;
 
+	if (!s1)
+		return (NULL);
 	dup = (char *)malloc(ft_strlen(s1) + 1);
 	if (!dup)
 		return (NULL);
@@ -23,6 +25,21 @@ char	*ft_strdup(const char *s1)
 		*tmp++ = *s1++;
 	*tmp = '\0';
 	return (dup);
+}
+
+char *ft_genstr(char sym, int num)
+{
+	char *gen;
+	char *str;
+
+	gen = (char *)malloc(sizeof(num + 1));
+	if (!gen)
+		return (NULL);
+	str = gen;
+	while (num--)
+		*str++ = sym;
+	*str = '\0';
+	return (gen);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)

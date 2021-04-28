@@ -65,23 +65,40 @@ static int quo_syntax_return(unsigned char flag)
 	return (0);
 }
 
-void manage_quotes(char *str, unsigned char *flag)
+static int even_escaped(t_shell *shell, char *str)
+{
+	int res;
+
+	res = 0;
+	str--;
+	while (str != shell->seq->run && *str == '\\')
+	{
+		res++;
+		str--;
+	}
+	if (!(res % 2))
+		return (1);
+	else
+		return (0);
+}
+
+void manage_quotes(char *str, unsigned char *flag, t_shell *shell)
 {
 	if (*str == '"')
 	{
-		if ((*(str - 1) == '\\') && (*(str - 2) != '\\') && \
-			!(*flag & SINGLE) && (*flag & DOUBLED))
-			return;
-		if (!(*flag & SINGLE) && (*flag & DOUBLED))
+		// if ((*flag & DOUBLED) && !(*flag & SINGLE) && \
+		// 	(*(str - 1) == '\\') && !even_escaped(shell, str))
+		// 	return;
+		if ((*flag & DOUBLED) && !(*flag & SINGLE) && even_escaped(shell, str))
 			*flag &= ~DOUBLED;
-		else if (!(*flag & SINGLE))
+		else if (!(*flag & SINGLE) && !(*flag & DOUBLED) && even_escaped(shell, str))
 			*flag |= DOUBLED;
 	}
 	else if (*str == '\'')
 	{
-		if (!(*flag & DOUBLED) && (*flag & SINGLE))
+		if ((*flag & SINGLE) && !(*flag & DOUBLED))
 			*flag &= ~SINGLE;
-		else if (!(*flag & DOUBLED))
+		else if (!(*flag & SINGLE) && !(*flag & DOUBLED) && even_escaped(shell, str))
 			*flag |= SINGLE;
 	}
 }
@@ -101,23 +118,6 @@ static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 		shell->sep[0]++;
 }
 
-static int even_escaped(t_shell *shell, char *str)
-{
-	int res;
-
-	res = 0;
-	str--;
-	while (str != shell->seq->run && *str == '\\')
-	{
-		res++;
-		str--;
-	}
-	if (!(res % 2))
-		return (1);
-	else
-		return (0);
-}
-
 static int quo_syntax(char *str, unsigned char flag, t_shell *shell)
 {
 	char *start;
@@ -126,7 +126,7 @@ static int quo_syntax(char *str, unsigned char flag, t_shell *shell)
 	while (*str)
 	{
 		if (*str == '"' || *str == '\'')
-			manage_quotes(str, &flag);
+			manage_quotes(str, &flag, shell);
 		else if (*str == ';' || *str == '|')
 		{
 			// if (!(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '\\' \

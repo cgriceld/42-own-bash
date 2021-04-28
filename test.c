@@ -73,6 +73,8 @@
 int main(void)
 {
 	if (!(0 % 2))
-		printf("%s\n", "ok");
+		printf("zero");
+	else
+		printf("not zero");
 	return (0);
 }
