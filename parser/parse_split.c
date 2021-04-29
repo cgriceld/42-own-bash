@@ -8,6 +8,14 @@ int syntax_error(t_shell *shell, char sym)
 	return (1);
 }
 
+static void trim_or_not(char *split, t_seq *tmp_seq)
+{
+	if (ft_strchr(split, '\\'))
+		tmp_seq->run = ft_strdup(split);
+	else
+		tmp_seq->run = ft_strtrim(split, " ");
+}
+
 static int fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)
 {
 	size_t	i;
@@ -17,7 +25,7 @@ static int fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)
 	while (split[i])
 	{
 		tmp = tmp_seq->run;
-		tmp_seq->run = ft_strtrim(split[i], " ");
+		trim_or_not(split[i], tmp_seq);
 		free(tmp);
 		if (!tmp_seq->run)
 			return (1);

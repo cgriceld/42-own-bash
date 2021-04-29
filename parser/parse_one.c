@@ -67,21 +67,6 @@ static void find_path(t_seq *tmp_seq, t_shell *shell)
 		full_or_wrong(tmp_seq, shell);
 }
 
-static int check_redirect(t_seq *tmp_seq, t_shell *shell)
-{
-	if ((tmp_seq->info & REDIR_OUT) && ft_strempty(tmp_seq->output))
-		return (syntax_error(shell, '>'));
-	if ((tmp_seq->info & REDIR_IN) && ft_strempty(tmp_seq->input))
-		return (syntax_error(shell, '<'));
-	if (ft_strempty(tmp_seq->run))
-	{
-		free(tmp_seq->run);
-		tmp_seq->run = NULL;
-		return (1);
-	}
-	return (0);
-}
-
 void	parse_one(t_seq *tmp_seq, t_shell *shell)
 {
 	struct stat	s;
@@ -93,8 +78,8 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 	// 	if (check_redirect(tmp_seq, shell))
 	// 		return;
 	// }
-	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "'\"\\")) || \
-		ft_strchrset(shell->hist_curr->command, "'\"\\"))
+	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "$>'\"\\")) || \
+		ft_strchrset(shell->hist_curr->command, "$>'\"\\"))
 		parse_quotes(tmp_seq, shell);
 	else
 	{
@@ -110,4 +95,10 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 		full_or_wrong(tmp_seq, shell);
 	else
 		find_path(tmp_seq, shell);
+	// int i = 0;
+	// while (tmp_seq->args[i])
+	// {
+	// 	printf("%s\n", tmp_seq->args[i]);
+	// 	i++;
+	// }
 }
