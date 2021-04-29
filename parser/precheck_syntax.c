@@ -99,6 +99,8 @@ int precheck_syntax(t_shell *shell)
 	if (ft_strchrset(shell->hist_curr->command, "'\";|"))
 	{
 		shell->seq->info |= QUOTED;
+		shell->sep[0] = 0;
+		shell->sep[1] = 0;
 		flag = ZERO;
 		start = shell->hist_curr->command;
 		res = quo_syntax(shell->hist_curr->command, flag, shell, start);

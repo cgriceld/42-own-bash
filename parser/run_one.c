@@ -56,7 +56,9 @@ static void handle_errno(char *comm, int errno_save)
 		handle_eacces(comm);
 	else
 	{
+		write(2, ": ", 2);
 		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, "\n", 1);
 		exit(errno_save);
 	}
 }
@@ -67,8 +69,8 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 
 	if (!pid)
 	{
-		if (tmp_seq->output)
-			redirect_out(tmp_seq, shell);
+		if (tmp_seq->output && redirect_out(tmp_seq, shell))
+			exit(1);
 		if (tmp_seq->input && redirect_in(tmp_seq, shell))
 			exit(1);
 		if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)

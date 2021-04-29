@@ -16,8 +16,6 @@ static void	prepare(int argc, t_shell **shell)
 	(*shell)->hist_curr = (*shell)->history;
 	(*shell)->hist_ptr = (*shell)->hist_curr;
 	init_hist(*shell);
-	(*shell)->sep[0] = 0;
-	(*shell)->sep[1] = 0;
 }
 
 int			main(int argc, char __attribute__((unused)) **argv, char **envp)

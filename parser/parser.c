@@ -16,7 +16,7 @@ int	init_seq(t_seq **seq)
 	(*seq)->pipe = NULL;
 	(*seq)->input = NULL;
 	(*seq)->output = NULL;
-	(*seq)->info &= ZERO;
+	(*seq)->info = ZERO;
 	(*seq)->next = NULL;
 	return (0);
 }

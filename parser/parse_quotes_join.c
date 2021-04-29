@@ -24,7 +24,8 @@ static void check_others2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_spli
 
 static void check_others(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
-	if (!quo->after_space && !tmp_split->arg)
+	// if (!quo->after_space && !tmp_split->arg)
+	if (!tmp_split->arg)
 	{
 		if (quo->slashes)
 		{
