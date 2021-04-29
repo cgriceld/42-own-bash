@@ -88,7 +88,7 @@ void parse_quotes(t_seq *tmp_seq, t_shell *shell)
 	if (init_quo_split(&quo->split))
 		error_quotes(&quo, &shell);
 	quo->flag = ZERO;
-	quo->after_space = 1;
+	quo->after_space = 0;
 	quo->split_len = 0;
 	tmp_split = quo->split;
 	quo->end = tmp_seq->run;

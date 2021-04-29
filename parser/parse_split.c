@@ -10,10 +10,13 @@ int syntax_error(t_shell *shell, char sym)
 
 static void trim_or_not(char *split, t_seq *tmp_seq)
 {
-	if (ft_strchr(split, '\\'))
-		tmp_seq->run = ft_strdup(split);
-	else
+	char *sym;
+
+	sym = ft_strrchr(split, '\\');
+	if (!sym || (sym && *(sym - 1) == '\\' && even_escaped(split, ++sym)))
 		tmp_seq->run = ft_strtrim(split, " ");
+	else
+		tmp_seq->run = ft_strdup(split);;
 }
 
 static int fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)

@@ -10,6 +10,22 @@ size_t	ft_strlen(const char *s)
 	return (str - s);
 }
 
+char	*ft_strrchr(const char *s, int c)
+{
+	char		ch;
+	const char	*res;
+
+	ch = (char)c;
+	res = NULL;
+	while (*s)
+	{
+		if (*s == ch)
+			res = s;
+		s++;
+	}
+	return (*s == ch ? (char *)s : (char *)res);
+}
+
 char	*ft_strdup(const char *s1)
 {
 	char *dup;

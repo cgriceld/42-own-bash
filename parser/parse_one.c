@@ -71,13 +71,6 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 {
 	struct stat	s;
 
-	// if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "><")) || \
-	// 	ft_strchrset(shell->hist_curr->command, "><"))
-	// {
-	// 	parse_redirect(tmp_seq, shell);
-	// 	if (check_redirect(tmp_seq, shell))
-	// 		return;
-	// }
 	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "$>'\"\\")) || \
 		ft_strchrset(shell->hist_curr->command, "$>'\"\\"))
 		parse_quotes(tmp_seq, shell);
@@ -95,10 +88,4 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 		full_or_wrong(tmp_seq, shell);
 	else
 		find_path(tmp_seq, shell);
-	// int i = 0;
-	// while (tmp_seq->args[i])
-	// {
-	// 	printf("%s\n", tmp_seq->args[i]);
-	// 	i++;
-	// }
 }
