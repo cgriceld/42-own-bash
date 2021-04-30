@@ -69,16 +69,23 @@ typedef struct	s_history
 	struct s_history	*next;
 }				t_history;
 
+// struct for redirect chain, type - redirect type
+typedef struct	s_redir_chain
+{
+	char					*path;
+	unsigned char			type;
+	struct s_redir_chain	*next;
+}				t_redir_chain;
+
 // splitted command with its argumnents
 typedef struct	s_seq
 {
-	char			*run;
-	char			**args;
-	unsigned char	info;
-	char			*input;
-	char			*output;
-	struct s_seq	*pipe;
-	struct s_seq	*next;
+	char					*run;
+	char					**args;
+	unsigned char			info;
+	struct s_redir_chain	*redirect;
+	struct s_seq			*pipe;
+	struct s_seq			*next;
 }				t_seq;
 
 // list analog of tmp_seq->args
@@ -171,7 +178,7 @@ int	init_seq(t_seq **seq);
 void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str);
 void	parse_one(t_seq *tmp_seq, t_shell *shell);
 int			is_builtin(char *s);
-void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int syntax_error(t_shell *shell, char sym);
 void parse_quotes(t_seq *tmp_seq, t_shell *shell);
 int init_quo_split(t_quo_split **new);
@@ -190,8 +197,7 @@ int even_escaped(char *etart, char *str);
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
-int redirect_out(t_seq *tmp_seq, t_shell *shell);
-int redirect_in(t_seq *tmp_seq, t_shell *shell);
+int run_redirect(t_seq *tmp_seq, t_shell *shell);
 
 //builtins
 char	*pwd(t_shell *shell);

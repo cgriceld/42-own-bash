@@ -48,7 +48,7 @@ static void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *
 	else if (*quo->end == '"')
 		parse_doubleq(tmp_seq, shell, quo, tmp_split);
 	else if (*quo->end == '>' || *quo->end == '<')
-		parse_redirect(tmp_seq, shell, quo, tmp_split);
+		parse_redirect(tmp_seq, shell, quo);
 }
 
 static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
@@ -64,6 +64,8 @@ static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split 
 			if (tmp_split->next)
 				tmp_split = tmp_split->next;
 			what_parse(tmp_seq, shell, quo, tmp_split);
+			if (shell->seq->info & SYNTAX_ERR)
+				return;
 			while (tmp_split->next)
 				tmp_split = tmp_split->next;
 			continue;
@@ -97,7 +99,8 @@ void parse_quotes(t_seq *tmp_seq, t_shell *shell)
 	quo->last_slash = 0;
 	quo->slashes = 0;
 	find_quotes(tmp_seq, shell, quo, tmp_split);
-	fill_after_quotes(tmp_seq, shell, quo);
+	if (!(shell->seq->info & SYNTAX_ERR))
+		fill_after_quotes(tmp_seq, shell, quo);
 	free_quotes(&quo);
 }
 

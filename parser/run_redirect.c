@@ -15,31 +15,51 @@ static int redirect_error(char *path, int flag)
 	return (1);
 }
 
-int redirect_out(t_seq *tmp_seq, t_shell *shell)
+static int redirect_out(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 {
 	int fd;
-
-	fd = open(tmp_seq->output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	
+	if (tmp_redir->type & REDIR_OUT)
+		fd = open(tmp_redir->path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		fd = open(tmp_redir->path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-		return (redirect_error(tmp_seq->output, 0));
+		return (redirect_error(tmp_redir->path, 0));
 	if (tmp_seq->run)
 		dup2(fd, 1);
 	close(fd);
 	return (0);
 }
 
-int redirect_in(t_seq *tmp_seq, t_shell *shell)
+static int redirect_in(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 {
 	int			fd;
 	struct stat	s;
 
-	if (stat(tmp_seq->input, &s))
-		return (redirect_error(tmp_seq->input, 1));
-	fd = open(tmp_seq->input, O_RDONLY, 0644);
+	if (stat(tmp_redir->path, &s))
+		return (redirect_error(tmp_redir->path, 1));
+	fd = open(tmp_redir->path, O_RDONLY, 0644);
 	if (fd < 0)
-		return (redirect_error(tmp_seq->input, 0));
+		return (redirect_error(tmp_redir->path, 0));
 	if (tmp_seq->run)
 		dup2(fd, 0);
 	close(fd);
+	return (0);
+}
+
+int run_redirect(t_seq *tmp_seq, t_shell *shell)
+{
+	t_redir_chain *tmp_redir;
+
+	tmp_redir = tmp_seq->redirect;
+	while (tmp_redir)
+	{
+		if ((tmp_redir->type & REDIR_IN) && redirect_in(tmp_seq, tmp_redir))
+			return (1);
+		else if (((tmp_redir->type & REDIR_OUT) || \
+		(tmp_redir->type & REDIR_APPEND)) && redirect_out(tmp_seq, tmp_redir))
+			return (1);
+		tmp_redir = tmp_redir->next;
+	}
 	return (0);
 }

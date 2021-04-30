@@ -69,9 +69,7 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 
 	if (!pid)
 	{
-		if (tmp_seq->output && redirect_out(tmp_seq, shell))
-			exit(1);
-		if (tmp_seq->input && redirect_in(tmp_seq, shell))
+		if (tmp_seq->redirect && run_redirect(tmp_seq, shell))
 			exit(1);
 		if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)
 			handle_errno(tmp_seq->run, errno);
@@ -105,13 +103,8 @@ static int run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 
 int run_one(t_seq *tmp_seq, t_shell *shell)
 {
-	if (!tmp_seq->run)
-	{
-		if (tmp_seq->info & REDIR_OUT)
-			return (redirect_out(tmp_seq, shell));
-		if (tmp_seq->info & REDIR_IN)
-			return (redirect_in(tmp_seq, shell));
-	}
+	if (!tmp_seq->run && tmp_seq->redirect)
+		return (run_redirect(tmp_seq, shell));
 	if (is_builtin(tmp_seq->run))
 		return (run_builtin(tmp_seq, shell));
 	else
