@@ -143,6 +143,7 @@ int		ft_strempty(char *s);
 char	*ft_strjoin_sym(char const *s1, char const *s2, char sym);
 char *ft_genstr(char sym, int num);
 char	*ft_strrchr(const char *s, int c);
+int	ft_isdigit(int c);
 
 // errors
 void lite_error(char *comment);
@@ -193,6 +194,7 @@ void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 int even_escaped(char *etart, char *str);
+void parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
