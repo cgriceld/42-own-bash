@@ -84,6 +84,7 @@ typedef struct	s_seq
 	char					**args;
 	unsigned char			info;
 	struct s_redir_chain	*redirect;
+	struct s_redir_chain	*tmp_redir;
 	struct s_seq			*pipe;
 	struct s_seq			*next;
 }				t_seq;
@@ -188,13 +189,17 @@ void error_quotes(t_quo **quo, t_shell **shell);
 void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int precheck_syntax(t_shell *shell);
 void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
-void join_one_sym(t_shell *shell, t_quo *quo, t_quo_split *tmp_split, char *sym);
+void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym);
 void join_routine(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 int even_escaped(char *start, char *str);
 void parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void redirect_join(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
+void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg);
+int cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);

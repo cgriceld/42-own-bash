@@ -39,6 +39,22 @@ ls<>
 >
 <
 > file1.txt ls
+ls > 'pwd'"\""
+ls >\|;pwd
+ls >\| pwd
+ls >| pwd
+ls >| | pwd
+pwd ; ls>  " \"| p " bla
+pwd ; ls>  " \"| p " bla
+pwd ; ls>  " \"| p "
+ls>  " \| p "
+ls>' | p '
+ls> | p
+ls>|
+ls >|||pwd$
+ls >|\|\|pwd$
+ls > $$$$\\
+echo $\P\A\T\H
 ls > file1.txt ; < file1.txt grep ls > file2.txt min
 "<" file1.txt grep > file2.txt min
 < "f"ile1.txt grep > file2.txt min
@@ -48,7 +64,9 @@ ls l > file3.txt -a
 ls l > file3.txt -a ; ls > file3.txt
 ls < f2.txt | grep min
 ls -l '-'a
-
+echo "$\P\A\T\H"
+echo '$\P\A\T\H'
+echo $\P\A\T\H
 /..
 echo " \"\"\"  "
 echo " hi \"  "

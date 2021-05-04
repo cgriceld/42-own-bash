@@ -1,47 +1,44 @@
 #include "../minibash.h"
 
-static void check_others2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 {
 	char *tmp;
 
-	if (!quo->after_space)
+	tmp = *arg;
+	if (quo->slashes)
 	{
-		tmp = tmp_split->arg;
-		if (quo->slashes)
-		{
-			if (quo->slashes == 1 && quo->last_slash)
-				quo->slashes = 0;
-			tmp_split->arg = ft_strjoin(tmp_split->arg, ft_genstr('\\', quo->slashes));
-		}
-		else
-			tmp_split->arg = ft_strjoin(tmp_split->arg, ft_strtrim(ft_substr(\
-			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\""));
-		free(tmp);
-		if (!tmp_split->arg)
-			error_quotes(&quo, &shell);
+		if (quo->slashes == 1 && quo->last_slash)
+			quo->slashes = 0;
+		*arg = ft_strjoin(*arg, ft_genstr('\\', quo->slashes));
 	}
+	else
+		*arg = ft_strjoin(*arg, ft_strtrim(ft_substr(\
+		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\""));
+	free(tmp);
+	if (!*arg)
+		error_quotes(&quo, &shell);
 }
 
-static void check_others(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+static void join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 {
 	// if (!quo->after_space && !tmp_split->arg)
-	if (!tmp_split->arg)
+	if (!*arg)
 	{
 		if (quo->slashes)
 		{
 			if (quo->slashes == 1 && quo->last_slash)
 				quo->slashes = 0;
-			tmp_split->arg = ft_genstr('\\', quo->slashes);
+			*arg = ft_genstr('\\', quo->slashes);
 		}
 		else
-			tmp_split->arg = ft_strtrim(ft_substr(\
+			*arg = ft_strtrim(ft_substr(\
 			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\"");
-		if (!tmp_split->arg)
+		if (!*arg)
 			error_quotes(&quo, &shell);
 		quo->split_len++;
 	}
 	else
-		check_others2(tmp_seq, shell, quo, tmp_split);
+		join_args2(tmp_seq, shell, quo, arg);
 }
 
 void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
@@ -65,17 +62,17 @@ void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_spli
 		quo->after_space = 0;
 	}
 	else
-		check_others(tmp_seq, shell, quo, tmp_split);
+		join_args1(tmp_seq, shell, quo, &tmp_split->arg);
 }
 
-void join_one_sym(t_shell *shell, t_quo *quo, t_quo_split *tmp_split, char *sym)
+void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym)
 {
 	char *tmp;
 
-	tmp = tmp_split->arg;
-	tmp_split->arg = ft_strjoin(tmp_split->arg, sym);
+	tmp = *str;
+	*str = ft_strjoin(*str, sym);
 	free(tmp);
-	if (!tmp_split->arg)
+	if (!*str)
 		error_quotes(&quo, &shell);
 	quo->last_slash = 0;
 	quo->end++;
@@ -85,8 +82,10 @@ void join_routine(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_s
 {
 	if (quo->start != quo->end)
 	{
-		join_args(tmp_seq, shell, quo, tmp_split);
-		//quo->after_space = 0;
+		if (tmp_split)
+			join_args(tmp_seq, shell, quo, tmp_split);
+		else
+			join_args2(tmp_seq, shell, quo, &tmp_seq->tmp_redir->path);
 		quo->start = quo->end;
 	}
 }

@@ -15,6 +15,7 @@ int	init_seq(t_seq **seq)
 	(*seq)->args = NULL;
 	(*seq)->pipe = NULL;
 	(*seq)->redirect = NULL;
+	(*seq)->tmp_redir = NULL;
 	(*seq)->info = ZERO;
 	(*seq)->next = NULL;
 	return (0);
