@@ -58,8 +58,10 @@ static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 	if (!shell->seq->run)
 		free_error(strerror(errno), &shell);
 	*start = str + 1;
-	if (sym == ' ')
+	if (sym == ' ' && *str == ';')
 		shell->sep[0]++;
+	if (sym == ' ' && *str == '|')
+		shell->sep[1]++;
 }
 
 // check for start string bound when slash
@@ -71,11 +73,17 @@ static int quo_syntax(char *str, unsigned char flag, t_shell *shell, char *start
 			manage_quotes(str, &flag, shell);
 		else if (*str == ';' || *str == '|')
 		{
-			if (!(flag & DOUBLED) && !(flag & SINGLE) && \
-				(*(str - 1) == '\\' && even_escaped(shell->hist_curr->command, str)))
-				manage_separator(shell, &start, str, ' ');
-			else if (((flag & SINGLE) && *(str - 1) != '\\') || \
-				((flag & DOUBLED) && *(str - 1) != '\\'))
+			if (*str == '|' && !(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '>')
+			{
+				if (!even_escaped(shell->hist_curr->command, str))
+					shell->sep[1]++;
+			}
+			else if (!(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '\\')
+			{
+				if (even_escaped(shell->hist_curr->command, str))
+					manage_separator(shell, &start, str, ' ');
+			}
+			else if ((flag & SINGLE) || (flag & DOUBLED))
 				manage_separator(shell, &start, str, '\\');
 			else
 			{

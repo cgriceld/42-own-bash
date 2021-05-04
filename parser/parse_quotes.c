@@ -2,13 +2,10 @@
 
 static void find_loop(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
+	if (*quo->end == ' ' && *(quo->end - 1) == '\\' && quo->last_slash)
+		join_one_sym(shell, quo, tmp_split, " ");
 	if (*quo->end == ' ')
-	{
-		if (*(quo->end - 1) == '\\' && quo->last_slash)
-			join_one_sym(shell, quo, tmp_split, " ");
-		else
-			quo->after_space = 1;
-	}
+		quo->after_space = 1;
 	while (*quo->end && *quo->end == ' ')
 		quo->end++;
 	quo->start = quo->end;
@@ -16,8 +13,7 @@ static void find_loop(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *t
 		quo->end++;
 	if (*quo->end == ' ' || !*quo->end)
 	{
-		join_routine(tmp_seq, shell, quo, tmp_split);
-		//join_args(tmp_seq, shell, quo, tmp_split);
+		join_args(tmp_seq, shell, quo, tmp_split);
 		quo->after_space = 1;
 	}
 }
@@ -58,6 +54,8 @@ static void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *
 
 static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
+	while (*quo->end && *quo->end == ' ')
+		quo->end++;
 	while (*quo->end)
 	{
 		find_loop(tmp_seq, shell, quo, tmp_split);

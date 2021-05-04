@@ -51,6 +51,26 @@ static void init_redirect(t_redir_chain **new, t_quo *quo, t_shell *shell)
 	(*new)->next = NULL;
 }
 
+
+
+// static void construct_file(t_shell *shell, t_quo *quo)
+// {
+// 	char *file;
+
+// 	file = ft_strdup("");
+// 	if (!file)
+// 		error_quotes(&quo, &shell);
+// 	if (*quo->end == '|')
+// 		quo->end++;
+// 	while (*quo->end && *quo->end == ' ')
+// 		quo->end++;
+// 	while (*quo->end && !ft_strchr(" $<>\"\\'", *quo->end))
+// 	{
+// 		if (*quo->end == '\'')
+
+// 	}
+// }
+
 void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 {
 	static t_redir_chain *tmp_redir;

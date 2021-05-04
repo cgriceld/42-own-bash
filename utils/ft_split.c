@@ -3,8 +3,10 @@
 static int	ft_getwords(char const *s, const char c)
 {
 	int words;
+	char *start;
 
 	words = 0;
+	start = (char *)s;
 	while (*s)
 	{
 		while (*s && *s == c)
@@ -13,7 +15,8 @@ static int	ft_getwords(char const *s, const char c)
 			words++;
 		while (*s)
 		{
-			if (*s != c || (*s == c && *(s - 1) == '\\'))
+			if (*s != c || (*s == c && *(s - 1) == '\\') || \
+				(*s == '|' && *(s - 1) == '>' && even_escaped(start, (char *)s)))
 				s++;
 			else
 				break;
@@ -43,7 +46,8 @@ static int	ft_putwords(char const *s, char c, int words, char **split)
 		start = s;
 		while (*s)
 		{
-			if (*s != c || (*s == c && *(s - 1) == '\\'))
+			if (*s != c || (*s == c && *(s - 1) == '\\') || \
+				(*s == '|' && *(s - 1) == '>' && even_escaped((char *)start, (char *)s)))
 				s++;
 			else
 				break;

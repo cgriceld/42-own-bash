@@ -66,6 +66,21 @@ static int check_separator(t_shell *shell, char sym, size_t len, char *str)
 	return (0);
 }
 
+static int pipe_exist(char *str)
+{
+	char *start;
+
+	start = str;
+	while (*str)
+	{
+		if (*str == '|' && *(str - 1) != '\\' && \
+		!(*(str - 1) == '>' && even_escaped(start, str)))
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
 void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 {
 	char **split;
@@ -90,7 +105,7 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 		return;
 	while (tmp_seq)
 	{
-		if (ft_strchr(tmp_seq->run, '|'))
+		if (sym == ';' && pipe_exist(tmp_seq->run))
 		{
 			if (init_seq(&tmp_seq->pipe))
 				free_error(strerror(errno), &shell);
