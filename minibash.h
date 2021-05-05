@@ -21,6 +21,10 @@
 #define REDIR_OUT 0b00000100
 #define REDIR_APPEND 0b00001000
 #define REDIR_IN 0b00010000
+#define QUOTED 0b00100000
+#define SINGLE 0b00100000
+#define DOUBLED 0b01000000
+#define ESCAPED 0b10000000
 
 // errors
 #define WRONG_ARGS "wrong input arguments, should be : ./minishell"
@@ -68,17 +72,45 @@ typedef struct	s_history
 	struct s_history	*next;
 }				t_history;
 
+// struct for redirect chain, type - redirect type
+typedef struct	s_redir_chain
+{
+	char					*path;
+	unsigned char			type;
+	struct s_redir_chain	*next;
+}				t_redir_chain;
+
 // splitted command with its argumnents
 typedef struct	s_seq
 {
-	char			*run;
-	char			**args;
-	unsigned char	info;
-	char			*input;
-	char			*output;
-	struct s_seq	*pipe;
-	struct s_seq	*next;
+	char					*run;
+	char					**args;
+	unsigned char			info;
+	struct s_redir_chain	*redirect;
+	struct s_redir_chain	*tmp_redir;
+	struct s_seq			*pipe;
+	struct s_seq			*next;
 }				t_seq;
+
+// list analog of tmp_seq->args
+typedef struct	s_quo_split
+{
+	char				*arg;
+	struct s_quo_split	*next;
+}				t_quo_split;
+
+// quotes structure
+typedef struct	s_quo
+{
+	unsigned char flag;
+	int			after_space;
+	int			split_len;
+	t_quo_split	*split;
+	char		*start;
+	char		*end;
+	int			slashes;
+	int			last_slash;
+}				t_quo;
 
 // shell struct with main info
 typedef struct	s_shell
@@ -89,6 +121,7 @@ typedef struct	s_shell
 	t_env		*env;
 	size_t		env_size;
 	t_seq		*seq;
+	int			sep[2];
 }				t_shell;
 
 struct		s_list
@@ -125,6 +158,10 @@ void		ft_lstadd_front(t_list **lst, t_list *new);
 void		ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 char *ft_low_str(char *str);
+char	*ft_strjoin_sym(char const *s1, char const *s2, char sym);
+char *ft_genstr(char sym, int num);
+char	*ft_strrchr(const char *s, int c);
+int	ft_isdigit(int c);
 
 // errors
 void lite_error(char *comment);
@@ -161,12 +198,31 @@ int	init_seq(t_seq **seq);
 void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str);
 void	parse_one(t_seq *tmp_seq, t_shell *shell);
 int			is_builtin(char *s);
-void	parse_redirect(t_seq *tmp_seq, t_shell *shell);
+void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int syntax_error(t_shell *shell, char sym);
+void parse_quotes(t_seq *tmp_seq, t_shell *shell);
+int init_quo_split(t_quo_split **new);
+void free_quotes(t_quo **quo);
+void error_quotes(t_quo **quo, t_shell **shell);
+void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
+int precheck_syntax(t_shell *shell);
+void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym);
+void join_routine(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+int even_escaped(char *start, char *str);
+void parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void redirect_join(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
+void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg);
+int cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
+int run_redirect(t_seq *tmp_seq, t_shell *shell);
 
 //builtins
 char	*pwd(t_shell *shell, t_seq *tmp_seq);

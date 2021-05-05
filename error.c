@@ -33,6 +33,20 @@ static void	free_hist_env(t_shell **shell)
 	}
 }
 
+static void free_redirect(t_redir_chain **redir)
+{
+	t_redir_chain *tmp;
+
+	while (*redir)
+	{
+		tmp = *redir;
+		*redir = (*redir)->next;
+		if (tmp->path)
+			free(tmp->path);
+		free(tmp);
+	}
+}
+
 void		free_seq(t_seq **seq)
 {
 	t_seq *tmp;
@@ -45,10 +59,8 @@ void		free_seq(t_seq **seq)
 			free(tmp->run);
 		if (tmp->args)
 			ft_twodarr_free(&tmp->args, ft_twodarr_len(tmp->args));
-		if (tmp->output)
-			free(tmp->output);
-		if (tmp->input)
-			free(tmp->input);
+		if (tmp->redirect)
+			free_redirect(&tmp->redirect);
 		if (tmp->pipe)
 			free_seq(&tmp->pipe);
 		free(tmp);
