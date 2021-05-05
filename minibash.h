@@ -124,6 +124,7 @@ t_list		*ft_lstnew(void *content);
 void		ft_lstadd_front(t_list **lst, t_list *new);
 void		ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
+char *ft_low_str(char *str);
 
 // errors
 void lite_error(char *comment);
@@ -169,11 +170,11 @@ int run_pipe(t_seq *tmp_seq, t_shell *shell);
 
 //builtins
 char	*pwd(t_shell *shell, t_seq *tmp_seq);
-int	builtins_pwd(t_shell *shell, t_seq *tmp_seq);
-int	builtins_cd(t_shell *shell, t_seq *tmp_seq);
-int builtins_env(t_shell *shell, t_seq *tmp_seq);
-int	builtins_echo(t_shell *shell, t_seq *tmp_seq);
-int builtins_unset_value(t_shell *shell, t_seq *tmp_seq);
-int builtins_exit(t_shell *shell, t_seq *tmp_seq);
-int builtins_export(t_shell *shell, t_seq *tmp_seq);
+int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int	builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low);
 #endif

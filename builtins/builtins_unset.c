@@ -6,15 +6,13 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:38:46 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/04/26 08:03:01 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/03 18:05:13 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-// а если первая в списке? .проверить
-
-int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq)
+int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	t_env	*env;
 	t_env	*previous;
@@ -22,6 +20,7 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq)
 	int		i;
 	int		len;
 
+	free(str_low);
 	i = 1;
 	while (tmp_seq->args[i] != 0)
 	{

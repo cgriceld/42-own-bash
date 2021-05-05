@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_cd.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
+/*   Updated: 2021/05/03 18:14:41 by lesia            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minibash.h"
+
+//больште буквы
 
 char	*find_path(t_shell *shell, char *path, char *match)
 {
@@ -6,13 +20,13 @@ char	*find_path(t_shell *shell, char *path, char *match)
 	if (!path)
 	{
 		printf("cd: %s not set\n", match);
-		ret_status = 1;
+		ret_status = 2;
 		return (NULL);
 	}
 	return (path);
 }
 
-void update_pwd(t_shell *shell, char *path, char *old_path, t_seq *tmp_seq)
+void	update_pwd(t_shell *shell, char *path, char *old_path, t_seq *tmp_seq)
 {
 	if (is_oldpwd == 0)
 	{
@@ -27,19 +41,25 @@ void update_pwd(t_shell *shell, char *path, char *old_path, t_seq *tmp_seq)
 		envp_set_value(shell, "OLDPWD", old_path);
 		envp_set_value(shell, "PWD", path);
 	}
+	else
+	{
+		free(old_path);
+		free(path);
+	}
 }
 
-int		builtins_cd(t_shell *shell, t_seq *tmp_seq)
+int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	char *path;
 	char *old_path;
 	char *param;
 
+	free(str_low);
 	ret_status = 0;
 	param = ft_strtrim(tmp_seq->args[1], "\n");
 	old_path = pwd(shell, tmp_seq);
 	if (!old_path)
-		return (1);
+		return (2);
 	if (!param || (ft_strncmp(param, "", 1) == 0))
 		path = find_path(shell, path, "HOME");
 	else if (ft_strncmp(param, "-", 2) == 0)
@@ -49,9 +69,10 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq)
 	if (param && ret_status == 0 && chdir(path) != 0)
 	{
 		printf("cd: %s: No such file or directory\n", param);
-		ret_status = 1;
+		ret_status = 2;
 	}
-	//free(param);
+	if (param)
+		free(param);
 	if (ret_status == 0)
 		update_pwd(shell, path, old_path, tmp_seq);
 	return (ret_status);

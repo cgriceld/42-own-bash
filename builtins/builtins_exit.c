@@ -6,7 +6,7 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/04/26 08:00:54 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/03 18:08:15 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,30 @@
 int	too_many_args(void)
 {
 	printf("exit: too many arguments");
-	ret_status = 1;
+	ret_status = 2;
 	return (ret_status);
 }
 
 int	two_args(t_seq *tmp_seq, char *copy)
 {
 	printf("exit: %s: numeric argument required", tmp_seq->args[1]);
-	ret_status = 1;
+	ret_status = 2;
 	free(copy);
 	return (ret_status);
 }
 
-int	builtins_exit(t_shell *shell, t_seq *tmp_seq)
+int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	int		n_args;
 	int		num;
 	char	*copy;
 
+	free(str_low);
 	printf("exit\n");
 	ret_status = 0;
 	n_args = 0;
 	while (tmp_seq->args[n_args] != 0)
-		n_args ++;
+		n_args++;
 	if (n_args > 1)
 	{
 		num = ft_atoi(tmp_seq->args[1]);

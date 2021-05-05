@@ -23,16 +23,25 @@ int	init_seq(t_seq **seq)
 
 int			is_builtin(char *s)
 {
-	if (!ft_strncmp(s, "echo", ft_strlen(s)) \
-	|| !ft_strncmp(s, "cd", ft_strlen(s)) \
-	|| !ft_strncmp(s, "pwd", ft_strlen(s)) \
-	|| !ft_strncmp(s, "env", ft_strlen(s)) \
+	char *tmp;
+
+	tmp = ft_low_str(s);
+	if (!ft_strncmp(tmp, "echo", ft_strlen(s)) \
+	|| !ft_strncmp(tmp, "cd", ft_strlen(s)) \
+	|| !ft_strncmp(tmp, "pwd", ft_strlen(s)) \
+	|| !ft_strncmp(tmp, "env", ft_strlen(s)) \
 	|| !ft_strncmp(s, "unset", ft_strlen(s)) \
 	|| !ft_strncmp(s, "export", ft_strlen(s)) \
 	|| !ft_strncmp(s, "exit", ft_strlen(s)))
+	{
+		free(tmp);
 		return (1);
+	}
 	else
+	{
+		free(tmp);
 		return (0);
+	}
 }
 
 static void run(t_seq *tmp_seq, t_shell *shell)

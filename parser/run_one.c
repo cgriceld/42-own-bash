@@ -2,20 +2,24 @@
 
 static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 {
-	if (!ft_strncmp(tmp_seq->run, "echo", ft_strlen(tmp_seq->run)))
-		return (builtins_echo(shell, tmp_seq));
-	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
-		return (builtins_cd(shell, tmp_seq));
-	else if (!ft_strncmp(tmp_seq->run, "pwd", ft_strlen(tmp_seq->run)))
-		return (builtins_pwd(shell, tmp_seq));
-	else if (!ft_strncmp(tmp_seq->run, "env", ft_strlen(tmp_seq->run)))
-		return (builtins_env(shell, tmp_seq));
+	char *tmp;
+
+	tmp = ft_low_str(tmp_seq->run);
+	printf("%s\n", tmp);
+	if (!ft_strncmp(tmp, "echo", ft_strlen(tmp_seq->run)))
+		return (builtins_echo(shell, tmp_seq, tmp));
+	else if (!ft_strncmp(tmp, "cd", ft_strlen(tmp_seq->run)))
+		return (builtins_cd(shell, tmp_seq, tmp));
+	else if (!ft_strncmp(tmp, "pwd", ft_strlen(tmp_seq->run)))
+		return (builtins_pwd(shell, tmp_seq, tmp));
+	else if (!ft_strncmp(tmp, "env", ft_strlen(tmp_seq->run)))
+		return (builtins_env(shell, tmp_seq, tmp));
 	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
-		return (builtins_unset_value(shell, tmp_seq));
+		return (builtins_unset_value(shell, tmp_seq, tmp));
 	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
-		return (builtins_export(shell, tmp_seq));
+		return (builtins_export(shell, tmp_seq, tmp));
 	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
-		return (builtins_exit(shell, tmp_seq));
+		return (builtins_exit(shell, tmp_seq, tmp));
 	//printf("\n");
 	return (0);
 }
@@ -107,6 +111,7 @@ int run_one(t_seq *tmp_seq, t_shell *shell)
 		if (tmp_seq->info & REDIR_IN)
 			return (redirect_in(tmp_seq, shell));
 	}
+	printf("run_builtin\n");
 	if (is_builtin(tmp_seq->run))
 		return (run_builtin(tmp_seq, shell));
 	else

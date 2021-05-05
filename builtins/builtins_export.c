@@ -6,13 +6,11 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/04/26 21:08:24 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/03 18:22:55 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
-
-// поправить по норме!!!
 
 void print_declations(t_list *key_sort, t_shell *shell)
 {
@@ -27,9 +25,9 @@ void print_declations(t_list *key_sort, t_shell *shell)
 
 int print_export(t_shell *shell)
 {
-	t_env *tmp;
-	t_list *key_sort;
-	t_list *sort_start;
+	t_env		*tmp;
+	t_list		*key_sort;
+	t_list		*sort_start;
 
 	sort_start = NULL;
 	tmp = shell->env;
@@ -58,8 +56,9 @@ int print_export(t_shell *shell)
 
 void pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 {
-	int n;
-	int len;
+	int		n;
+	int		len;
+
 	*value = NULL;
 	*param = NULL;
 	len = ft_strlen(tmp_seq->args[i]);
@@ -77,10 +76,9 @@ void pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 	*param = ft_strdup(tmp_seq->args[i]);
 }
 
-
-int check_is_valid(t_seq *tmp_seq, int i)
+int		check_is_valid(t_seq *tmp_seq, int i)
 {
-	int n;
+	int	n;
 
 	n = 0;
 	if ((tmp_seq->args[i][0] == '_') ||
@@ -90,7 +88,7 @@ int check_is_valid(t_seq *tmp_seq, int i)
 	else
 	{
 		printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
-		return (1);
+		return (2);
 	}
 	while (tmp_seq->args[i][n] != 0 && tmp_seq->args[i][n] != '=')
 	{
@@ -102,23 +100,29 @@ int check_is_valid(t_seq *tmp_seq, int i)
 		else
 		{
 			printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
-			return (1);
+			return (2);
 		}
 	}
 	return (0);
 }
 
 // умирает прии  export g7 hj k9 . пока хз почему.
+//
 
-int builtins_export(t_shell *shell, t_seq *tmp_seq)
+
+
+//
+
+int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 
 	char *value;
 	char *param;
-	int len;
+//	int len;
 	int i;
-	int n;
+//	int n;
 
+	free(str_low);
 	if (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n')
 		return (print_export(shell));
 	i = 1;
@@ -126,8 +130,8 @@ int builtins_export(t_shell *shell, t_seq *tmp_seq)
 	{
 		value = NULL;
 		param = NULL;
-		if (check_is_valid(tmp_seq, i) == 1)
-			return (1);
+		if (check_is_valid(tmp_seq, i) == 2)
+			return (2);
 //		if ((tmp_seq->args[i][0] == '_') ||
 //		(tmp_seq->args[i][0] >= 'a' && tmp_seq->args[i][0] <= 'z') ||
 //		(tmp_seq->args[i][0] >= 'A' && tmp_seq->args[i][0] <= 'Z'))
