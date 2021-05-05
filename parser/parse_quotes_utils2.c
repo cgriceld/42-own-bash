@@ -62,15 +62,28 @@ void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 			if (*(quo->end + 1) == '\\' || *(quo->end + 1) == '$' || *(quo->end + 1) == '"')
 				parse_escape(tmp_seq, shell, quo, tmp_split);
 			else
+			{
 				quo->end++;
+				join_routine(tmp_seq, shell, quo, tmp_split);
+			}
 		}
 		else if (*quo->end == '$')
-			parse_dollar(tmp_seq, shell, quo, tmp_split);
+		{
+			if (*(quo->end + 1) != '"')
+				parse_dollar(tmp_seq, shell, quo, tmp_split);
+			else
+			{
+				quo->end++;
+				join_routine(tmp_seq, shell, quo, tmp_split);
+			}
+		}
 		else if (*quo->end == '"')
 		{
 			quo->end++;
 			break;
 		}
+		if (tmp_split && tmp_split->next)
+			tmp_split = tmp_split->next;
 	}
 }
 		// if ((*quo->end == '\\' && *(quo->end + 1) == '\\') || *quo->end == '$')
