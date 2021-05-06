@@ -54,32 +54,17 @@ void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 		join_routine(tmp_seq, shell, quo, tmp_split);
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;
-		if (*quo->end == '\\')
-		{
-			if (ft_strchr("\\$\"|;", *(quo->end + 1)))
-			{
-				//tmp_seq->info |= QUOTED;
-				parse_escape(tmp_seq, shell, quo, tmp_split);
-				//tmp_seq->info &= ~QUOTED;
-			}
-			else
-			{
-				quo->end++;
-				join_routine(tmp_seq, shell, quo, tmp_split);
-			}
-		}
-		else if (*quo->end == '$')
-		{
-			if (*(quo->end + 1) != '"')
-				parse_dollar(tmp_seq, shell, quo, tmp_split);
-			else
-			{
-				quo->end++;
-				join_routine(tmp_seq, shell, quo, tmp_split);
-			}
-		}
+		if (*quo->end == '\\' && ft_strchr("\\$\"|;", *(quo->end + 1)))
+			parse_escape(tmp_seq, shell, quo, tmp_split);
+		else if (*quo->end == '$' && *(quo->end + 1) != '"')
+			parse_dollar(tmp_seq, shell, quo, tmp_split);
 		else if (*quo->end == '"')
 			break;
+		else
+		{
+			quo->end++;
+			join_routine(tmp_seq, shell, quo, tmp_split);
+		}
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;
 	}
