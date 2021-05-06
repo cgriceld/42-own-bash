@@ -16,7 +16,7 @@ static int	ft_getwords(char const *s, const char c)
 		while (*s)
 		{
 			if (*s != c || (*s == c && *(s - 1) == '\\') || \
-				(*s == '|' && *(s - 1) == '>' && even_escaped(start, (char *)s)))
+				(*s == '|' && *(s - 1) == '>' && even_escaped(start, (char *)(s - 1))))
 				s++;
 			else
 				break;
@@ -47,7 +47,7 @@ static int	ft_putwords(char const *s, char c, int words, char **split)
 		while (*s)
 		{
 			if (*s != c || (*s == c && *(s - 1) == '\\') || \
-				(*s == '|' && *(s - 1) == '>' && even_escaped((char *)start, (char *)s)))
+				(*s == '|' && *(s - 1) == '>' && even_escaped((char *)start, (char *)(s - 1))))
 				s++;
 			else
 				break;

@@ -74,6 +74,7 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "$<>'\"\\")) || \
 		(!tmp_seq->run && ft_strchrset(shell->hist_curr->command, "$<>'\"\\")))
 	{
+		//tmp_seq->info &= ~QUOTED;
 		parse_quotes(tmp_seq, shell);
 		if (!tmp_seq->run || (shell->seq->info & SYNTAX_ERR))
 			return;
