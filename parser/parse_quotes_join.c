@@ -1,5 +1,16 @@
 #include "../minibash.h"
 
+static void shut_escape(t_seq *tmp_seq, t_quo *quo)
+{
+	// if (ft_strchr("|;", *quo->end) && (tmp_seq->info & QUOTED))
+	// 	quo->last_slash = 0;
+	if (!(quo->slashes % 2))
+		quo->last_slash = 0;
+	else
+		quo->last_slash = 1;
+	quo->slashes = quo->slashes / 2;
+}
+
 void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 {
 	char *tmp;
@@ -7,13 +18,12 @@ void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 	tmp = *arg;
 	if (quo->slashes)
 	{
-		if (quo->slashes == 1 && quo->last_slash)
-			quo->slashes = 0;
+		shut_escape(tmp_seq, quo);
 		*arg = ft_strjoin(*arg, ft_genstr('\\', quo->slashes));
 	}
 	else
-		*arg = ft_strjoin(*arg, ft_strtrim(ft_substr(\
-		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\""));
+		*arg = ft_strjoin(*arg, ft_substr(\
+		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start));
 	free(tmp);
 	if (!*arg)
 		error_quotes(&quo, &shell);
@@ -26,13 +36,12 @@ static void join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 	{
 		if (quo->slashes)
 		{
-			if (quo->slashes == 1 && quo->last_slash)
-				quo->slashes = 0;
+			shut_escape(tmp_seq, quo);
 			*arg = ft_genstr('\\', quo->slashes);
 		}
 		else
-			*arg = ft_strtrim(ft_substr(\
-			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\"");
+			*arg = ft_substr(\
+			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start);
 		if (!*arg)
 			error_quotes(&quo, &shell);
 		quo->split_len++;
@@ -49,13 +58,12 @@ void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_spli
 			error_quotes(&quo, &shell);
 		if (quo->slashes)
 		{
-			if (quo->slashes == 1 && quo->last_slash)
-				quo->slashes = 0;
+			shut_escape(tmp_seq, quo);
 			tmp_split->next->arg = ft_genstr('\\', quo->slashes);
 		}
 		else
-			tmp_split->next->arg = ft_strtrim(ft_substr(\
-			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\"");
+			tmp_split->next->arg = ft_substr(\
+			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start);
 		if (!tmp_split->next->arg)
 			error_quotes(&quo, &shell);
 		quo->split_len++;

@@ -49,14 +49,25 @@ static void manage_quotes(char *str, unsigned char *flag, t_shell *shell)
 static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 {
 	char *tmp;
+	char *after;
+	char *before;
+	static size_t len = 0;
 
-	tmp = shell->seq->run;
-	shell->seq->run = ft_strjoin_sym(\
+	if (!shell->seq->run)
+		before = ft_strdup("");
+	else
+		before = ft_substr(shell->seq->run, 0, len);
+	after = ft_strjoin_sym(\
 	ft_substr(shell->hist_curr->command, *start - shell->hist_curr->command, \
 			str - *start), str, sym);
+	tmp = shell->seq->run;
+	shell->seq->run = ft_strjoin(before, after);
 	free(tmp);
+	free(before);
+	free(after);
 	if (!shell->seq->run)
 		free_error(strerror(errno), &shell);
+	len = len + (str - *start) + 2;
 	*start = str + 1;
 	if (sym == ' ' && *str == ';')
 		shell->sep[0]++;
@@ -75,7 +86,7 @@ static int quo_syntax(char *str, unsigned char flag, t_shell *shell, char *start
 		{
 			if (*str == '|' && !(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '>')
 			{
-				if (!even_escaped(shell->hist_curr->command, str))
+				if (!even_escaped(shell->hist_curr->command, (str - 1)))
 					shell->sep[1]++;
 			}
 			else if (!(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '\\')
