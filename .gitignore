@@ -1,5 +1,8 @@
-/minishell.dSYM/
-.gitignore
 minishell
-minishell.dSYM
+*.o
+*.out
+*.dSYM
 .idea/
+.vscode
+*.code-workspace
+.DS_Store

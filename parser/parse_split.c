@@ -2,7 +2,9 @@
 
 int syntax_error(t_shell *shell, char sym)
 {
-	printf("-minibash: syntax error near unexpected token `%c'\n", sym);
+	write(2, "-minibash: syntax error near unexpected token `", 47);
+	write(2, &sym, 1);
+	write(2, "'\n", 2);
 	shell->seq->info |= SYNTAX_ERR;
 	ret_status = 258;
 	return (1);

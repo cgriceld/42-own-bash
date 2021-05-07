@@ -109,7 +109,7 @@ int run_one(t_seq *tmp_seq, t_shell *shell)
 {
 	if (!tmp_seq->run && tmp_seq->redirect)
 		return (run_redirect(tmp_seq, shell));
-	printf("run_builtin\n");
+	//printf("run_builtin\n");
 	if (is_builtin(tmp_seq->run))
 		return (run_builtin(tmp_seq, shell));
 	else

@@ -2,8 +2,8 @@
 
 static void	prepare(int argc, t_shell **shell)
 {
-	if (argc != 1)
-		lite_error(WRONG_ARGS);
+	// if (argc != 1)
+	// 	lite_error(WRONG_ARGS);
 	*shell = (t_shell *)malloc(sizeof(t_shell));
 	if (!*shell)
 		lite_error(strerror(errno));
@@ -18,7 +18,7 @@ static void	prepare(int argc, t_shell **shell)
 	init_hist(*shell);
 }
 
-int			main(int argc, char __attribute__((unused)) **argv, char **envp)
+int			main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
@@ -27,7 +27,15 @@ int			main(int argc, char __attribute__((unused)) **argv, char **envp)
 	envp_to_list(envp, shell);
 	tgetent(NULL, getenv("TERM")); // can return -1 in error
 	set_signals();
-	ft_readline(shell);
+	if (argc == 3)
+	{
+		shell->hist_curr->command = ft_strdup(argv[2]);
+		parser(shell);
+	}
+	else
+		ft_readline(shell);
 	free_error(NULL, &shell);
 	return (ret_status);
 }
+
+// int			main(int argc, char __attribute__((unused)) **argv, char **envp)

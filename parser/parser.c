@@ -54,14 +54,14 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 				ret_status = run_pipe(tmp_seq->pipe, shell);
 			else
 				ret_status = run_pipe(tmp_seq, shell);
-			printf("%d\n", ret_status);
+			//printf("%d\n", ret_status);
 			if (tmp_seq->info & PIPE)
 				break;
 			tmp_seq = tmp_seq->next;
 			continue;
 		}
 		ret_status = run_one(tmp_seq, shell);
-		printf("%d\n", ret_status);
+		//printf("%d\n", ret_status);
 		tmp_seq = tmp_seq->next;
 	}
 }
