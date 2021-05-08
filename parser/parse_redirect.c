@@ -2,14 +2,14 @@
 
 static void parse_input(t_redir_chain *tmp_redir, t_shell *shell)
 {
-	if (ft_strempty(tmp_redir->path))
+	if (!tmp_redir->path)
 		syntax_error(shell, '<');
 	tmp_redir->type |= REDIR_IN;
 }
 
 static void parse_output(t_redir_chain *tmp_redir, t_shell *shell)
 {
-	if (ft_strempty(tmp_redir->path))
+	if (!tmp_redir->path)
 		syntax_error(shell, '>');
 	if (!(tmp_redir->type & REDIR_APPEND))
 		tmp_redir->type |= REDIR_OUT;
@@ -43,34 +43,8 @@ static void init_redirect(t_redir_chain **new, t_quo *quo, t_shell *shell)
 	(*new)->next = NULL;
 }
 
-// void redirect_join(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
-// {
-// 	char *tmp;
-
-// 	tmp = tmp_seq->tmp_redir->path;
-// 	if (quo->slashes)
-// 	{
-// 		if (quo->slashes == 1 && quo->last_slash)
-// 			quo->slashes = 0;
-// 		tmp_seq->tmp_redir->path = ft_strjoin(tmp_seq->tmp_redir->path, \
-// 		ft_genstr('\\', quo->slashes));
-// 	}
-// 	else
-// 	{
-// 		tmp_seq->tmp_redir->path = ft_strjoin(tmp_seq->tmp_redir->path, \
-// 		ft_strtrim(ft_substr(\
-// 		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start), "'\""));
-// 	}
-// 	free(tmp);
-// 	if (!tmp_seq->tmp_redir->path)
-// 		error_quotes(&quo, &shell);
-// }
-
 static void construct_file(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 {
-	tmp_seq->tmp_redir->path = ft_strdup("");
-	if (!tmp_seq->tmp_redir->path)
-		error_quotes(&quo, &shell);
 	if (*quo->end == '|')
 		quo->end++;
 	while (*quo->end && *quo->end == ' ')
@@ -113,7 +87,7 @@ void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 	tmp_seq->tmp_redir = tmp_redir;
 	construct_file(tmp_seq, shell, quo);
 	tmp_redir->path = ft_strdup(tmp_seq->tmp_redir->path);
-	if (!tmp_redir->path)
+	if (!tmp_redir->path && tmp_seq->tmp_redir->path)
 		error_quotes(&quo, &shell);
 	if (i == 2)
 		tmp_redir->type |= REDIR_APPEND;

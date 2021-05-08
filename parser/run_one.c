@@ -67,6 +67,7 @@ static void handle_errno(char *comm, int errno_save)
 	}
 }
 
+// handle_errno(tmp_seq->run, errno);
 static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 {
 	int status;
@@ -76,7 +77,7 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 		if (tmp_seq->redirect && run_redirect(tmp_seq, shell))
 			exit(1);
 		if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)
-			handle_errno(tmp_seq->run, errno);
+			handle_errno(tmp_seq->args[0], errno);
 		exit(0);
 	}
 	else

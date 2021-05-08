@@ -76,6 +76,8 @@ exec_test '/ls'
 exec_test './ls'
 exec_test '../ls'
 exec_test '/..'
+exec_test '/bin/ls --l'
+exec_test 'ls --l'
 touch f1
 exec_test 'f1/'
 exec_test '/f1'
@@ -111,6 +113,8 @@ exec_test "ls '$\P\A\T\H'"
 exec_test 'ls $\P\A\T\H'
 exec_test '\l\s'
 exec_test 'l\s'
+exec_test '"ls"'
+exec_test "'ls'"
 exec_test 'ls\'
 exec_test ' ls\ '
 exec_test '\  \  \\'
@@ -124,6 +128,20 @@ exec_test 'ls ";" -la'
 exec_test "ls -l '-'a"
 exec_test "'l''s'"
 exec_test "ls ''"
+exec_test "ls >''"
+exec_test "ls > '' "
+exec_test "l''s"
+exec_test "ls '' -l"
+exec_test "ls -l''"
+exec_test "ls ''-l"
+exec_test 'l""s'
+exec_test 'ls ""'
+exec_test 'ls >""'
+exec_test 'ls > "" '
+exec_test 'l""s'
+exec_test 'ls "" -l'
+exec_test 'ls -l""'
+exec_test 'ls ""-l'
 exec_test '    ls;;   ;     '
 exec_test 'ls | grep bla'
 exec_test 'ls | grep min'
@@ -147,7 +165,10 @@ exec_test 'ls     |'
 exec_test '     ls     |'
 exec_test '   |    ls     |'
 exec_test 'ls|||||||'
-exec_test      'ls|||||||'
+exec_test '  ls \|'
+exec_test '  ls "\" \\\\'
+exec_test "  ls $ '$'$"
+exec_test '   ls |||||||'
 exec_test   'ls|||||||     '
 exec_test   'ls||  ||||  |     '
 exec_test   'ls||  ||>||  |     '
@@ -166,6 +187,10 @@ exec_test 'ls>file1.txt -l a<file1.txt'
 exec_test 'ls<>'
 exec_test '< ls'
 exec_test '> ls'
+exec_test ' < ls '
+exec_test ' > ls '
+exec_test 'ls >   '
+exec_test '  ls  <   '
 exec_test '>'
 exec_test '<'
 exec_test '>\>'
@@ -184,8 +209,15 @@ exec_test 'ls>|'
 exec_test 'ls >|||pwd$'
 exec_test 'ls >|\|\|pwd$'
 exec_test 'ls > $$$$\\'
+exec_test 'ls $'
+exec_test 'ls $$'
+exec_test 'ls $$$'
+exec_test '/bin/ls $ $$'
+exec_test 'ls $b$l$$a'
+exec_test 'ls $b$l$a'
 exec_test 'ls <| wc'
 exec_test '> f1 ls bla'
+#exec_test 'ls< no_file > huhu'
 
 echo ==============================================
 echo $ok / $all

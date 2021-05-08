@@ -88,12 +88,21 @@ void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym)
 
 void join_routine(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
-	if (quo->start != quo->end)
+	if ((quo->start != quo->end) || \
+	(quo->start == quo->end && (*quo->end == '\'' || *quo->end == '"')))
 	{
 		if (tmp_split)
 			join_args(tmp_seq, shell, quo, tmp_split);
 		else
+		{
+			if (!tmp_seq->tmp_redir->path)
+			{
+				tmp_seq->tmp_redir->path = ft_strdup("");
+				if (!tmp_seq->tmp_redir->path)
+					error_quotes(&quo, &shell);
+			}
 			join_args2(tmp_seq, shell, quo, &tmp_seq->tmp_redir->path);
+		}
 		quo->start = quo->end;
 	}
 }
