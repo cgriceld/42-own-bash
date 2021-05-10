@@ -41,9 +41,6 @@
 // global variable, exit code of last command
 int ret_status;
 
-// global variable, to know is OLDPWD initilased;
-int is_oldpwd;
-
 // terminal modes
 typedef enum	e_modes
 {
@@ -233,4 +230,5 @@ int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low);
+void	redir(t_shell *shell, t_seq *tmp_seq, char *str_low);
 #endif

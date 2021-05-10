@@ -6,13 +6,13 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/05 11:15:16 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/10 17:49:23 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-void print_declations(t_list *key_sort, t_shell *shell)
+void	print_declations(t_list *key_sort, t_shell *shell)
 {
 	if (ft_strncmp((char *)key_sort->content, "_", 2) != 0)
 	{
@@ -23,7 +23,7 @@ void print_declations(t_list *key_sort, t_shell *shell)
 	}
 }
 
-int print_export(t_shell *shell)
+int	print_export(t_shell *shell)
 {
 	t_env		*tmp;
 	t_list		*key_sort;
@@ -39,14 +39,16 @@ int print_export(t_shell *shell)
 	key_sort = sort_start;
 	while (key_sort)
 	{
-		if (((char *)key_sort->content)[0] < 'a' || ((char *)key_sort->content)[0] > 'z')
+		if (((char *)key_sort->content)[0] < 'a'
+		|| ((char *)key_sort->content)[0] > 'z')
 			print_declations(key_sort, shell);
 		key_sort = key_sort->next;
 	}
 	key_sort = sort_start;
 	while (key_sort)
 	{
-		if (((char *)key_sort->content)[0] >= 'a' && ((char *)key_sort->content)[0] <= 'z')
+		if (((char *)key_sort->content)[0] >= 'a'
+		&& ((char *)key_sort->content)[0] <= 'z')
 			print_declations(key_sort, shell);
 		key_sort = key_sort->next;
 	}
@@ -54,10 +56,10 @@ int print_export(t_shell *shell)
 	return (0);
 }
 
-void pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
+void	pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 {
-	int		n;
-	int		len;
+	int	n;
+	int	len;
 
 	*value = NULL;
 	*param = NULL;
@@ -76,7 +78,7 @@ void pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 	*param = ft_strdup(tmp_seq->args[i]);
 }
 
-int		check_is_valid(t_seq *tmp_seq, int i)
+int	check_is_valid(t_seq *tmp_seq, int i)
 {
 	int	n;
 
@@ -106,22 +108,17 @@ int		check_is_valid(t_seq *tmp_seq, int i)
 	return (0);
 }
 
-// умирает прии  export g7 hj k9 . пока хз почему.
-//
-
-
-
-//
-
-int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 
-	char *value;
-	char *param;
-//	int len;
-	int i;
-//	int n;
+	char	*value;
+	char	*param;
+	int		i;
+	int		fds[2];
 
+	fds[0] = dup(0);
+	fds[1] = dup(1);
+	run_redirect(tmp_seq, shell);
 	free(str_low);
 	if (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n')
 		return (print_export(shell));
@@ -154,5 +151,6 @@ int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			envp_new_value(shell, param, value);
 		i++;
 	}
+	dup2(fds[1], 1);
 	return (0);
 }
