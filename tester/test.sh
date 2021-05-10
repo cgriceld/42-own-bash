@@ -67,6 +67,7 @@ printf "| |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ \n"
 printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
+<<<<<<< HEAD
 exec_test '/bin/ls'
 exec_test 'bin/ls'
 exec_test 'bin/ls'
@@ -218,6 +219,65 @@ exec_test 'ls $b$l$a'
 exec_test 'ls <| wc'
 exec_test '> f1 ls bla'
 #exec_test 'ls< no_file > huhu'
+
+exec_test 'echo $ '$'$'
+exec_test 'echo 2 6'
+exec_test 'echo 2'
+exec_test 'ECHO 1 1  ff'
+exec_test 'env | grep -e OLDPWD'
+exec_test 'env | grep -e PWD'
+exec_test 'cd /Users/sbrenton/Documents/Study/minish/ ; pwd'
+exec_test 'env | grep -e OLDPWD'
+exec_test 'env | grep -e PWD'
+exec_test 'cd ./parser ; pwd'
+exec_test 'cd /Users/sbrenton/Documents/Study/minish/parser/ ; pWd'
+
+
+
+exec_test 'cd ./bad | pwd'
+exec_test 'cd . ; pwd'
+exec_test 'cd .. ; pwd'
+exec_test 'CD ; pwd'
+exec_test 'cd ; pwd'
+exec_test 'pwd'
+exec_test 'PWD'
+exec_test 'export g7 hj k9'
+exec_test 'export g7 hj k9'
+exec_test 'export hh=jjj'
+exec_test 'env | grep -e hh'
+exec_test 'cd /Users/sbrenton/Documents/Study/tester/ | pwd'
+
+exec_test 'echo " \"\"\"  "'
+exec_test 'echo " hi \"  "'
+exec_test 'echo "  "hi"  "'
+#exec_test "echo 'hi \'''"
+exec_test 'echo \   $PWD'
+exec_test 'echo "in test" > txt.txt | echo  "in test" < txt.txt'
+exec_test 'echo "in test" > txt.txt | echo < txt.txt'
+exec_test 'echo "in test" > txt.txt | echo  "in test" < txt.txt'
+rm txt.txt
+
+exec_test 'pwd > txt.txt | echo < txt.txt'
+
+rm txt.txt
+exec_test 'echo -n ll'
+exec_test 'exit > new.t'
+exec_test 'echo ls -la'
+rm new.t
+
+## порядок не понятен, поэтому сравнение не получается (  Вопросы надо ли править
+#exec_test 'ENV'
+#exec_test 'env'
+#exec_test 'env > txt.txt ; echo < txt.txt'
+#rm txt.txt
+
+## кейсы для ;
+exec_test 'echo pwd >> txt.txt ; echo < txt.txt'
+rm txt.txt
+
+
+#exec_test 'export'
+
 
 echo ==============================================
 echo $ok / $all

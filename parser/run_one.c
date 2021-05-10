@@ -5,10 +5,9 @@ static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 	char *tmp;
 
 	tmp = ft_low_str(tmp_seq->run);
-	printf("%s\n", tmp);
 	if (!ft_strncmp(tmp, "echo", ft_strlen(tmp_seq->run)))
 		return (builtins_echo(shell, tmp_seq, tmp));
-	else if (!ft_strncmp(tmp, "cd", ft_strlen(tmp_seq->run)))
+	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
 		return (builtins_cd(shell, tmp_seq, tmp));
 	else if (!ft_strncmp(tmp, "pwd", ft_strlen(tmp_seq->run)))
 		return (builtins_pwd(shell, tmp_seq, tmp));

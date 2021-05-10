@@ -55,6 +55,12 @@ ls >|||pwd$
 ls >|\|\|pwd$
 ls > $$$$\\
 
+echo " \"\"\"  "
+echo " hi \"  "
+echo "  "hi"  "
+echo 'hi \'''
+echo \   $PWD
+
 --- ADD BEFORE ---
 
 echo $\P\A\T\H
@@ -66,11 +72,7 @@ ls -l > file3.txt -a
 ls l > file3.txt -a
 ls l > file3.txt -a ; ls > file3.txt
 ls < f2.txt | grep min
-echo " \"\"\"  "
-echo " hi \"  "
-echo "  "hi"  "
-echo 'hi \'''
-echo \   $PWD
+
    " ls |   " \; pwd
 'ls' > f1.txt -la
 echo " hi '$PWD'"
@@ -91,3 +93,5 @@ file with name ls in same directory
 
 echo " a ' b " c ' d "e" f' g" h' j"
 ' "" '
+
+---- echo $ '$'$
