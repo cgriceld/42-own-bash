@@ -231,4 +231,5 @@ int builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low);
 void	redir(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int	print_export(t_shell *shell);
 #endif

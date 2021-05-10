@@ -6,7 +6,7 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:25:46 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/10 18:41:04 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,13 @@ void	update_pwd(t_shell *shell, char *path, char *old_path, t_seq *tmp_seq)
 	free(path);
 }
 
-// более 25 строк
-int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	char	*path;
 	char	*old_path;
 	char	*param;
-	int		fds[2];
 
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	run_redirect(tmp_seq, shell);
-	dup2(fds[1], 1);
-	free(str_low);
+	redir(shell, tmp_seq, str_low);
 	ret_status = 0;
 	param = tmp_seq->args[1];
 	old_path = pwd(shell, tmp_seq);
@@ -74,6 +68,5 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	}
 	if (ret_status == 0)
 		update_pwd(shell, path, old_path, tmp_seq);
-	//dup2(fds[1], 1);
 	return (ret_status);
 }

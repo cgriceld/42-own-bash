@@ -67,7 +67,6 @@ printf "| |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ \n"
 printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
-<<<<<<< HEAD
 exec_test '/bin/ls'
 exec_test 'bin/ls'
 exec_test 'bin/ls'
@@ -231,8 +230,6 @@ exec_test 'env | grep -e OLDPWD'
 exec_test 'env | grep -e PWD'
 exec_test 'cd ./parser ; pwd'
 exec_test 'cd /Users/sbrenton/Documents/Study/minish/parser/ ; pWd'
-
-
 
 exec_test 'cd ./bad | pwd'
 exec_test 'cd . ; pwd'
