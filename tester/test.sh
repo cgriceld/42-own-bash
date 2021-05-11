@@ -217,7 +217,12 @@ exec_test 'ls $b$l$$a'
 exec_test 'ls $b$l$a'
 exec_test 'ls <| wc'
 exec_test '> f1 ls bla'
-#exec_test 'ls< no_file > huhu'
+exec_test 'ls <> ll'
+exec_test 'ls < <>'
+exec_test 'ls < <> f1'
+exec_test 'ls < <>'
+exec_test 'ls < $bll'
+exec_test 'ls< no_file > huhu'
 
 echo ==============================================
 echo $ok / $all
