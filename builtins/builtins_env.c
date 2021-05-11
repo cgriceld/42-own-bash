@@ -6,16 +6,20 @@
 /*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:57 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/05 11:15:16 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
-	t_env *tmp;
+	t_env	*tmp;
+	int		fds[2];
 
+	fds[0] = dup(0);
+	fds[1] = dup(1);
+	run_redirect(tmp_seq, shell);
 	free(str_low);
 	if (envp_get_value(shell, "PATH") == NULL)
 	{
@@ -31,5 +35,6 @@ int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	dup2(fds[1], 1);
 	return (0);
 }
