@@ -91,10 +91,6 @@ void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 	char sym;
 	int i;
 
-	sym = *quo->end;
-	i = check_redirect(quo, sym, shell, tmp_seq);
-	if (shell->seq->info & SYNTAX_ERR)
-		return;
 	if (!tmp_seq->redirect)
 	{
 		init_redirect(&tmp_seq->redirect, quo, shell);
@@ -106,6 +102,15 @@ void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 		tmp_redir = tmp_redir->next;
 	}
 	tmp_seq->tmp_redir = tmp_redir;
+	if (*quo->end == '<' && *(quo->end + 1) == '>' && !ft_strchr("<>", *(quo->end + 2)))
+	{
+		quo->end++;
+		tmp_seq->tmp_redir->type |= IGNORE;
+	}
+	sym = *quo->end;
+	i = check_redirect(quo, sym, shell, tmp_seq);
+	if (shell->seq->info & SYNTAX_ERR)
+		return;
 	construct_file(tmp_seq, shell, quo);
 	tmp_redir->path = ft_strdup(tmp_seq->tmp_redir->path);
 	if (!tmp_redir->path && tmp_seq->tmp_redir->path)

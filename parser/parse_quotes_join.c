@@ -55,6 +55,7 @@ static void join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 		if (!*arg)
 			error_quotes(&quo, &shell);
 		quo->split_len++;
+		quo->after_space = 0;
 	}
 	else
 		join_args2(tmp_seq, shell, quo, arg);

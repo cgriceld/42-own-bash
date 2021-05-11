@@ -27,7 +27,7 @@ static int redirect_out(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 		fd = open(tmp_redir->path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 		return (redirect_error(tmp_redir->path, 0));
-	if (tmp_seq->run)
+	if (tmp_seq->run && !(tmp_redir->type & IGNORE))
 		dup2(fd, 1);
 	close(fd);
 	return (0);
@@ -43,7 +43,7 @@ static int redirect_in(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 	fd = open(tmp_redir->path, O_RDONLY, 0644);
 	if (fd < 0)
 		return (redirect_error(tmp_redir->path, 0));
-	if (tmp_seq->run)
+	if (tmp_seq->run && !(tmp_redir->type & IGNORE))
 		dup2(fd, 0);
 	close(fd);
 	return (0);
