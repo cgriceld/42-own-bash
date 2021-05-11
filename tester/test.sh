@@ -1,5 +1,3 @@
-# MINISHELL-TESTER
-
 RESET="\033[0m"
 BLACK="\033[30m"
 RED="\033[31m"
@@ -19,7 +17,6 @@ BOLDMAGENTA="\033[1m\033[35m"
 BOLDCYAN="\033[1m\033[36m"
 BOLDWHITE="\033[1m\033[37m"
 
-# Compile and set executable rights
 make -C ../ > /dev/null
 cp ../minishell .
 chmod 755 minishell
@@ -67,7 +64,6 @@ printf "| |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ \n"
 printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
-<<<<<<< HEAD
 exec_test '/bin/ls'
 exec_test 'bin/ls'
 exec_test 'bin/ls'
@@ -224,6 +220,24 @@ exec_test 'ls < <> f1'
 exec_test 'ls < <>'
 exec_test 'ls < $bll'
 exec_test 'ls< no_file > huhu'
+exec_test 'ls < $bll$bu'
+exec_test 'ls < $bll$bu\l'
+exec_test 'ls < $bl\el$bu'
+exec_test 'ls $bla'
+exec_test 'ls < $TERM\el$bu'
+exec_test '> $PATH'
+exec_test '> $TERM'
+exec_test 'ls > $PATH'
+exec_test 'ls $PATH'
+exec_test 'ls > $b$u > f1'
+exec_test 'ls > $b$u>f1'
+exec_test 'ls >$b$u>f1'
+exec_test 'ls $?bu'
+exec_test 'ls > f1>$b'
+exec_test 'ls $?$"b"u'
+exec_test "echo $?'$?'"
+exec_test 'ls ???$?'
+exec_test 'ls ?\??\$?'
 
 exec_test 'echo $ '$'$'
 exec_test 'echo 2 6'
@@ -236,8 +250,6 @@ exec_test 'env | grep -e OLDPWD'
 exec_test 'env | grep -e PWD'
 exec_test 'cd ./parser ; pwd'
 exec_test 'cd /Users/sbrenton/Documents/Study/minish/parser/ ; pWd'
-
-
 
 exec_test 'cd ./bad | pwd'
 exec_test 'cd . ; pwd'

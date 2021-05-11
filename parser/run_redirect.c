@@ -4,9 +4,11 @@ static int redirect_error(char *path, int flag)
 {
 	write(2, "-minibash: ", 11);
 	write(2, path, ft_strlen(path));
-	if (flag)
+	if (flag == 1)
 		write(2, ": No such file or directory\n", 28);
-	if (!flag)
+	else if (flag == 2)
+		write(2, ": ambiguous redirect\n", 21);
+	else if (!flag)
 	{
 		write(2, ": ", 2);
 		write(2, strerror(errno), ft_strlen(strerror(errno)));
@@ -54,7 +56,9 @@ int run_redirect(t_seq *tmp_seq, t_shell *shell)
 	tmp_redir = tmp_seq->redirect;
 	while (tmp_redir)
 	{
-		if ((tmp_redir->type & REDIR_IN) && redirect_in(tmp_seq, tmp_redir))
+		if (tmp_redir->type & AMBIGUOUS)
+			return (redirect_error(tmp_redir->path, 2));
+		else if ((tmp_redir->type & REDIR_IN) && redirect_in(tmp_seq, tmp_redir))
 			return (1);
 		else if (((tmp_redir->type & REDIR_OUT) || \
 		(tmp_redir->type & REDIR_APPEND)) && redirect_out(tmp_seq, tmp_redir))

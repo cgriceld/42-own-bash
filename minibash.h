@@ -21,6 +21,7 @@
 #define REDIR_OUT 0b00000100
 #define REDIR_APPEND 0b00001000
 #define REDIR_IN 0b00010000
+#define AMBIGUOUS 0b00000001
 #define QUOTED 0b00100000
 #define SINGLE 0b00100000
 #define DOUBLED 0b01000000
@@ -99,7 +100,6 @@ typedef struct	s_quo_split
 // quotes structure
 typedef struct	s_quo
 {
-	unsigned char flag;
 	int			after_space;
 	int			split_len;
 	t_quo_split	*split;

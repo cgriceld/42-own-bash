@@ -1,15 +1,34 @@
 #include "../minibash.h"
 
-static void parse_input(t_redir_chain *tmp_redir, t_shell *shell)
+static void dollar_path(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo)
 {
+	char *start;
+
+	start = quo->end;
+	if (*start == ' ')
+		start--;
+	while (*start != ' ' && *start != '>' && *start != '<')
+		start--;
+	start++;
+	tmp_redir->path = ft_substr(start, 0, quo->end - start);
 	if (!tmp_redir->path)
+		error_quotes(&quo, &shell);
+}
+
+static void parse_input(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo)
+{
+	if (!tmp_redir->path && (tmp_redir->type & AMBIGUOUS))
+		dollar_path(tmp_redir, shell, quo);
+	else if (!tmp_redir->path)
 		syntax_error(shell, '<');
 	tmp_redir->type |= REDIR_IN;
 }
 
-static void parse_output(t_redir_chain *tmp_redir, t_shell *shell)
+static void parse_output(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo)
 {
-	if (!tmp_redir->path)
+	if (!tmp_redir->path && (tmp_redir->type & AMBIGUOUS))
+		dollar_path(tmp_redir, shell, quo);
+	else if (!tmp_redir->path)
 		syntax_error(shell, '>');
 	if (!(tmp_redir->type & REDIR_APPEND))
 		tmp_redir->type |= REDIR_OUT;
@@ -49,6 +68,8 @@ static void construct_file(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 		quo->end++;
 	while (*quo->end && *quo->end == ' ')
 		quo->end++;
+	if (*quo->end == '$')
+		tmp_seq->tmp_redir->type |= AMBIGUOUS;
 	while (*quo->end)
 	{
 		quo->start = quo->end;
@@ -91,8 +112,10 @@ void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 		error_quotes(&quo, &shell);
 	if (i == 2)
 		tmp_redir->type |= REDIR_APPEND;
+	if (tmp_redir->path)
+		tmp_redir->type &= ~AMBIGUOUS;
 	if (sym == '>')
-		parse_output(tmp_redir, shell);
+		parse_output(tmp_redir, shell, quo);
 	else if (sym == '<')
-		parse_input(tmp_redir, shell);
+		parse_input(tmp_redir, shell, quo);
 }

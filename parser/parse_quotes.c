@@ -100,7 +100,6 @@ void parse_quotes(t_seq *tmp_seq, t_shell *shell)
 		free_error(strerror(errno), &shell);
 	if (init_quo_split(&quo->split))
 		error_quotes(&quo, &shell);
-	quo->flag = ZERO;
 	quo->after_space = 0;
 	quo->split_len = 0;
 	tmp_split = quo->split;

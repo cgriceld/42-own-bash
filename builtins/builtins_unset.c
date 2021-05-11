@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_unset.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:38:46 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/11 16:34:26 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-int	static first_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
-{
-//			this = env;
-//			shell->env = env->next;
-//			free(this);
-//			*i += 1;
+// int	static first_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
+// {
+// //			this = env;
+// //			shell->env = env->next;
+// //			free(this);
+// //			*i += 1;
 
-}
+// }
 
 int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
@@ -31,11 +31,11 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
 
 	redir(shell, tmp_seq, str_low);
 	*i = 1;
-	while (tmp_seq->args[i] != 0)
+	while (tmp_seq->args[*i] != 0)
 	{
-		len = ft_strlen(tmp_seq->args[i]);
+		len = ft_strlen(tmp_seq->args[*i]);
 		env = shell->env;
-		if (ft_strncmp(env->key, tmp_seq->args[i], len) == 0)
+		if (ft_strncmp(env->key, tmp_seq->args[*i], len) == 0)
 		{
 			this = env;
 			shell->env = env->next;
@@ -43,12 +43,12 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			*i += 1;
 			continue;
 		}
-		while (ft_strncmp(env->key, tmp_seq->args[i], len) != 0 && env->next)
+		while (ft_strncmp(env->key, tmp_seq->args[*i], len) != 0 && env->next)
 		{
 			previous = env;
 			env = env->next;
 		}
-		if (ft_strncmp(env->key, tmp_seq->args[i], len) != 0)
+		if (ft_strncmp(env->key, tmp_seq->args[*i], len) != 0)
 		{
 			*i += 1;
 			continue;

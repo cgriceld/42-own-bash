@@ -53,6 +53,14 @@ static int prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_spli
 		join_routine(tmp_seq, shell, quo, tmp_split);
 		return (1);
 	}
+	if (*quo->end == '?')
+	{
+		quo->slashes = -1;
+		join_routine(tmp_seq, shell, quo, tmp_split);
+		quo->slashes = 0;
+		quo->end++;
+		return (1);
+	}
 	else if (ft_isdigit(*quo->end))
 		quo->start = ++quo->end;
 	while (*quo->end && !ft_strchr(" $<>\"\\'", *quo->end))
@@ -86,6 +94,12 @@ void parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_s
 	}
 	else
 	{
+		if (!tmp_seq->tmp_redir->path)
+		{
+			tmp_seq->tmp_redir->path = ft_strdup("");
+			if (!tmp_seq->tmp_redir->path)
+				error_quotes(&quo, &shell);
+		}
 		if (exp_dollar2(value, shell, quo, &tmp_seq->tmp_redir->path))
 			error_dollar(&exp, quo, shell);
 	}
