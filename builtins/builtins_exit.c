@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/12 13:36:06 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,28 @@ int	static	two_args(t_seq *tmp_seq, char *copy)
 	return (ret_status);
 }
 
-void	redir(t_shell *shell, t_seq *tmp_seq, char *str_low)
+// flag = 1 : open and close
+// flag = 0 : only open
+// flag = 2 : only close
+int	redir(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 {
-	int		fds[2];
+	static int fds[2];
+	int res;
 
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	run_redirect(tmp_seq, shell);
-	dup2(fds[1], 1);
+	res = 0;
+	if (flag != 2)
+	{
+		fds[0] = dup(0);
+		fds[1] = dup(1);
+		res = run_redirect(tmp_seq, shell);
+	}
+	if (flag || res)
+	{
+		dup2(fds[1], 1);
+		dup2(fds[0], 0);
+	}
 	free(str_low);
+	return (res);
 }
 
 int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
@@ -44,7 +57,8 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	int		num;
 	char	*copy;
 
-	redir(shell, tmp_seq, str_low);
+	if (redir(shell, tmp_seq, str_low, 1))
+		return (2);
 	ret_status = 0;
 	n_args = 0;
 	while (tmp_seq->args[n_args] != 0)

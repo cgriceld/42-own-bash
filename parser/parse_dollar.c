@@ -47,7 +47,7 @@ static int exp_dollar(char *value, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 static int prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
 {
 	quo->end++;
-	if (!*quo->end || ft_strchr(" <>\\$", *quo->end))
+	if (!*quo->end || ft_strchr(" <>\\$=", *quo->end))
 	{
 		quo->start--;
 		join_routine(tmp_seq, shell, quo, tmp_split);
@@ -63,7 +63,7 @@ static int prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_spli
 	}
 	else if (ft_isdigit(*quo->end))
 		quo->start = ++quo->end;
-	while (*quo->end && !ft_strchr(" $<>\"\\'", *quo->end))
+	while (*quo->end && !ft_strchr(" $<>\"\\'=", *quo->end))
 		quo->end++;
 	return (0);
 }

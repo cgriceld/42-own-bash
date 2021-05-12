@@ -15,9 +15,12 @@ void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 			tmp_split = tmp_split->next;
 		if (*quo->end == '\'')
 			break;
-		else if (*quo->end == '\\' && (*(quo->end + 1) == '|' || *(quo->end + 1) == ';'))
+		else if (*quo->end == '\\')
 		{
-			parse_escape(tmp_seq, shell, quo, tmp_split);
+			if (*(quo->end + 1) == '|' || *(quo->end + 1) == ';')
+				parse_escape(tmp_seq, shell, quo, tmp_split);
+			else
+				join_one_sym(shell, quo, &tmp_split->arg, "\\");
 			if (tmp_split && tmp_split->next)
 				tmp_split = tmp_split->next;
 		}

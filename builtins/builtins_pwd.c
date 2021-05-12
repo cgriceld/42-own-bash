@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_pwd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:02:33 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/12 12:33:18 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,16 @@ char	*pwd(t_shell *shell, t_seq *tmp_seq)
 int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	char	*buf;
-	int		fds[2];
 
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	run_redirect(tmp_seq, shell);
-	free(str_low);
+	if (redir(shell, tmp_seq, str_low, 0))
+		return (2);
+	str_low = NULL;
 	buf = pwd(shell, tmp_seq);
 	if (!buf)
 		return (2);
 	printf("%s", buf);
 	free(buf);
 	printf("\n");
-	dup2(fds[1], 1);
+	redir(shell, tmp_seq, str_low, 2);
 	return (0);
 }

@@ -260,11 +260,67 @@ exec_test '> f2 l\s -la' # !!
 exec_test '> f2 \ls -la'
 exec_test '> f1 l\ s -l'
 exec_test '\\l\$?'
-
+exec_test 'pwd | > | ls'
+exec_test '    " ls |   " \; pwd'
+exec_test "'ls' > f7.txt -la"
+exec_test '/bin/ls ..'
+# exec_test echo " hi '$PWD'" верно, но в тестере не работает из-за кавычек
+exec_test '/bin/pwd'
+exec_test 'echo test tout'
+exec_test 'echo test      tout'
+exec_test 'echo -n test tout'
+exec_test 'echo -n -n -n test tout'
 exec_test 'echo $ '$'$'
+exec_test 'echo \" $PWD \"'
+exec_test 'echo \$?'
 exec_test 'echo 2 6'
 exec_test 'echo 2'
 exec_test 'ECHO 1 1  ff'
+exec_test 'echo " \"\"\"  "'
+exec_test 'echo " hi \"  "'
+exec_test 'echo "  "hi"  "'
+exec_test "echo 'hi \'''"
+exec_test "echo 'hi \''\;'"
+exec_test "echo 'hi \''|'"
+exec_test "echo '''b'''"
+exec_test "echo '\''\\''\;'"
+exec_test 'echo \   $PWD'
+exec_test 'echo test     \    test'
+exec_test 'echo \"test'
+exec_test 'echo $TEST'
+exec_test 'echo "$TEST"'
+exec_test "echo '$TEST'"
+exec_test 'echo "$TEST$TEST$TEST"'
+exec_test 'echo "$TEST$TEST=lol$TEST"'
+exec_test 'echo "   $TEST lol $TEST"'
+exec_test 'echo $TEST$TEST$TEST'
+exec_test 'echo $TEST$TEST=lol$TEST""lol'
+exec_test 'echo    $TEST lol $TEST'
+exec_test 'echo test "" test "" test'
+exec_test 'echo "\$TEST"'
+exec_test 'echo "$=TEST"'
+exec_test 'echo "$"'
+exec_test 'echo "$?TEST"'
+exec_test 'echo $TEST $TEST'
+exec_test 'echo "$1TEST"'
+exec_test 'echo "$T1TEST"'
+
+exec_test 'exit 42'
+exec_test 'exit 42 53 68'
+exec_test 'exit 259'
+exec_test 'exit 9223372036854775807'
+exec_test 'exit -9223372036854775808'
+exec_test 'exit 9223372036854775808'
+exec_test 'exit -9223372036854775810'
+exec_test 'exit -4'
+exec_test 'exit wrong'
+exec_test 'exit wrong_command'
+
+exec_test 'gdagadgag'
+exec_test 'ls -Z'
+exec_test 'cd gdhahahad'
+exec_test 'ls -la | wtf'
+
 exec_test 'env | grep -e OLDPWD'
 exec_test 'env | grep -e PWD'
 exec_test 'cd /Users/sbrenton/Documents/Study/minish/ ; pwd'
@@ -274,6 +330,7 @@ exec_test 'cd ./parser ; pwd'
 exec_test 'cd /Users/sbrenton/Documents/Study/minish/parser/ ; pWd'
 
 exec_test 'cd ./bad | pwd'
+exec_test 'cd bla ..'
 exec_test 'cd . ; pwd'
 exec_test 'cd .. ; pwd'
 exec_test 'CD ; pwd'
@@ -285,20 +342,21 @@ exec_test 'export g7 hj k9'
 exec_test 'export hh=jjj'
 exec_test 'env | grep -e hh'
 exec_test 'cd /Users/sbrenton/Documents/Study/tester/ | pwd'
+exec_test 'cd .. ; pwd'
+exec_test 'cd /Users ; pwd'
+exec_test 'cd ; pwd'
+exec_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd . ; pwd ; cd .. ; pwd'
 
-exec_test 'echo " \"\"\"  "'
-exec_test 'echo " hi \"  "'
-exec_test 'echo "  "hi"  "'
-#exec_test "echo 'hi \'''"
-exec_test 'echo \   $PWD'
 exec_test 'echo "in test" > txt.txt | echo  "in test" < txt.txt'
 exec_test 'echo "in test" > txt.txt | echo < txt.txt'
+exec_test 'echo "in test" >> txt.txt ; echo < txt.txt'
 exec_test 'echo "in test" > txt.txt | echo  "in test" < txt.txt'
+exec_test 'echo pwd >> txt.txt ; echo < txt.txt'
 rm txt.txt
 
 exec_test 'pwd > txt.txt | echo < txt.txt'
-
 rm txt.txt
+
 exec_test 'echo -n ll'
 exec_test 'exit > new.t'
 exec_test 'echo ls -la'
@@ -309,10 +367,6 @@ rm new.t
 #exec_test 'env'
 #exec_test 'env > txt.txt ; echo < txt.txt'
 #rm txt.txt
-
-## кейсы для ;
-exec_test 'echo pwd >> txt.txt ; echo < txt.txt'
-rm txt.txt
 
 
 #exec_test 'export'

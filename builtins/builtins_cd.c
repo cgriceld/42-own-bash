@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/12 12:49:38 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ char	*find_path(t_shell *shell, char *path, char *match)
 	path = envp_get_value(shell, match);
 	if (!path)
 	{
-		printf("cd: %s not set\n", match);
+		write(2, "cd: ", 4);
+		write(2, match, ft_strlen(match));
+		write(2, ": not set\n", 10);
+		//printf("cd: %s not set\n", match);
 		ret_status = 2;
 		return (NULL);
 	}
@@ -49,13 +52,9 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	char	*path;
 	char	*old_path;
 	char	*param;
-	int		fds[2];
-
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	run_redirect(tmp_seq, shell);
-	dup2(fds[1], 1);
-	free(str_low);
+	
+	if (redir(shell, tmp_seq, str_low, 1))
+		return (2);
 	ret_status = 0;
 	param = tmp_seq->args[1];
 	old_path = pwd(shell, tmp_seq);
@@ -69,11 +68,13 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		path = param;
 	if (path && ret_status == 0 && chdir(path) != 0)
 	{
-		printf("cd: %s: No such file or directory\n", param);
+		write(2, "cd: ", 4);
+		write(2, param, ft_strlen(param));
+		write(2, ": No such file or directory\n", 28);
+		//printf("cd: %s: No such file or directory\n", param);
 		ret_status = 2;
 	}
 	if (ret_status == 0)
 		update_pwd(shell, path, old_path, tmp_seq);
-	//dup2(fds[1], 1);
 	return (ret_status);
 }

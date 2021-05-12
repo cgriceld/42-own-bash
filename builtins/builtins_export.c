@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/12 12:32:53 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,10 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	char	*value;
 	char	*param;
 	int		i;
-	int		fds[2];
 
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	run_redirect(tmp_seq, shell);
-	free(str_low);
+	if (redir(shell, tmp_seq, str_low, 0))
+		return (2);
+	str_low = NULL;
 	if (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n')
 		return (print_export(shell));
 	i = 1;
@@ -151,6 +149,6 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			envp_new_value(shell, param, value);
 		i++;
 	}
-	dup2(fds[1], 1);
+	redir(shell, tmp_seq, str_low, 2);
 	return (0);
 }

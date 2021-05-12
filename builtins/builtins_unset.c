@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:38:46 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/11 16:34:26 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/12 12:29:36 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	int		*i;
 	int		len;
 
-	redir(shell, tmp_seq, str_low);
+	if (redir(shell, tmp_seq, str_low, 1))
+		return (2);
 	*i = 1;
 	while (tmp_seq->args[*i] != 0)
 	{

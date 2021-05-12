@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:43 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/10 18:17:41 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/12 13:07:19 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ void	print_echo(t_seq *tmp_seq, int i, int n)
 
 	tmp = ft_strtrim(tmp_seq->args[i + n - 1], "\n");
 	if (tmp[0] != 0)
-		printf("%s ", tmp);
+	{
+		write(1, tmp, ft_strlen(tmp));
+		write(1, " ", 1);
+		//printf("%s ", tmp);
+	}
 	free(tmp);
 }
 
@@ -26,12 +30,10 @@ int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	int		n;
 	int		i;
-	int		fds[2];
 
-	fds[0] = dup(0);
-	fds[1] = dup(1);
-	run_redirect(tmp_seq, shell);
-	free(str_low);
+	if (redir(shell, tmp_seq, str_low, 0))
+		return (2);
+	str_low = NULL;
 	ret_status = 0;
 	n = 0;
 	if (tmp_seq->args[1] != NULL)
@@ -40,12 +42,18 @@ int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			n += 1;
 		i = 0;
 		while (tmp_seq->args[++i + n + 1] != NULL)
-			printf("%s ", tmp_seq->args[i + n]);
+		{
+			write(1, tmp_seq->args[i + n], ft_strlen(tmp_seq->args[i + n]));
+			write(1, " ", 1);
+			//printf("%s ", tmp_seq->args[i + n]);
+		}
 		if (tmp_seq->args[i + n] != NULL)
-			printf("%s", tmp_seq->args[i + n]);
+			write(1, tmp_seq->args[i + n], ft_strlen(tmp_seq->args[i + n]));
+			//printf("%s", tmp_seq->args[i + n]);
 		if (n == 0)
-			printf("\n");
+			write(1, "\n", 1);
+			//printf("\n");
 	}
-	dup2(fds[1], 1);
+	redir(shell, tmp_seq, str_low, 2);
 	return (ret_status);
 }
