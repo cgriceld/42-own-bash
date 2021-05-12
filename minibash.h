@@ -140,7 +140,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 char		*ft_itoa(int n);
-int			ft_atoi(const char *str);
+long long int			ft_atoi(const char *str);
 char		**ft_split(char const *s, char c);
 void	ft_twodarr_free(char ***arr, size_t len);
 size_t	ft_twodarr_len(char **arr);
