@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/03 18:22:55 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/12 12:32:53 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-void print_declations(t_list *key_sort, t_shell *shell)
+void	print_declations(t_list *key_sort, t_shell *shell)
 {
 	if (ft_strncmp((char *)key_sort->content, "_", 2) != 0)
 	{
@@ -23,7 +23,7 @@ void print_declations(t_list *key_sort, t_shell *shell)
 	}
 }
 
-int print_export(t_shell *shell)
+int	print_export(t_shell *shell)
 {
 	t_env		*tmp;
 	t_list		*key_sort;
@@ -39,14 +39,16 @@ int print_export(t_shell *shell)
 	key_sort = sort_start;
 	while (key_sort)
 	{
-		if (((char *)key_sort->content)[0] < 'a' || ((char *)key_sort->content)[0] > 'z')
+		if (((char *)key_sort->content)[0] < 'a'
+		|| ((char *)key_sort->content)[0] > 'z')
 			print_declations(key_sort, shell);
 		key_sort = key_sort->next;
 	}
 	key_sort = sort_start;
 	while (key_sort)
 	{
-		if (((char *)key_sort->content)[0] >= 'a' && ((char *)key_sort->content)[0] <= 'z')
+		if (((char *)key_sort->content)[0] >= 'a'
+		&& ((char *)key_sort->content)[0] <= 'z')
 			print_declations(key_sort, shell);
 		key_sort = key_sort->next;
 	}
@@ -54,10 +56,10 @@ int print_export(t_shell *shell)
 	return (0);
 }
 
-void pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
+void	pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 {
-	int		n;
-	int		len;
+	int	n;
+	int	len;
 
 	*value = NULL;
 	*param = NULL;
@@ -76,7 +78,7 @@ void pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 	*param = ft_strdup(tmp_seq->args[i]);
 }
 
-int		check_is_valid(t_seq *tmp_seq, int i)
+int	check_is_valid(t_seq *tmp_seq, int i)
 {
 	int	n;
 
@@ -106,23 +108,16 @@ int		check_is_valid(t_seq *tmp_seq, int i)
 	return (0);
 }
 
-// умирает прии  export g7 hj k9 . пока хз почему.
-//
-
-
-
-//
-
-int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 
-	char *value;
-	char *param;
-//	int len;
-	int i;
-//	int n;
+	char	*value;
+	char	*param;
+	int		i;
 
-	free(str_low);
+	if (redir(shell, tmp_seq, str_low, 0))
+		return (2);
+	str_low = NULL;
 	if (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n')
 		return (print_export(shell));
 	i = 1;
@@ -154,5 +149,6 @@ int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			envp_new_value(shell, param, value);
 		i++;
 	}
+	redir(shell, tmp_seq, str_low, 2);
 	return (0);
 }

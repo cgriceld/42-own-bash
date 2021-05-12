@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_pwd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:02:33 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/03 18:08:58 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/12 12:33:18 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-//больште буквы
+
 #include "../minibash.h"
 
 char	*pwd(t_shell *shell, t_seq *tmp_seq)
@@ -24,16 +24,19 @@ char	*pwd(t_shell *shell, t_seq *tmp_seq)
 	return (buf);
 }
 
-int		builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
-	char		*buf;
+	char	*buf;
 
-	free(str_low);
+	if (redir(shell, tmp_seq, str_low, 0))
+		return (2);
+	str_low = NULL;
 	buf = pwd(shell, tmp_seq);
 	if (!buf)
 		return (2);
 	printf("%s", buf);
 	free(buf);
 	printf("\n");
+	redir(shell, tmp_seq, str_low, 2);
 	return (0);
 }

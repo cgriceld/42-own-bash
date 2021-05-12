@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbrenton <sbrenton@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:57 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/03 18:08:15 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/12 12:32:37 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
-	free(str_low);
+	if (redir(shell, tmp_seq, str_low, 0))
+		return (2);
+	str_low = NULL;
 	if (envp_get_value(shell, "PATH") == NULL)
 	{
 		printf("env: No such file or directory\n");
@@ -31,5 +33,6 @@ int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	redir(shell, tmp_seq, str_low, 2);
 	return (0);
 }
