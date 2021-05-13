@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minibash.h"
+#include "../../../../Downloads/42-own-bash-main/minibash.h"
 
 void	print_declations(t_list *key_sort, t_shell *shell)
 {

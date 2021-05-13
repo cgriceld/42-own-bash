@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minibash.h"
+#include "../../../../Downloads/42-own-bash-main/minibash.h"
 
 // int	static first_value(t_shell *shell, t_seq *tmp_seq, char *str_low)
 // {

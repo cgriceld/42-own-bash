@@ -6,24 +6,28 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/12 13:36:06 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/12 22:27:25 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minibash.h"
+#include "../../../../Downloads/42-own-bash-main/minibash.h"
 
-int	static	too_many_args(void)
+int	static	too_many_args(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
-	printf("exit: too many arguments");
+	write(1, "exit: too many arguments\n", 25);
 	ret_status = 2;
+	redir(shell, tmp_seq, str_low, 2);
 	return (ret_status);
 }
 
-int	static	two_args(t_seq *tmp_seq, char *copy)
+int	static	two_args(t_shell *shell, t_seq *tmp_seq, char *copy, char *str_low)
 {
-	printf("exit: %s: numeric argument required", tmp_seq->args[1]);
+	write(1, "exit: ", 6);
+	write(1, tmp_seq->args[1], ft_strlen(tmp_seq->args[1]));
+	write(1, ": numeric argument required\n", 28);
 	ret_status = 2;
 	free(copy);
+	redir(shell, tmp_seq, str_low,2);
 	return (ret_status);
 }
 
@@ -47,20 +51,21 @@ int	redir(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		dup2(fds[1], 1);
 		dup2(fds[0], 0);
 	}
-	free(str_low);
+	//free(str_low);
 	return (res);
 }
 
 int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	int		n_args;
-	int		num;
+	long long int		num;
 	char	*copy;
 
 	if (redir(shell, tmp_seq, str_low, 1))
 		return (2);
 	ret_status = 0;
 	n_args = 0;
+	write(2, "exit\n", 5);
 	while (tmp_seq->args[n_args] != 0)
 		n_args++;
 	if (n_args > 1)
@@ -68,7 +73,7 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		num = ft_atoi(tmp_seq->args[1]);
 		copy = ft_itoa(num);
 		if (ft_strncmp(tmp_seq->args[1], copy, ft_strlen(tmp_seq->args[1])))
-			return (two_args(tmp_seq, copy));
+			return (two_args(shell, tmp_seq, copy, str_low));
 		if (num < 0)
 			ret_status = num % 256 + 256;
 		else if (num > 0)
@@ -76,7 +81,8 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		free(copy);
 	}
 	if ((n_args) > 2)
-		return (too_many_args());
+		return (too_many_args(shell, tmp_seq,  str_low));
+	redir(shell, tmp_seq, str_low, 2);
 	free_error(NULL, &shell);
 	exit(ret_status);
 }

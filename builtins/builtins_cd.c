@@ -6,11 +6,11 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/12 12:49:38 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/12 19:51:36 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minibash.h"
+#include "../../../../Downloads/42-own-bash-main/minibash.h"
 
 char	*find_path(t_shell *shell, char *path, char *match)
 {
@@ -59,7 +59,7 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	param = tmp_seq->args[1];
 	old_path = pwd(shell, tmp_seq);
 	if (!old_path)
-		return (2);
+		return (1);
 	if (!param || (ft_strncmp(param, "", 1) == 0))
 		path = find_path(shell, path, "HOME");
 	else if (ft_strncmp(param, "-", 2) == 0)
@@ -71,8 +71,7 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		write(2, "cd: ", 4);
 		write(2, param, ft_strlen(param));
 		write(2, ": No such file or directory\n", 28);
-		//printf("cd: %s: No such file or directory\n", param);
-		ret_status = 2;
+		ret_status = 1;
 	}
 	if (ret_status == 0)
 		update_pwd(shell, path, old_path, tmp_seq);
