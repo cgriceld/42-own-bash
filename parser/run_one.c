@@ -16,7 +16,7 @@ static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
 		return (builtins_unset_value(shell, tmp_seq, tmp));
 	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
-		return (builtins_export(shell, tmp_seq, tmp));
+		return (builtins_export(shell, tmp_seq, tmp, 0));
 	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
 		return (builtins_exit(shell, tmp_seq, tmp));
 	return (0);
@@ -108,7 +108,6 @@ int run_one(t_seq *tmp_seq, t_shell *shell)
 {
 	if (!tmp_seq->run && tmp_seq->redirect)
 		return (run_redirect(tmp_seq, shell));
-	//printf("run_builtin\n");
 	if (is_builtin(tmp_seq->run))
 		return (run_builtin(tmp_seq, shell));
 	else

@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 12:47:35 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:06:15 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
 	*param = ft_strdup(tmp_seq->args[i]);
 }
 
-int	check_is_valid(t_seq *tmp_seq, int i)
+int	check_is_valid(t_seq *tmp_seq, int i, int flag)
 {
 	int	n;
 
@@ -89,7 +89,8 @@ int	check_is_valid(t_seq *tmp_seq, int i)
 		n++;
 	else
 	{
-		printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
+		if (!flag)
+			printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
 		return (2);
 	}
 	while (tmp_seq->args[i][n] != 0 && tmp_seq->args[i][n] != '=')
@@ -101,31 +102,32 @@ int	check_is_valid(t_seq *tmp_seq, int i)
 			n++;
 		else
 		{
-			printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
+			if (!flag)
+				printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
 			return (2);
 		}
 	}
 	return (0);
 }
 
-int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 {
 
 	char	*value;
 	char	*param;
 	int		i;
 
-	if (redir(shell, tmp_seq, str_low, 0))
+	if (!flag && redir(shell, tmp_seq, str_low, 0))
 		return (2);
 	str_low = NULL;
-	if (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n')
+	if (!flag && (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n'))
 		return (print_export(shell));
 	i = 1;
 	while (tmp_seq->args[i] != 0)
 	{
 		value = NULL;
 		param = NULL;
-		if (check_is_valid(tmp_seq, i) == 2)
+		if (check_is_valid(tmp_seq, i, flag) == 2)
 			return (2);
 //		if ((tmp_seq->args[i][0] == '_') ||
 //		(tmp_seq->args[i][0] >= 'a' && tmp_seq->args[i][0] <= 'z') ||
@@ -149,6 +151,7 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low)
 			envp_new_value(shell, param, value);
 		i++;
 	}
-	redir(shell, tmp_seq, str_low, 2);
+	if (!flag)
+		redir(shell, tmp_seq, str_low, 2);
 	return (0);
 }

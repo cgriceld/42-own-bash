@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 12:47:11 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:29:16 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	char	*param;
 	
 	if (redir(shell, tmp_seq, str_low, 1))
-		return (2);
+		return (1);
 	ret_status = 0;
 	param = tmp_seq->args[1];
 	old_path = pwd(shell, tmp_seq);
