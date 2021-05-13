@@ -6,11 +6,11 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:02:33 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/12 12:33:18 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 12:47:40 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../Downloads/42-own-bash-main/minibash.h"
+#include "../minibash.h"
 
 char	*pwd(t_shell *shell, t_seq *tmp_seq)
 {

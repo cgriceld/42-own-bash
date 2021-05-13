@@ -6,11 +6,11 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/12 19:51:36 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/13 12:47:11 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../Downloads/42-own-bash-main/minibash.h"
+#include "../minibash.h"
 
 char	*find_path(t_shell *shell, char *path, char *match)
 {

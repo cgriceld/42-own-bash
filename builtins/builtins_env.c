@@ -6,11 +6,11 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:57 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/12 12:32:37 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 12:47:24 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../Downloads/42-own-bash-main/minibash.h"
+#include "../minibash.h"
 
 int	builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {

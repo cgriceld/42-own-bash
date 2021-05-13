@@ -6,11 +6,11 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:43 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/12 20:49:45 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/13 12:47:17 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../Downloads/42-own-bash-main/minibash.h"
+#include "../minibash.h"
 
 //void	print_echo(t_seq *tmp_seq, int i, int n)
 //{
