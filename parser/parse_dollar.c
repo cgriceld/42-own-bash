@@ -35,7 +35,7 @@ static int exp_dollar(char *value, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 	else if (!tmp_split->arg)
 	{
 		tmp_split->arg = ft_strdup(value);
-		if (!tmp_split->next->arg)
+		if (!tmp_split->arg)
 			return (1);
 		quo->split_len++;
 	}

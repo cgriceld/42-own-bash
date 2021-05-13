@@ -16,5 +16,6 @@ int envp_new_value(t_shell *shell, char *param, char *value)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = export;
+	shell->env_size++;
 	return (0);
 }

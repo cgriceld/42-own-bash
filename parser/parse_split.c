@@ -121,8 +121,13 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 		parse_one(tmp_seq, shell);
 		if (shell->seq->info & SYNTAX_ERR)
 			return;
-		if (sym != '|' && tmp_seq->run && !ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
-			builtins_export(shell, tmp_seq, NULL, 1);
+		if (sym != '|' && tmp_seq->run)
+		{
+			if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
+				builtins_export(shell, tmp_seq, NULL, 1);
+			else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
+				builtins_unset_value(shell, tmp_seq, NULL);
+		}
 		tmp_seq = tmp_seq->next;
 	}
 }

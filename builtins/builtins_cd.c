@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 13:29:16 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:27:38 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*find_path(t_shell *shell, char *path, char *match)
 		write(2, match, ft_strlen(match));
 		write(2, ": not set\n", 10);
 		//printf("cd: %s not set\n", match);
-		ret_status = 2;
+		ret_status = 1;
 		return (NULL);
 	}
 	return (path);

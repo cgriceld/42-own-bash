@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:43 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 12:47:17 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:41:21 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		if (n == 0)
 			write(1, "\n", 1);
 	}
+	else
+		write(1, "\n", 1);
 	redir(shell, tmp_seq, str_low, 2);
 	return (ret_status);
 }

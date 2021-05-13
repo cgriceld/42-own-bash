@@ -65,9 +65,29 @@ printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
 exec_test ';; test'
+exec_test 'ec"ho;";pwd'
 exec_test '| test'
 exec_test 'echo > <'
 exec_test 'echo | |'
+exec_test ';\ls\ ;'
+exec_test 'pwd >a1>a2>a3; echo s1 >q1 s2>q2 s3; cat a2; cat a3; cat q1; cat q2;' # руками верно
+exec_test 'echo \"\|\;\"\| cat -e > \q\w\e\r\t\y ; cat qwerty'
+exec_test 'echo $PWD > as ; cat as'
+exec_test 'export a=l d=s; $a$d'
+exec_test '>>"helo l" echo hell\ f ; echo hell\ f'
+exec_test '>"helo l" echo hell\ f'
+exec_test '"echo f" hello'
+exec_test 'echo "\""'
+exec_test 'echo "\$PWD" "\PWD"'
+exec_test 'echo $123'
+exec_test 'echo "hello\""'
+exec_test ';echo'
+exec_test 'echo $fdsgbkldmbklfdsmklfmd$""'
+exec_test 'echo "\hello \$PWD"'
+exec_test 'echo \hello \$PWD'
+exec_test 'ls lskdgjdhgisdoigjiredg'
+exec_test '$lkjlkjllkdfs$q$w$e$r "$e"$q"l"$r;'
+exec_test 'echo $bu'
 exec_test '/bin/ls'
 exec_test 'bin/ls'
 exec_test 'bin/ls'
@@ -201,8 +221,8 @@ exec_test 'ls >\|;wc'
 exec_test 'ls >\| pwd'
 exec_test 'ls >| pwd'
 exec_test 'ls >| | pwd'
-exec_test 'ls ; ls>  " \"| p " bla' # all good, but tester may show error, delete file after first run
-exec_test 'ls ; ls>  " \"| p "' # same
+exec_test 'ls ; ls>  " \"| p " bla' # руками верно
+exec_test 'ls ; ls>  " \"| p "' # руками верно
 exec_test 'ls>  " \| p "'
 exec_test "ls>' | p '"
 exec_test 'ls> | p'
@@ -311,6 +331,7 @@ exec_test 'echo "$T1TEST"'
 exec_test 'echo $1TERM'
 exec_test 'echo $1bla$TERM'
 exec_test 'echo $1PATH$PATH'
+exec_test 'echo $"12$"$'
 exec_test 'echo -n ll'
 exec_test 'echo ls -la'
 
@@ -326,6 +347,8 @@ exec_test 'exit -9223372036854775810'
 exec_test 'exit -4'
 exec_test 'exit wrong'
 exec_test 'exit wrong_command'
+exec_test 'exit +10'
+exec_test 'exit 0'
 
 exec_test 'gdagadgag'
 exec_test 'ls -Z'
