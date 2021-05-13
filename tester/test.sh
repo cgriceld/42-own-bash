@@ -308,6 +308,9 @@ exec_test 'echo "$?TEST"'
 exec_test 'echo $TEST $TEST'
 exec_test 'echo "$1TEST"'
 exec_test 'echo "$T1TEST"'
+exec_test 'echo $1TERM'
+exec_test 'echo $1bla$TERM'
+exec_test 'echo $1PATH$PATH'
 exec_test 'echo -n ll'
 exec_test 'echo ls -la'
 
@@ -370,6 +373,12 @@ exec_test 'cat < ls > ls'
 exec_test '> lol echo test lol; cat lol'
 exec_test '>lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test'
 exec_test 'echo testing multi ; echo "test 1 ; | and 2" ; cat tests/lorem.txt | grep Lorem'
+
+# exec_test 'unset 11'
+# exec_test 'export var=42 ; echo $var'
+# exec_test 'pwd ; export bu=haha 11 ; echo $1bu$haha'
+# exec_test 'unset var bu'
+# exec_test 'ls | echo $bu$var$\l$? | export var=21 | echo $var'
 
 # ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
 # EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"

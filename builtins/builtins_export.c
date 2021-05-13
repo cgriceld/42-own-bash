@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 13:06:15 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:53:21 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,11 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		value = NULL;
 		param = NULL;
 		if (check_is_valid(tmp_seq, i, flag) == 2)
+		{
+			if (!flag)
+				redir(shell, tmp_seq, str_low, 2);
 			return (2);
+		}
 //		if ((tmp_seq->args[i][0] == '_') ||
 //		(tmp_seq->args[i][0] >= 'a' && tmp_seq->args[i][0] <= 'z') ||
 //		(tmp_seq->args[i][0] >= 'A' && tmp_seq->args[i][0] <= 'Z'))

@@ -62,7 +62,10 @@ static int prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_spli
 		return (1);
 	}
 	else if (ft_isdigit(*quo->end))
-		quo->start = ++quo->end;
+	{
+		quo->end++;
+		return (1);
+	}
 	while (*quo->end && !ft_strchr(" $<>\"\\'=", *quo->end))
 		quo->end++;
 	return (0);
@@ -80,13 +83,11 @@ void parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_s
 	if (!exp)
 		error_quotes(&quo, &shell);
 	value = envp_get_value(shell, exp);
-	if (!value && !ft_isdigit(*(quo->start - 1)))
+	if (!value)
 	{
 		free(exp);
 		return;
 	}
-	if (!value)
-		value = exp;
 	if (tmp_split)
 	{
 		if (exp_dollar(value, shell, quo, tmp_split))

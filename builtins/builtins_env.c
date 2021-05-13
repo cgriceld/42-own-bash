@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:57 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 12:47:24 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:45:42 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	str_low = NULL;
 	if (envp_get_value(shell, "PATH") == NULL)
 	{
+		redir(shell, tmp_seq, str_low, 2);
 		printf("env: No such file or directory\n");
 		return (127);
 	}
