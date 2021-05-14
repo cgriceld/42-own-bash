@@ -24,15 +24,17 @@ int	init_seq(t_seq **seq)
 int			is_builtin(char *s)
 {
 	char *tmp;
+	int len;
 
 	tmp = ft_low_str(s);
-	if (!ft_strncmp(tmp, "echo", ft_strlen(s)) \
-	|| !ft_strncmp(tmp, "cd", ft_strlen(s)) \
-	|| !ft_strncmp(tmp, "pwd", ft_strlen(s)) \
-	|| !ft_strncmp(tmp, "env", ft_strlen(s)) \
-	|| !ft_strncmp(s, "unset", ft_strlen(s)) \
-	|| !ft_strncmp(s, "export", ft_strlen(s)) \
-	|| !ft_strncmp(s, "exit", ft_strlen(s)))
+	len = ft_strlen(s);
+	if ((len == 4 && !ft_strncmp(tmp, "echo", len)) \
+	|| (len == 2 && !ft_strncmp(tmp, "cd", len)) \
+	|| (len == 3 && !ft_strncmp(tmp, "pwd", len)) \
+	|| (len == 3 && !ft_strncmp(tmp, "env", len)) \
+	|| (len == 5 && !ft_strncmp(s, "unset", len)) \
+	|| (len == 6 && !ft_strncmp(s, "export", len)) \
+	|| (len == 4 && !ft_strncmp(s, "exit", len)))
 	{
 		free(tmp);
 		return (1);

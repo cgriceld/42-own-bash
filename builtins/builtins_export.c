@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 15:32:29 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/14 16:30:15 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 	char	*param;
 	int		i;
 
-	if (!flag && redir(shell, tmp_seq, str_low, 0))
+	if (!flag && redir(shell, tmp_seq, &str_low, 0))
 		return (2);
-	str_low = NULL;
+	ret_status = 0;
 	if (!flag && (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n'))
 		return (print_export(shell));
 	i = 1;
@@ -129,9 +129,9 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		param = NULL;
 		if (check_is_valid(tmp_seq, i, flag) == 2)
 		{
-			if (!flag)
-				redir(shell, tmp_seq, str_low, 2);
-			return (1);
+			ret_status = 1;
+			i++;
+			continue;
 		}
 //		if ((tmp_seq->args[i][0] == '_') ||
 //		(tmp_seq->args[i][0] >= 'a' && tmp_seq->args[i][0] <= 'z') ||
@@ -156,6 +156,6 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		i++;
 	}
 	if (!flag)
-		redir(shell, tmp_seq, str_low, 2);
-	return (0);
+		redir(shell, tmp_seq, &str_low, 2);
+	return (ret_status);
 }

@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:02:33 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 12:47:40 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/14 16:30:47 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,14 @@ int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	char	*buf;
 
-	if (redir(shell, tmp_seq, str_low, 0))
+	if (redir(shell, tmp_seq, &str_low, 0))
 		return (2);
-	str_low = NULL;
 	buf = pwd(shell, tmp_seq);
 	if (!buf)
 		return (2);
 	printf("%s", buf);
 	free(buf);
 	printf("\n");
-	redir(shell, tmp_seq, str_low, 2);
+	redir(shell, tmp_seq, &str_low, 2);
 	return (0);
 }

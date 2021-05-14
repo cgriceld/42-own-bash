@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:38:46 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/14 09:45:16 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/14 16:55:42 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag
 	int		i;
 	int		len;
 
-	if (!flag && redir(shell, tmp_seq, str_low, 0))
+	if (!flag && redir(shell, tmp_seq, &str_low, 0))
 		return (2);
 	i = 1;
+	ret_status = 0;
 	while (tmp_seq->args[i] != 0)
 	{
 		if (check_is_valid(tmp_seq, i, flag) == 2)
 		{
 			i += 1;
-			//if (!flag)
-			//	redir(shell, tmp_seq, str_low, 2);
+			ret_status = 1;
 			continue;
 		}
 		len = ft_strlen(tmp_seq->args[i]);
@@ -79,5 +79,7 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag
 		}
 		i = unset_last(previous, env, i);
 	}
-	return (0);
+	if (!flag)
+		redir(shell, tmp_seq, &str_low, 2);
+	return (ret_status);
 }

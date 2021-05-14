@@ -23,8 +23,7 @@ int			main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
-	if (tgetent(NULL, getenv("TERM")) < 0)
-		return (1);
+	tgetent(NULL, getenv("TERM"));
 	ret_status = 0;
 	prepare(argc, &shell);
 	envp_to_list(envp, shell);

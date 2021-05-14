@@ -64,19 +64,65 @@ printf "| |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ \n"
 printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
-exec_test ';'
-exec_test '|'
-exec_test ';ls'
-exec_test ';; test'
-exec_test 'ec"ho;";pwd'
+# exec_test ';'
+# exec_test '|'
+# exec_test ';ls'
+# exec_test 'ls||'
+# exec_test 'ls| |'
+# exec_test "echo ''"
+# exec_test '\ls\ ;'
+# exec_test 'ec"ho;";pwd'
+# exec_test 'echo ""'
+# exec_test 'echo "hello\""'
+# exec_test 'echo $PWD'
+# exec_test 'echo $fdsgbkldmbklfdsmklfmd'
+# exec_test 'echo $hfkdghldf$PWD$ '
+# exec_test 'echo $"hfkdgh"ldf"$PWD"$ '
+# exec_test ';; test'
+# exec_test 'echo """""""""",         wtf     :""'
+# exec_test 'echo hello                       happy                               man'
+
+#  # ЗАПУСКАТЬ КУСОК ОТДЕЛЬНО, ОСТАЛЬНОЕ ЗАКОММЕНТИТЬ
+# exec_test 'export = ; echo $?'
+# exec_test 'echo $?'
+# exec_test 'export str1 2str = _3str str4=str5'
+# exec_test 'ec"h"o $str1 $str4 $str2'
+# exec_test 'export q=e "w"=c e="h" r=o t=x "y"="p" u=r i=t'
+# exec_test '  e"x"port "t"$qs$i=hell$r'
+# exec_test 'echo "hello;"; $qc"h"o $test'
+# exec_test '$q$w$eo $PWD;   cd .. ;    $q"c"$eo $PWD    ;'
+# exec_test '$lkjlkjllkdfs$q$w$e$r "$e"$q"l"l$r;'
+# exec_test 'ec"ho;";pwd'
+# exec_test '>fil$q"1" e$w"ho" s$i"r"ing f$r$u file1'
+# exec_test 'pwd ; cat file1'
+# exec_test 'echo $?'
+# exec_test 'echo $?'
+# exec_test 'unset 11; echo $11'
+# exec_test 'unset PWD; echo $PWD'
+# exec_test 'ls; unset PATH; ls     ;'
+# exec_test 'export PATH=/  ; ls'
+# exec_test 'echo $PWD; unset PWD'
+# exec_test 'echo $PWD; export PWD=/ ; echo $PWD;'
+# exec_test 'pwd; echo $PWD'
+# exec_test '"echo f" hello'
+# exec_test '>"helo l" echo hell\ f'
+# exec_test '>>"helo l" echo hell\ f ; echo hell\ f'
+# exec_test 'cat "helo l"'
+
+
+#  # ЗАПУСКАТЬ КУСОК ОТДЕЛЬНО, ОСТАЛЬНОЕ ЗАКОММЕНТИТЬ
+# exec_test 'export t=n; echo -$t -n "-"n hello'
+# exec_test "echo -$t '-n' '-''n' '-n;'         -n hello"
+
+
 exec_test '| test'
 exec_test 'echo > <'
 exec_test 'echo | |'
 exec_test ';\ls\ ;'
 exec_test 'pwd >a1>a2>a3; echo s1 >q1 s2>q2 s3; cat a2; cat a3; cat q1; cat q2;' # руками верно
 exec_test 'echo \"\|\;\"\| cat -e > \q\w\e\r\t\y ; cat qwerty'
-exec_test 'echo $PWD > as ; cat as'
 exec_test 'export a=l d=s; $a$d'
+exec_test 'echo $PWD > as ; cat as'
 exec_test '>>"helo l" echo hell\ f ; echo hell\ f'
 exec_test '>"helo l" echo hell\ f'
 exec_test '"echo f" hello'
@@ -401,34 +447,36 @@ exec_test '> lol echo test lol; cat lol'
 exec_test '>lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test'
 exec_test 'echo testing multi ; echo "test 1 ; | and 2" ; cat tests/lorem.txt | grep Lorem'
 
-# exec_test 'unset 11'
-# exec_test 'export var=42 ; echo $var'
-# exec_test 'pwd ; export bu=haha 11 ; echo $1bu$haha'
-# exec_test 'unset var bu'
-# exec_test 'ls | echo $bu$var$\l$? | export var=21 | echo $var'
+exec_test 'unset 11'
+exec_test 'export var=42 ; echo $var'
+exec_test 'pwd ; export bu=haha 11 ; echo $1bu$haha'
+exec_test 'unset var bu'
+exec_test 'ls | echo $bu$var$\l$? | export var=21 | echo $var'
+exec_test 'unset var  |echo $var'
+exec_test 'unset var ; echo $var'
 
-# ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
-# EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"
-# exec_test 'export ='
-# exec_test 'export 1TEST= ;' $ENV_SHOW
-# exec_test 'unset HOME ;' $ENV_SHOW
-# exec_test 'export ""="" ; ' $ENV_SHOW
-# exec_test 'export TES=T="" ;' $ENV_SHOW
-# exec_test 'export TE+S=T="" ;' $ENV_SHOW
-# exec_test 'export TEST=LOL ; echo $TEST ;' $ENV_SHOW
-# exec_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
-# exec_test $ENV_SHOW
-# exec_test $EXPORT_SHOW
-# exec_test 'export TEST="ls       -l     - a" ; echo $TEST ; $LS ; ' $ENV_SHOW
+# # ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
+# # EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"
+# # exec_test 'export ='
+# # exec_test 'export 1TEST= ;' $ENV_SHOW
+# # exec_test 'unset HOME ;' $ENV_SHOW
+# # exec_test 'export ""="" ; ' $ENV_SHOW
+# # exec_test 'export TES=T="" ;' $ENV_SHOW
+# # exec_test 'export TE+S=T="" ;' $ENV_SHOW
+# # exec_test 'export TEST=LOL ; echo $TEST ;' $ENV_SHOW
+# # exec_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
+# # exec_test $ENV_SHOW
+# # exec_test $EXPORT_SHOW
+# # exec_test 'export TEST="ls       -l     - a" ; echo $TEST ; $LS ; ' $ENV_SHOW
 
-## порядок не понятен, поэтому сравнение не получается (  Вопросы надо ли править
-#exec_test 'ENV'
-#exec_test 'env'
-#exec_test 'env > txt.txt ; echo < txt.txt'
-#rm txt.txt
+# ## порядок не понятен, поэтому сравнение не получается (  Вопросы надо ли править
+# #exec_test 'ENV'
+# #exec_test 'env'
+# #exec_test 'env > txt.txt ; echo < txt.txt'
+# #rm txt.txt
 
 
-#exec_test 'export'
+# #exec_test 'export'
 
 
 echo ==============================================

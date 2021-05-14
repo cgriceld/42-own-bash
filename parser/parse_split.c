@@ -126,7 +126,7 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 			if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
 				builtins_export(shell, tmp_seq, NULL, 1);
 			else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
-				builtins_unset_value(shell, tmp_seq, NULL,0);
+				builtins_unset_value(shell, tmp_seq, NULL, 1);
 		}
 		tmp_seq = tmp_seq->next;
 	}
