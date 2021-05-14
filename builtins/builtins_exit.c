@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/13 15:19:20 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/14 09:54:40 by lesia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	redir(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		dup2(fds[1], 1);
 		dup2(fds[0], 0);
 	}
-	free(str_low);
+	//free(str_low);
 	return (res);
 }
 
@@ -60,6 +60,7 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	int		n_args;
 	long long int		num;
 	char	*copy;
+	int pluses;
 
 	if (redir(shell, tmp_seq, str_low, 1))
 		return (2);
@@ -71,9 +72,12 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		n_args++;
 	if (n_args > 1)
 	{
-		num = ft_atoi(tmp_seq->args[1]);
+		pluses = 0;
+		while (tmp_seq->args[1][pluses] == '+')
+			pluses++;
+		num = ft_atoi(&(tmp_seq->args[1][pluses]));
 		copy = ft_itoa(num);
-		if (ft_strncmp(tmp_seq->args[1], copy, ft_strlen(tmp_seq->args[1])))
+		if (ft_strncmp(&(tmp_seq->args[1][pluses]), copy, ft_strlen(&(tmp_seq->args[1][pluses]))))
 			return (two_args(shell, tmp_seq, copy, str_low));
 		if (num < 0)
 			ret_status = num % 256 + 256;

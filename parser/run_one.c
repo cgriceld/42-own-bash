@@ -14,7 +14,7 @@ static int run_builtin(t_seq *tmp_seq, t_shell *shell)
 	else if (!ft_strncmp(tmp, "env", ft_strlen(tmp_seq->run)))
 		return (builtins_env(shell, tmp_seq, tmp));
 	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
-		return (builtins_unset_value(shell, tmp_seq, tmp));
+		return (builtins_unset_value(shell, tmp_seq, tmp, 0));
 	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
 		return (builtins_export(shell, tmp_seq, tmp, 0));
 	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
