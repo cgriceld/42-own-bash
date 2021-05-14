@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/14 09:54:40 by lesia            ###   ########.fr       */
+/*   Updated: 2021/05/14 14:33:26 by cgriceld         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	redir(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		dup2(fds[1], 1);
 		dup2(fds[0], 0);
 	}
-	//free(str_low);
+	free(str_low);
 	return (res);
 }
 
