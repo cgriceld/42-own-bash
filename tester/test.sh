@@ -64,6 +64,9 @@ printf "| |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ \n"
 printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
+exec_test ';'
+exec_test '|'
+exec_test ';ls'
 exec_test ';; test'
 exec_test 'ec"ho;";pwd'
 exec_test '| test'
@@ -349,6 +352,7 @@ exec_test 'exit wrong'
 exec_test 'exit wrong_command'
 exec_test 'exit +10'
 exec_test 'exit 0'
+exec_test 'exit 0 | exit 1'
 
 exec_test 'gdagadgag'
 exec_test 'ls -Z'

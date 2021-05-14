@@ -23,10 +23,11 @@ int			main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
+	if (tgetent(NULL, getenv("TERM")) < 0)
+		return (1);
 	ret_status = 0;
 	prepare(argc, &shell);
 	envp_to_list(envp, shell);
-	tgetent(NULL, getenv("TERM")); // can return -1 in error
 	set_signals();
 	if (argc == 3)
 	{
