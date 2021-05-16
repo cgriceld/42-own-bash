@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envp_to_arr.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/27 22:39:21 by cgriceld          #+#    #+#             */
+/*   Updated: 2021/05/16 17:55:54 by cgriceld         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minibash.h"
 
 static void	free_arr(char ***arr, t_shell *shell, size_t i)
@@ -6,7 +18,7 @@ static void	free_arr(char ***arr, t_shell *shell, size_t i)
 	free_error(strerror(errno), &shell);
 }
 
-char		**envp_to_arr(t_shell *shell)
+char	**envp_to_arr(t_shell *shell)
 {
 	char	**arr;
 	t_env	*l_tmp;

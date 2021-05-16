@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envp_to_list.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/27 22:39:21 by cgriceld          #+#    #+#             */
+/*   Updated: 2021/05/16 18:01:26 by sbrenton         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minibash.h"
 
-static void	envp_lstfill(char *envp, t_env *curr, t_shell *shell)
+static	void	envp_lstfill(char *envp, t_env *curr, t_shell *shell)
 {
 	char	*sep;
 	char	*end;
@@ -27,9 +39,9 @@ static void	envp_lstfill(char *envp, t_env *curr, t_shell *shell)
 	shell->env_size++;
 }
 
-void		envp_to_list(char **envp, t_shell *shell)
+void	envp_to_list(char **envp, t_shell *shell)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	shell->env = (t_env *)malloc(sizeof(t_env));
 	if (!shell->env)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbrenton <sbrenton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/16 17:28:51 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/16 17:50:33 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	static	not_num_arg(t_shell *shell, t_seq *tmp_seq, char *copy, char *str_low
 	redir(shell, tmp_seq, &str_low,2);
 	free_error(NULL, &shell);
 	exit(ret_status);
-	return (ret_status);
 }
 
 int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)

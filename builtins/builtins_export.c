@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbrenton <sbrenton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
 /*   Updated: 2021/05/16 16:33:26 by sbrenton         ###   ########.fr       */

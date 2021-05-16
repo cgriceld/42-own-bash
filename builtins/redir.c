@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/24 12:59:43 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/16 17:32:23 by sbrenton         ###   ########.fr       */
+/*   Created: 2021/04/24 12:59:43 by cgriceld          #+#    #+#             */
+/*   Updated: 2021/05/16 17:48:42 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ int	redir(t_shell *shell, t_seq *tmp_seq, char **str_low, int flag)
 	{
 		dup2(fds[1], 1);
 		dup2(fds[0], 0);
-	free(*str_low);
-	*str_low = NULL;
+		free(*str_low);
+		*str_low = NULL;
+		return (res);
+	}
 	return (res);
 }
