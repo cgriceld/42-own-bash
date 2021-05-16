@@ -20,8 +20,12 @@ char	*pwd(t_shell *shell, t_seq *tmp_seq)
 	buf = NULL;
 	size = 0;
 	buf = getcwd(buf, size);
-	envp_set_value(shell, "PWD", buf);
-	return (buf);
+	if (buf)
+		envp_set_value(shell, "PWD", buf);
+	if (!buf)
+		return (ft_strdup(envp_get_value(shell, "PWD")));
+	else
+		return (buf);
 }
 
 int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)

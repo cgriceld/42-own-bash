@@ -15,19 +15,21 @@
 int	static	too_many_args(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	write(1, "exit: too many arguments\n", 25);
-	ret_status = 2;
+	ret_status = 255;
 	redir(shell, tmp_seq, &str_low, 2);
 	return (ret_status);
 }
 
-int	static	two_args(t_shell *shell, t_seq *tmp_seq, char *copy, char *str_low)
+int	static	not_num_arg(t_shell *shell, t_seq *tmp_seq, char *copy, char *str_low)
 {
 	write(1, "exit: ", 6);
 	write(1, tmp_seq->args[1], ft_strlen(tmp_seq->args[1]));
 	write(1, ": numeric argument required\n", 28);
-	ret_status = 2;
+	ret_status = 255;
 	free(copy);
 	redir(shell, tmp_seq, &str_low,2);
+	free_error(NULL, &shell);
+	exit(ret_status);
 	return (ret_status);
 }
 
@@ -73,12 +75,12 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	if (n_args > 1)
 	{
 		pluses = 0;
-		while (tmp_seq->args[1][pluses] == '+')
+		if (tmp_seq->args[1][pluses] == '+')
 			pluses++;
 		num = ft_atoi(&(tmp_seq->args[1][pluses]));
 		copy = ft_itoa(num);
 		if (ft_strncmp(&(tmp_seq->args[1][pluses]), copy, ft_strlen(&(tmp_seq->args[1][pluses]))))
-			return (two_args(shell, tmp_seq, copy, str_low));
+			return (not_num_arg(shell, tmp_seq, copy, str_low));
 		if (num < 0)
 			ret_status = num % 256 + 256;
 		else if (num > 0)
@@ -91,3 +93,4 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	free_error(NULL, &shell);
 	exit(ret_status);
 }
+

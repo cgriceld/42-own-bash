@@ -14,7 +14,7 @@ int envp_set_value(t_shell *shell, char *param, char *value)
 		return 1;
 	tmp = env->value;
 	env->value = ft_strdup(value);
-	free(tmp);
+	//free(tmp);
 
 	return 0;
 }
