@@ -84,6 +84,13 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 		ft_twodarr_free(&arr_env, shell->env_size);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == 2)
+			return (130);
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == 3)
+		{
+			write(1, "Quit: 3\n", 8);
+			return (131);
+		}
 		else
 			return (1);
 	}

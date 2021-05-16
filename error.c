@@ -1,6 +1,6 @@
 #include "minibash.h"
 
-void		lite_error(char *comment)
+void	lite_error(char *comment)
 {
 	printf("\n%s\n", comment);
 	exit(EXIT_FAILURE);
@@ -33,9 +33,9 @@ static void	free_hist_env(t_shell **shell)
 	}
 }
 
-static void free_redirect(t_redir_chain **redir)
+static void	free_redirect(t_redir_chain **redir)
 {
-	t_redir_chain *tmp;
+	t_redir_chain	*tmp;
 
 	while (*redir)
 	{
@@ -47,9 +47,9 @@ static void free_redirect(t_redir_chain **redir)
 	}
 }
 
-void		free_seq(t_seq **seq)
+void	free_seq(t_seq **seq)
 {
-	t_seq *tmp;
+	t_seq	*tmp;
 
 	while (*seq)
 	{
@@ -67,7 +67,7 @@ void		free_seq(t_seq **seq)
 	}
 }
 
-void		free_error(char *comment, t_shell **shell)
+void	free_error(char *comment, t_shell **shell)
 {
 	if ((*shell)->history || (*shell)->env)
 		free_hist_env(shell);

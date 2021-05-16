@@ -34,7 +34,7 @@ static void	handle_read(t_shell *shell, char *str, ssize_t read_len)
 		write_symbol(shell, str, read_len);
 }
 
-void		deal_cache(t_shell *shell)
+void	deal_cache(t_shell *shell)
 {
 	char *tmp;
 
@@ -58,7 +58,7 @@ static void	ctrlc(t_shell *shell)
 	shell->hist_ptr = shell->hist_curr;
 }
 
-void		ft_readline(t_shell *shell)
+void	ft_readline(t_shell *shell)
 {
 	char	str[10];
 	ssize_t	read_len;
