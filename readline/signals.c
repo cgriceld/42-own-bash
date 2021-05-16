@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-int			*signal_tracker(void)
+int	*signal_tracker(void)
 {
 	static int was_sig = 0;
 
@@ -15,10 +15,9 @@ static void	handler(int sig)
 		prompt();
 		*signal_tracker() = 1;
 	}
-	return;
 }
 
-void		set_signals(void)
+void	set_signals(void)
 {
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);

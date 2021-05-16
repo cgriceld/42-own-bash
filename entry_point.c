@@ -12,14 +12,14 @@ static void	prepare(int argc, t_shell **shell)
 	(*shell)->history = (t_history *)malloc(sizeof(t_history));
 	if (!(*shell)->history)
 		free_error(strerror(errno), shell);
-	(*shell)->history->prev = NULL; // first node
+	(*shell)->history->prev = NULL;
 	(*shell)->hist_curr = (*shell)->history;
 	(*shell)->hist_ptr = (*shell)->hist_curr;
 	init_hist(*shell);
 	ret_status = 0;
 }
 
-int			main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
