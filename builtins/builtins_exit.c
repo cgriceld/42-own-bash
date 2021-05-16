@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:00:08 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/14 16:33:00 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/16 17:28:51 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	static	too_many_args(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	write(1, "exit: too many arguments\n", 25);
-	ret_status = 255;
+	ret_status = 1;
 	redir(shell, tmp_seq, &str_low, 2);
 	return (ret_status);
 }
@@ -33,31 +33,6 @@ int	static	not_num_arg(t_shell *shell, t_seq *tmp_seq, char *copy, char *str_low
 	return (ret_status);
 }
 
-// flag = 1 : open and close
-// flag = 0 : only open
-// flag = 2 : only close
-int	redir(t_shell *shell, t_seq *tmp_seq, char **str_low, int flag)
-{
-	static int fds[2];
-	int res;
-
-	res = 0;
-	if (flag != 2)
-	{
-		fds[0] = dup(0);
-		fds[1] = dup(1);
-		res = run_redirect(tmp_seq, shell);
-	}
-	if (flag || res)
-	{
-		dup2(fds[1], 1);
-		dup2(fds[0], 0);
-	}
-	free(*str_low);
-	*str_low = NULL;
-	return (res);
-}
-
 int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	int		n_args;
@@ -66,7 +41,7 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	int pluses;
 
 	if (redir(shell, tmp_seq, &str_low, 1))
-		return (2);
+		return (1);
 	ret_status = 0;
 	n_args = 0;
 	write(2, "exit\n", 5);

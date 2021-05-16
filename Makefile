@@ -14,7 +14,7 @@ SRC = entry_point.c error.c utils/utils.c utils/ft_split.c \
 	parser/parse_quotes_utils2.c parser/parse_dollar.c \
 	parser/parse_quotes_join.c parser/precheck_syntax.c \
 	envp/envp_to_list.c envp/envp_to_arr.c envp/envp_get_value.c \
-	builtins/builtins_*.c envp/envp_set_value.c envp/envp_new_value.c \
+	builtins/builtins_*.c builtins/redir.c envp/envp_set_value.c envp/envp_new_value.c \
 	utils/ft_lst.c utils/ft_sort_str.c
 
 OBJ = $(SRC:.s=.o)

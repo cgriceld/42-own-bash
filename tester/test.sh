@@ -114,7 +114,7 @@ echo
 # exec_test 'export t=n; echo -$t -n "-"n hello'
 # exec_test "echo -$t '-n' '-''n' '-n;'         -n hello"
 
-
+exec_test 'ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls ls | ls | ls | ls | ls | ls | ls | ls | ls |ls|ls|ls|ls'
 exec_test '| test'
 exec_test 'echo > <'
 exec_test 'echo | |'

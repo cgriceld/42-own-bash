@@ -6,42 +6,32 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:43 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/16 16:06:09 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/16 17:32:23 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low)
+// flag = 1 : open and close
+// flag = 0 : only open
+// flag = 2 : only close
+int	redir(t_shell *shell, t_seq *tmp_seq, char **str_low, int flag)
 {
-	int		n;
-	int		i;
+	static int fds[2];
+	int res;
 
-	if (redir(shell, tmp_seq, &str_low, 0))
-		return (2);
-	ret_status = 0;
-	n = 0;
-	if (tmp_seq->args[1] != NULL)
+	res = 0;
+	if (flag != 2)
 	{
-		while (tmp_seq->args[n + 1] != NULL &&
-		ft_strncmp(tmp_seq->args[n + 1], "-n", 3) == 0)
-			n += 1;
-		i = 1;
-		while (tmp_seq->args[i + n] != NULL && tmp_seq->args[i + n + 1] != NULL)
-		{
-			write(1, tmp_seq->args[i + n], ft_strlen(tmp_seq->args[i + n]));
-			write(1, " ", 1);
-			i++;
-		}
-		if (tmp_seq->args[i + n] != NULL)
-		{
-			write(1, tmp_seq->args[i + n], ft_strlen(tmp_seq->args[i + n]));
-		}
-		if (n == 0)
-			write(1, "\n", 1);
+		fds[0] = dup(0);
+		fds[1] = dup(1);
+		res = run_redirect(tmp_seq, shell);
 	}
-	else
-		write(1, "\n", 1);
-	redir(shell, tmp_seq, &str_low, 2);
-	return (ret_status);
+	if (flag || res)
+	{
+		dup2(fds[1], 1);
+		dup2(fds[0], 0);
+	free(*str_low);
+	*str_low = NULL;
+	return (res);
 }

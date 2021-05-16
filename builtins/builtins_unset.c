@@ -6,13 +6,13 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:38:46 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/14 16:55:42 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/16 17:27:58 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
 
-int	static	unset_value( t_shell *shell, t_env	*env, int i)
+int	static	unset_value(t_shell *shell, t_env	*env, int i)
 {
 	t_env	*this;
 
@@ -23,10 +23,11 @@ int	static	unset_value( t_shell *shell, t_env	*env, int i)
 	this->next = NULL;
 	free(this);
 	i += 1;
+	shell->env_size--;
 	return (i);
 }
 
-int	static	unset_last( t_env *previous, t_env	*env, int i)
+int	static	unset_last(t_env *previous, t_env	*env, int i)
 {
 	t_env	*this;
 
@@ -37,6 +38,7 @@ int	static	unset_last( t_env *previous, t_env	*env, int i)
 	this->next = NULL;
 	free(this);
 	i += 1;
+
 	return (i);
 }
 
@@ -48,8 +50,8 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag
 	int		i;
 	int		len;
 
-	if (!flag && redir(shell, tmp_seq, &str_low, 0))
-		return (2);
+	if (!flag && redir(shell, tmp_seq, &str_low, 1))
+		return (1);
 	i = 1;
 	ret_status = 0;
 	while (tmp_seq->args[i] != 0)
@@ -78,6 +80,7 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag
 			continue ;
 		}
 		i = unset_last(previous, env, i);
+		shell->env_size--;
 	}
 	if (!flag)
 		redir(shell, tmp_seq, &str_low, 2);

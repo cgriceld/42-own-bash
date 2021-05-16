@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/14 16:30:15 by cgriceld         ###   ########.fr       */
+/*   Updated: 2021/05/16 16:33:26 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,23 +133,12 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 			i++;
 			continue;
 		}
-//		if ((tmp_seq->args[i][0] == '_') ||
-//		(tmp_seq->args[i][0] >= 'a' && tmp_seq->args[i][0] <= 'z') ||
-//		(tmp_seq->args[i][0] >= 'A' && tmp_seq->args[i][0] <= 'Z'))
-//		{
-//			printf("export: `%s': not a valid identifier\n", tmp_seq->args[i]);
-//				return (1);
-//		}
 		pair_param_value(tmp_seq, i, &param, &value);
-		if (value == NULL && envp_get_value(shell, param) != NULL)
+		if ((value == NULL && envp_get_value(shell, param) != NULL)
+		|| (envp_set_value(shell, param, value) == 0))
 		{
-			i++;
-			continue ;
-		}
-		if (envp_set_value(shell, param, value) == 0)
-		{
-			i++;
-			continue ;
+			free(value);
+			free(param);
 		}
 		else
 			envp_new_value(shell, param, value);
