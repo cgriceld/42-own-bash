@@ -112,9 +112,9 @@ void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 	if (shell->seq->info & SYNTAX_ERR)
 		return;
 	construct_file(tmp_seq, shell, quo);
-	tmp_redir->path = ft_strdup(tmp_seq->tmp_redir->path);
-	if (!tmp_redir->path && tmp_seq->tmp_redir->path)
-		error_quotes(&quo, &shell);
+	// tmp_redir->path = ft_strdup(tmp_seq->tmp_redir->path);
+	// if (!tmp_redir->path && tmp_seq->tmp_redir->path)
+	// 	error_quotes(&quo, &shell);
 	if (i == 2)
 		tmp_redir->type |= REDIR_APPEND;
 	if (tmp_redir->path)

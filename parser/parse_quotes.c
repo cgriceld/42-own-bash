@@ -111,5 +111,3 @@ void parse_quotes(t_seq *tmp_seq, t_shell *shell)
 		fill_after_quotes(tmp_seq, shell, quo);
 	free_quotes(&quo);
 }
-
-// free on errors

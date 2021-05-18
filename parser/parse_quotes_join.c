@@ -12,21 +12,31 @@ static void shut_escape(t_seq *tmp_seq, t_quo *quo)
 void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 {
 	char *tmp;
+	char *tmp2;
 
 	tmp = *arg;
 	if (quo->slashes)
 	{
 		if (quo->slashes == -1)
-			*arg = ft_strjoin(*arg, ft_itoa(ret_status));
+		{
+			tmp2 = ft_itoa(ret_status);
+			*arg = ft_strjoin(*arg, tmp2);
+			free(tmp2);
+		}
 		else
 		{
 			shut_escape(tmp_seq, quo);
-			*arg = ft_strjoin(*arg, ft_genstr('\\', quo->slashes));
+			tmp2 = ft_genstr('\\', quo->slashes);
+			*arg = ft_strjoin(*arg, tmp2);
+			free(tmp2);
 		}
 	}
 	else
-		*arg = ft_strjoin(*arg, ft_substr(\
-		tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start));
+	{
+		tmp2 = ft_substr(tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start);
+		*arg = ft_strjoin(*arg, tmp2);
+		free(tmp2);
+	}
 	free(tmp);
 	if (!*arg)
 		error_quotes(&quo, &shell);
@@ -37,7 +47,7 @@ static void join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 	if (quo->slashes)
 	{
 		if (quo->slashes == -1)
-			*arg = ft_strdup(ft_itoa(ret_status));
+			*arg = ft_itoa(ret_status);
 		else
 		{
 			shut_escape(tmp_seq, quo);
@@ -66,61 +76,6 @@ void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_spli
 	else
 		join_args2(tmp_seq, shell, quo, &tmp_split->arg);
 }
-
-// static void join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
-// {
-// 	// if (!quo->after_space && !tmp_split->arg)
-// 	if (!*arg)
-// 	{
-// 		if (quo->slashes)
-// 		{
-// 			if (quo->slashes == -1)
-// 				*arg = ft_strdup(ft_itoa(ret_status));
-// 			else
-// 			{
-// 				shut_escape(tmp_seq, quo);
-// 				*arg = ft_genstr('\\', quo->slashes);
-// 			}
-// 		}
-// 		else
-// 			*arg = ft_substr(\
-// 			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start);
-// 		if (!*arg)
-// 			error_quotes(&quo, &shell);
-// 		quo->split_len++;
-// 		quo->after_space = 0;
-// 	}
-// 	else
-// 		join_args2(tmp_seq, shell, quo, arg);
-// }
-
-// void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
-// {
-// 	if (quo->after_space && tmp_split->arg)
-// 	{
-// 		if (init_quo_split(&tmp_split->next))
-// 			error_quotes(&quo, &shell);
-// 		if (quo->slashes)
-// 		{
-// 			if (quo->slashes == -1)
-// 				tmp_split->next->arg = ft_strdup(ft_itoa(ret_status));
-// 			else
-// 			{
-// 				shut_escape(tmp_seq, quo);
-// 				tmp_split->next->arg = ft_genstr('\\', quo->slashes);
-// 			}
-// 		}
-// 		else
-// 			tmp_split->next->arg = ft_substr(\
-// 			tmp_seq->run, quo->start - tmp_seq->run, quo->end - quo->start);
-// 		if (!tmp_split->next->arg)
-// 			error_quotes(&quo, &shell);
-// 		quo->split_len++;
-// 		quo->after_space = 0;
-// 	}
-// 	else
-// 		join_args1(tmp_seq, shell, quo, &tmp_split->arg);
-// }
 
 void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym)
 {

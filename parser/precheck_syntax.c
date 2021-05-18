@@ -49,6 +49,7 @@ static void manage_quotes(char *str, unsigned char *flag, t_shell *shell)
 static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 {
 	char *tmp;
+	char *tmp2;
 	char *after;
 	char *before;
 	static size_t len = 0;
@@ -57,9 +58,10 @@ static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 		before = ft_strdup("");
 	else
 		before = ft_substr(shell->seq->run, 0, len);
-	after = ft_strjoin_sym(\
-	ft_substr(shell->hist_curr->command, *start - shell->hist_curr->command, \
-			str - *start), str, sym);
+	tmp2 = ft_substr(shell->hist_curr->command, *start - shell->hist_curr->command, \
+			str - *start);
+	after = ft_strjoin_sym(tmp2, str, sym);
+	free(tmp2);
 	tmp = shell->seq->run;
 	shell->seq->run = ft_strjoin(before, after);
 	free(tmp);
