@@ -38,7 +38,7 @@ static void	concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *t)
 	}
 }
 
-static void full_or_wrong(t_seq *tmp_seq, t_shell *shell)
+static void	full_or_wrong(t_seq *tmp_seq, t_shell *shell)
 {
 	char *tmp;
 
@@ -49,7 +49,7 @@ static void full_or_wrong(t_seq *tmp_seq, t_shell *shell)
 		free_error(strerror(errno), &shell);
 }
 
-static void find_path(t_seq *tmp_seq, t_shell *shell)
+static void	find_path(t_seq *tmp_seq, t_shell *shell)
 {
 	char		**split;
 	char		*tmp;

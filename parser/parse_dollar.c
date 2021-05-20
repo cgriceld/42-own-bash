@@ -1,12 +1,12 @@
 #include "../minibash.h"
 
-static void error_dollar(char **value, t_quo *quo, t_shell *shell)
+static void	error_dollar(char **value, t_quo *quo, t_shell *shell)
 {
 	free(*value);
 	error_quotes(&quo, &shell);
 }
 
-static int exp_dollar2(char *value, t_shell *shell, t_quo *quo, char **str)
+static int	exp_dollar2(char *value, t_shell *shell, t_quo *quo, char **str)
 {
 	char *tmp;
 
@@ -18,7 +18,7 @@ static int exp_dollar2(char *value, t_shell *shell, t_quo *quo, char **str)
 	return (0);
 }
 
-static int exp_dollar(char *value, t_shell *shell, t_quo *quo, \
+static int	exp_dollar(char *value, t_shell *shell, t_quo *quo, \
 						t_quo_split *tmp_split)
 {
 	char *tmp;
@@ -45,7 +45,7 @@ static int exp_dollar(char *value, t_shell *shell, t_quo *quo, \
 	return (0);
 }
 
-static int prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+static int	prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 						t_quo_split *tmp_split)
 {
 	quo->start++;

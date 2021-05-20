@@ -1,6 +1,7 @@
 #include "../minibash.h"
 
-static void find_loop(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+static void	find_loop(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
 {
 	if (*quo->end == ' ' && *(quo->end - 1) == '\\' && quo->last_slash)
 		join_one_sym(shell, quo, &tmp_split->arg, " ");
@@ -18,8 +19,8 @@ static void find_loop(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *t
 	}
 }
 
-// check for start string bound when slash
-int cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+int	cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+				t_quo_split *tmp_split)
 {
 	char **str;
 
@@ -44,7 +45,8 @@ int cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_s
 	return (0);
 }
 
-void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+void	what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+				t_quo_split *tmp_split)
 {
 	if (*quo->end == '\\')
 		parse_escape(tmp_seq, shell, quo, tmp_split);
@@ -58,16 +60,16 @@ void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_spl
 		parse_dollar(tmp_seq, shell, quo, tmp_split);
 }
 
-static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+static void	find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
 {
-	while (*quo->end && *quo->end == ' ')
-		quo->end++;
 	while (*quo->end)
 	{
 		find_loop(tmp_seq, shell, quo, tmp_split);
 		if (*quo->end && ft_strchr("$<>\"\\'", *quo->end))
 		{
-			if (ft_strchr("$<>\"'", *quo->end) && cancel_escape(tmp_seq, shell, quo, tmp_split))
+			if (ft_strchr("$<>\"'", *quo->end) && \
+				cancel_escape(tmp_seq, shell, quo, tmp_split))
 				continue;
 			join_routine(tmp_seq, shell, quo, tmp_split);
 			if (tmp_split->next)
@@ -86,7 +88,7 @@ static void find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split 
 	}
 }
 
-void parse_quotes(t_seq *tmp_seq, t_shell *shell)
+void	parse_quotes(t_seq *tmp_seq, t_shell *shell)
 {
 	t_quo		*quo;
 	t_quo_split	*tmp_split;
@@ -106,6 +108,8 @@ void parse_quotes(t_seq *tmp_seq, t_shell *shell)
 	quo->end = tmp_seq->run;
 	quo->last_slash = 0;
 	quo->slashes = 0;
+	while (*quo->end && *quo->end == ' ')
+		quo->end++;
 	find_quotes(tmp_seq, shell, quo, tmp_split);
 	if (!(shell->seq->info & SYNTAX_ERR))
 		fill_after_quotes(tmp_seq, shell, quo);

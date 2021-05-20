@@ -69,4 +69,3 @@ int run_pipe(t_seq *tmp_seq, t_shell *shell)
 	}
 	return (parent_wait(fd, pid));
 }
-

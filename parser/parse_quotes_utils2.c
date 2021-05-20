@@ -1,7 +1,16 @@
 #include "../minibash.h"
 
-// if already check close match, no check for \0 ?
-void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+static void	parse_singleq_utils(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
+{
+	if (*(quo->end + 1) == '|' || *(quo->end + 1) == ';')
+		parse_escape(tmp_seq, shell, quo, tmp_split);
+	else
+		join_one_sym(shell, quo, &tmp_split->arg, "\\");
+}
+
+void	parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
 {
 	quo->end++;
 	quo->start++;
@@ -17,10 +26,7 @@ void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 			break;
 		else if (*quo->end == '\\')
 		{
-			if (*(quo->end + 1) == '|' || *(quo->end + 1) == ';')
-				parse_escape(tmp_seq, shell, quo, tmp_split);
-			else
-				join_one_sym(shell, quo, &tmp_split->arg, "\\");
+			parse_singleq_utils(tmp_seq, shell, quo, tmp_split);
 			if (tmp_split && tmp_split->next)
 				tmp_split = tmp_split->next;
 		}
@@ -30,8 +36,8 @@ void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 	quo->end++;
 }
 
-// check for end?
-void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+void	parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
 {
 	while (*quo->end == '\\')
 	{
@@ -42,8 +48,22 @@ void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_s
 	quo->slashes = 0;
 }
 
-// start bound with slash
-void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split)
+static void	parse_doubleq_utils(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
+{
+	if (*quo->end == '\\' && ft_strchr("\\$\"|;", *(quo->end + 1)))
+			parse_escape(tmp_seq, shell, quo, tmp_split);
+	else if (*quo->end == '$' && *(quo->end + 1) != '"')
+		parse_dollar(tmp_seq, shell, quo, tmp_split);
+	else
+	{
+		quo->end++;
+		join_routine(tmp_seq, shell, quo, tmp_split);
+	}
+}
+
+void	parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+					t_quo_split *tmp_split)
 {
 	quo->end++;
 	quo->start++;
@@ -52,22 +72,15 @@ void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_
 		quo->start = quo->end;
 		while (*quo->end && !ft_strchr("$\"\\", *quo->end))
 			quo->end++;
-		if (ft_strchr("$\"", *quo->end) && cancel_escape(tmp_seq, shell, quo, tmp_split))
+		if (ft_strchr("$\"", *quo->end) && \
+					cancel_escape(tmp_seq, shell, quo, tmp_split))
 			continue;
 		join_routine(tmp_seq, shell, quo, tmp_split);
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;
-		if (*quo->end == '\\' && ft_strchr("\\$\"|;", *(quo->end + 1)))
-			parse_escape(tmp_seq, shell, quo, tmp_split);
-		else if (*quo->end == '$' && *(quo->end + 1) != '"')
-			parse_dollar(tmp_seq, shell, quo, tmp_split);
-		else if (*quo->end == '"')
+		if (*quo->end == '"')
 			break;
-		else
-		{
-			quo->end++;
-			join_routine(tmp_seq, shell, quo, tmp_split);
-		}
+		parse_doubleq_utils(tmp_seq, shell, quo, tmp_split);
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;
 	}

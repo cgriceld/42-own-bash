@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-int init_quo_split(t_quo_split **new)
+int	init_quo_split(t_quo_split **new)
 {
 	*new = (t_quo_split *)malloc(sizeof(t_quo_split));
 	if (!*new)
@@ -10,9 +10,9 @@ int init_quo_split(t_quo_split **new)
 	return (0);
 }
 
-void free_quotes(t_quo **quo)
+void	free_quotes(t_quo **quo)
 {
-	t_quo_split	*tmp;
+	t_quo_split *tmp;
 
 	while ((*quo)->split)
 	{
@@ -25,13 +25,13 @@ void free_quotes(t_quo **quo)
 	free(*quo);
 }
 
-void error_quotes(t_quo **quo, t_shell **shell)
+void	error_quotes(t_quo **quo, t_shell **shell)
 {
 	free_quotes(quo);
 	free_error(strerror(errno), shell);
 }
 
-static void fill_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, size_t i)
+static void	fill_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, size_t i)
 {
 	tmp_seq->args[quo->split_len] = NULL;
 	i = quo->split_len;
@@ -39,7 +39,7 @@ static void fill_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, size_t i)
 		tmp_seq->args[i] = NULL;
 }
 
-void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
+void	fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 {
 	char		*tmp;
 	t_quo_split	*tmp_s;
