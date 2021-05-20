@@ -55,7 +55,8 @@ static int check_separator(t_shell *shell, char sym, size_t len, char *str)
 	{
 		if ((shell->seq->info & QUOTED) && shell->sep[1] + 1 != len)
 			return (syntax_error(shell, sym));
-		else if (!(shell->seq->info & QUOTED) && ft_numchstr(str, sym) + 1 != len)
+		else if (!(shell->seq->info & QUOTED) && \
+				ft_numchstr(str, sym) + 1 != len)
 			return (syntax_error(shell, sym));
 	}
 	else if (sym == ';')
@@ -83,6 +84,35 @@ static int pipe_exist(char *str)
 	return (0);
 }
 
+static void	parse_split1(t_seq *tmp_seq, t_shell *shell, char sym)
+{
+	while (tmp_seq)
+	{
+		if (sym == ';' && pipe_exist(tmp_seq->run))
+		{
+			if (init_seq(&tmp_seq->pipe))
+				free_error(strerror(errno), &shell);
+			else
+				parse_split(tmp_seq->pipe, shell, '|', tmp_seq->run);
+			if (shell->seq->info & SYNTAX_ERR)
+				return;
+			tmp_seq = tmp_seq->next;
+			continue;
+		}
+		parse_one(tmp_seq, shell);
+		if (shell->seq->info & SYNTAX_ERR)
+			return;
+		if (sym != '|' && tmp_seq->run)
+		{
+			if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
+				builtins_export(shell, tmp_seq, NULL, 1);
+			if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
+				builtins_unset_value(shell, tmp_seq, NULL, 1);
+		}
+		tmp_seq = tmp_seq->next;
+	}
+}
+
 void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 {
 	char **split;
@@ -105,29 +135,5 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 	ft_twodarr_free(&split, ft_twodarr_len(split));
 	if (shell->seq->info & SYNTAX_ERR)
 		return;
-	while (tmp_seq)
-	{
-		if (sym == ';' && pipe_exist(tmp_seq->run))
-		{
-			if (init_seq(&tmp_seq->pipe))
-				free_error(strerror(errno), &shell);
-			else
-				parse_split(tmp_seq->pipe, shell, '|', tmp_seq->run);
-			if (shell->seq->info & SYNTAX_ERR)
-				return;
-			tmp_seq = tmp_seq->next;
-			continue;
-		}
-		parse_one(tmp_seq, shell);
-		if (shell->seq->info & SYNTAX_ERR)
-			return;
-		if (sym != '|' && tmp_seq->run)
-		{
-			if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
-				builtins_export(shell, tmp_seq, NULL, 1);
-			else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
-				builtins_unset_value(shell, tmp_seq, NULL, 1);
-		}
-		tmp_seq = tmp_seq->next;
-	}
+	parse_split1(tmp_seq, shell, sym);
 }

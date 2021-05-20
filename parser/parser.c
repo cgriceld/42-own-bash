@@ -48,6 +48,8 @@ int			is_builtin(char *s)
 
 static void run(t_seq *tmp_seq, t_shell *shell)
 {
+	if (shell->seq->info & SYNTAX_ERR)
+		return;
 	while (tmp_seq)
 	{
 		if (tmp_seq->pipe || (tmp_seq->info & PIPE))
@@ -56,14 +58,12 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 				ret_status = run_pipe(tmp_seq->pipe, shell);
 			else
 				ret_status = run_pipe(tmp_seq, shell);
-			//printf("%d\n", ret_status);
 			if (tmp_seq->info & PIPE)
 				break;
 			tmp_seq = tmp_seq->next;
 			continue;
 		}
 		ret_status = run_one(tmp_seq, shell);
-		//printf("%d\n", ret_status);
 		tmp_seq = tmp_seq->next;
 	}
 }
@@ -93,7 +93,6 @@ void		parser(t_shell *shell)
 	}
 	else
 		parse_one(tmp_seq, shell);
-	if (!(shell->seq->info & SYNTAX_ERR))
-		run(tmp_seq, shell);
+	run(tmp_seq, shell);
 	free_seq(&shell->seq);
 }

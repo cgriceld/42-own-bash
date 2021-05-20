@@ -1,20 +1,23 @@
 #include "../minibash.h"
 
-void set_mode(int type)
+void	set_mode(int type)
 {
 	struct termios term;
 
-	tcgetattr(0, &term); // can return -1
-	!type ? (term.c_lflag &= ~(ECHO | ICANON)) : (term.c_lflag |= (ECHO | ICANON));
+	tcgetattr(0, &term);
+	if (!type)
+		term.c_lflag &= ~(ECHO | ICANON);
+	else
+		term.c_lflag |= (ECHO | ICANON);
 	tcsetattr(0, TCSANOW, &term);
 }
 
-void prompt(void)
+void	prompt(void)
 {
 	write(1, PROMPT, ft_strlen(PROMPT));
 }
 
-void init_hist(t_shell *shell)
+void	init_hist(t_shell *shell)
 {
 	shell->hist_curr->command = ft_strdup("");
 	if (!shell->hist_curr->command)

@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-void		handle_execute(t_shell *shell)
+void	handle_execute(t_shell *shell)
 {
 	char *tmp;
 

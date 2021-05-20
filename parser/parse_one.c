@@ -1,18 +1,15 @@
 #include "../minibash.h"
 
-static void upd_path(t_seq *tmp_seq, char *comm)
+static void	upd_path(t_seq *tmp_seq, char *comm)
 {
 	char *tmp;
 
 	tmp = tmp_seq->run;
 	tmp_seq->run = ft_strdup(comm);
 	free(tmp);
-	// tmp = tmp_seq->args[0];
-	// tmp_seq->args[0] = ft_strdup(comm);
-	// free(tmp);
 }
 
-static void concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *tmp)
+static void	concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *t)
 {
 	struct stat	s;
 	size_t		i;
@@ -21,11 +18,11 @@ static void concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *tmp)
 	i = 0;
 	while (split[i])
 	{
-		tmp = ft_strjoin(split[i], "/");
-		if (!tmp)
+		t = ft_strjoin(split[i], "/");
+		if (!t)
 			free_split(&split, shell);
-		comm = ft_strjoin(tmp, tmp_seq->args[0]);
-		free(tmp);
+		comm = ft_strjoin(t, tmp_seq->args[0]);
+		free(t);
 		if (!comm)
 			free_split(&split, shell);
 		if (!stat(comm, &s))

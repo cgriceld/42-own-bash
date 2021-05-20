@@ -1,15 +1,15 @@
 #include "../minibash.h"
 
-static int quo_syntax_return(unsigned char flag)
+static int	quo_syntax_return(unsigned char f)
 {
-	if (flag & DOUBLED)
+	if (f & DOUBLED)
 		return (1);
-	if (flag & SINGLE)
+	if (f & SINGLE)
 		return (2);
 	return (0);
 }
 
-int even_escaped(char *start, char *str)
+int	even_escaped(char *start, char *str)
 {
 	int res;
 
@@ -26,27 +26,36 @@ int even_escaped(char *start, char *str)
 		return (0);
 }
 
-static void manage_quotes(char *str, unsigned char *flag, t_shell *shell)
+static void	manage_quotes(char *str, unsigned char *f, t_shell *shell)
 {
 	if (*str == '"')
 	{
-		if ((*flag & DOUBLED) && !(*flag & SINGLE) && even_escaped(shell->hist_curr->command, str))
-			*flag &= ~DOUBLED;
-		else if (!(*flag & SINGLE) && !(*flag & DOUBLED) && \
+		if ((*f & DOUBLED) && !(*f & SINGLE) && \
+			even_escaped(shell->hist_curr->command, str))
+			*f &= ~DOUBLED;
+		else if (!(*f & SINGLE) && !(*f & DOUBLED) && \
 				even_escaped(shell->hist_curr->command, str))
-			*flag |= DOUBLED;
+			*f |= DOUBLED;
 	}
 	else if (*str == '\'')
 	{
-		if ((*flag & SINGLE) && !(*flag & DOUBLED))
-			*flag &= ~SINGLE;
-		else if (!(*flag & SINGLE) && !(*flag & DOUBLED) && \
+		if ((*f & SINGLE) && !(*f & DOUBLED))
+			*f &= ~SINGLE;
+		else if (!(*f & SINGLE) && !(*f & DOUBLED) && \
 				even_escaped(shell->hist_curr->command, str))
-			*flag |= SINGLE;
+			*f |= SINGLE;
 	}
 }
 
-static void manage_separator(t_shell *shell, char **start, char *str, char sym)
+static void	manage_before(char **before, t_shell *shell, size_t len)
+{
+	if (!shell->seq->run)
+		*before = ft_strdup("");
+	else
+		*before = ft_substr(shell->seq->run, 0, len);
+}
+
+static void	manage_separator(t_shell *shell, char **start, char *str, char sym)
 {
 	char *tmp;
 	char *tmp2;
@@ -54,12 +63,9 @@ static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 	char *before;
 	static size_t len = 0;
 
-	if (!shell->seq->run)
-		before = ft_strdup("");
-	else
-		before = ft_substr(shell->seq->run, 0, len);
-	tmp2 = ft_substr(shell->hist_curr->command, *start - shell->hist_curr->command, \
-			str - *start);
+	manage_before(&before, shell, len);
+	tmp2 = ft_substr(shell->hist_curr->command, \
+			*start - shell->hist_curr->command, str - *start);
 	after = ft_strjoin_sym(tmp2, str, sym);
 	free(tmp2);
 	tmp = shell->seq->run;
@@ -77,44 +83,47 @@ static void manage_separator(t_shell *shell, char **start, char *str, char sym)
 		shell->sep[1]++;
 }
 
-// check for start string bound when slash
-static int quo_syntax(char *str, unsigned char flag, t_shell *shell, char *start)
+static void	quo_syntax1(char *str, t_shell *shell)
+{
+	if (*str == ';')
+		shell->sep[0]++;
+	else if (*str == '|')
+		shell->sep[1]++;
+}
+
+static int	quo_syntax(char *str, unsigned char f, t_shell *shell, char *start)
 {
 	while (*str)
 	{
 		if (*str == '"' || *str == '\'')
-			manage_quotes(str, &flag, shell);
+			manage_quotes(str, &f, shell);
 		else if (*str == ';' || *str == '|')
 		{
-			if (*str == '|' && !(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '>')
+			if (*str == '|' && !(f & DOUBLED) && !(f & SINGLE) && \
+				*(str - 1) == '>')
 			{
 				if (!even_escaped(shell->hist_curr->command, (str - 1)))
 					shell->sep[1]++;
 			}
-			else if (!(flag & DOUBLED) && !(flag & SINGLE) && *(str - 1) == '\\')
+			else if (!(f & DOUBLED) && !(f & SINGLE) && *(str - 1) == '\\')
 			{
 				if (even_escaped(shell->hist_curr->command, str))
 					manage_separator(shell, &start, str, ' ');
 			}
-			else if ((flag & SINGLE) || (flag & DOUBLED))
+			else if ((f & SINGLE) || (f & DOUBLED))
 				manage_separator(shell, &start, str, '\\');
 			else
-			{
-				if (*str == ';')
-					shell->sep[0]++;
-				else if (*str == '|')
-					shell->sep[1]++;
-			}
+				quo_syntax1(str, shell);
 		}
 		str++;
 	}
-	return (quo_syntax_return(flag));
+	return (quo_syntax_return(f));
 }
 
-int precheck_syntax(t_shell *shell)
+int	precheck_syntax(t_shell *shell)
 {
 	int res;
-	unsigned char flag;
+	unsigned char f;
 	char *start;
 
 	if (ft_strchrset(shell->hist_curr->command, "'\";|"))
@@ -122,9 +131,9 @@ int precheck_syntax(t_shell *shell)
 		shell->seq->info |= QUOTED;
 		shell->sep[0] = 0;
 		shell->sep[1] = 0;
-		flag = ZERO;
+		f = ZERO;
 		start = shell->hist_curr->command;
-		res = quo_syntax(shell->hist_curr->command, flag, shell, start);
+		res = quo_syntax(shell->hist_curr->command, f, shell, start);
 		if (!res)
 			return (0);
 		if (res == 1)
