@@ -6,7 +6,7 @@ int	syntax_error(t_shell *shell, char sym)
 	write(2, &sym, 1);
 	write(2, "'\n", 2);
 	shell->seq->info |= SYNTAX_ERR;
-	ret_status = 258;
+	g_ret_status = 258;
 	return (1);
 }
 

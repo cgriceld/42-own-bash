@@ -34,7 +34,7 @@ static void	join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 	if (quo->slashes)
 	{
 		if (quo->slashes == -1)
-			*arg = ft_itoa(ret_status);
+			*arg = ft_itoa(g_ret_status);
 		else
 		{
 			shut_escape(quo);

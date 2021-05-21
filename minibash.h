@@ -38,7 +38,7 @@
 # define DEL "\x7f"
 # define CTRLD "\04"
 
-int	ret_status;
+int	g_ret_status;
 
 typedef enum e_modes
 {

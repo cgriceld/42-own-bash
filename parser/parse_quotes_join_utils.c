@@ -13,7 +13,7 @@ void	join_args2_utils(t_quo *quo, char **tmp2, char **arg)
 {
 	if (quo->slashes == -1)
 	{
-		*tmp2 = ft_itoa(ret_status);
+		*tmp2 = ft_itoa(g_ret_status);
 		*arg = ft_strjoin(*arg, *tmp2);
 		free(*tmp2);
 	}

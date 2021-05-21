@@ -18,7 +18,7 @@ static void	prepare(int __attribute__((unused)) argc, t_shell **shell)
 	(*shell)->hist_curr = (*shell)->history;
 	(*shell)->hist_ptr = (*shell)->hist_curr;
 	init_hist(*shell);
-	ret_status = 0;
+	g_ret_status = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -26,7 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*shell;
 
 	tgetent(NULL, getenv("TERM"));
-	ret_status = 0;
+	g_ret_status = 0;
 	prepare(argc, &shell);
 	envp_to_list(envp, shell);
 	set_signals();
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	else
 		ft_readline(shell);
 	free_error(NULL, &shell);
-	return (ret_status);
+	return (g_ret_status);
 }
 
 // int			main(int argc, char __attribute__((unused)) **argv, char **envp)

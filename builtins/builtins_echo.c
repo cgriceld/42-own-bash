@@ -19,7 +19,7 @@ int	builtins_echo(t_seq *tmp_seq, char *str_low)
 
 	if (redir(tmp_seq, &str_low, 0))
 		return (2);
-	ret_status = 0;
+	g_ret_status = 0;
 	n = 0;
 	if (tmp_seq->args[1] != NULL)
 	{
@@ -43,5 +43,5 @@ int	builtins_echo(t_seq *tmp_seq, char *str_low)
 	else
 		write(1, "\n", 1);
 	redir(tmp_seq, &str_low, 2);
-	return (ret_status);
+	return (g_ret_status);
 }

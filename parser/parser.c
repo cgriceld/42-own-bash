@@ -55,15 +55,15 @@ static void	run(t_seq *tmp_seq, t_shell *shell)
 		if (tmp_seq->pipe || (tmp_seq->info & PIPE))
 		{
 			if (tmp_seq->pipe)
-				ret_status = run_pipe(tmp_seq->pipe, shell);
+				g_ret_status = run_pipe(tmp_seq->pipe, shell);
 			else
-				ret_status = run_pipe(tmp_seq, shell);
+				g_ret_status = run_pipe(tmp_seq, shell);
 			if (tmp_seq->info & PIPE)
 				break ;
 			tmp_seq = tmp_seq->next;
 			continue ;
 		}
-		ret_status = run_one(tmp_seq, shell);
+		g_ret_status = run_one(tmp_seq, shell);
 		tmp_seq = tmp_seq->next;
 	}
 }

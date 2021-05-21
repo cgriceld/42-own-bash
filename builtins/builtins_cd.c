@@ -20,7 +20,7 @@
 //		write(2, "cd: ", 4);
 //		write(2, match, ft_strlen(match));
 //		write(2, ": not set\n", 10);
-//		ret_status = 1;
+//		g_ret_status = 1;
 //		return (NULL);
 //	}
 //	return (path);
@@ -51,7 +51,7 @@
 //		write(2, "cd: ", 4);
 //		write(2, str, ft_strlen(str));
 //		write(2, ": No such file or directory\n", 28);
-//		ret_status = 1;
+//		g_ret_status = 1;
 //	}
 //	else
 //	{
@@ -68,7 +68,7 @@
 //
 //	if (redir(shell, tmp_seq, &str_low, 1))
 //		return (1);
-//	ret_status = 0;
+//	g_ret_status = 0;
 //	param = tmp_seq->args[1];
 //	old_path = pwd(shell, tmp_seq);
 //	if (!old_path)
@@ -79,15 +79,15 @@
 //		path = find_path(shell, path, "OLDPWD");
 //	else
 //		path = param;
-//	if (path && ret_status == 0 && chdir(path) != 0)
+//	if (path && g_ret_status == 0 && chdir(path) != 0)
 //	{
 //		local_print(param, 1);
 //	//if (ft_strncmp(param, "-", 2) == 0)
 //	//	local_print(param, 0);
 //	}
-//	if (ret_status == 0)
+//	if (g_ret_status == 0)
 //		update_pwd(shell, path, old_path, tmp_seq);
-//	return (ret_status);
+//	return (g_ret_status);
 //}
 
 
@@ -113,7 +113,7 @@ char	*find_path(t_shell *shell, char *path, char *match)
 		write(2, "cd: ", 4);
 		write(2, match, ft_strlen(match));
 		write(2, ": not set\n", 10);
-		ret_status = 1;
+		g_ret_status = 1;
 		return (NULL);
 	}
 	return (path);
@@ -141,7 +141,7 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 
 	if (redir(tmp_seq, &str_low, 1))
 		return (1);
-	ret_status = 0;
+	g_ret_status = 0;
 	param = tmp_seq->args[1];
 	old_path = pwd(shell);
 	if (!old_path)
@@ -157,14 +157,14 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	}
 	else
 		path = param;
-	if (path && ret_status == 0 && chdir(path) != 0)
+	if (path && g_ret_status == 0 && chdir(path) != 0)
 	{
 		write(2, "cd: ", 4);
 		write(2, param, ft_strlen(param));
 		write(2, ": No such file or directory\n", 28);
-		ret_status = 1;
+		g_ret_status = 1;
 	}
-	if (ret_status == 0)
+	if (g_ret_status == 0)
 		update_pwd(shell, path, old_path);
-	return (ret_status);
+	return (g_ret_status);
 }
