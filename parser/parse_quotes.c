@@ -22,7 +22,7 @@ static void	find_loop(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 int	cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 				t_quo_split *tmp_split)
 {
-	char **str;
+	char	**str;
 
 	if (*(quo->end - 1) == '\\' && quo->last_slash)
 	{
@@ -70,16 +70,16 @@ static void	find_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 		{
 			if (ft_strchr("$<>\"'", *quo->end) && \
 				cancel_escape(tmp_seq, shell, quo, tmp_split))
-				continue;
+				continue ;
 			join_routine(tmp_seq, shell, quo, tmp_split);
 			if (tmp_split->next)
 				tmp_split = tmp_split->next;
 			what_parse(tmp_seq, shell, quo, tmp_split);
 			if (shell->seq->info & SYNTAX_ERR)
-				return;
+				return ;
 			while (tmp_split->next)
 				tmp_split = tmp_split->next;
-			continue;
+			continue ;
 		}
 		while (tmp_split->next)
 			tmp_split = tmp_split->next;

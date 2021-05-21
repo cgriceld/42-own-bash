@@ -1,28 +1,9 @@
 #include "../minibash.h"
 
-static void	shut_escape(t_seq *tmp_seq, t_quo *quo)
-{
-	if (!(quo->slashes % 2))
-		quo->last_slash = 0;
-	else
-		quo->last_slash = 1;
-	quo->slashes = quo->slashes / 2;
-}
-
-static void	join_args2_utils(t_quo *quo, char *tmp2, char **arg)
-{
-	if (quo->slashes == -1)
-	{
-		tmp2 = ft_itoa(ret_status);
-		*arg = ft_strjoin(*arg, tmp2);
-		free(tmp2);
-	}
-}
-
 void	join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 {
-	char *tmp;
-	char *tmp2;
+	char	*tmp;
+	char	*tmp2;
 
 	tmp = *arg;
 	if (quo->slashes)
@@ -86,7 +67,7 @@ void	join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 
 void	join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = *str;
 	*str = ft_strjoin(*str, sym);

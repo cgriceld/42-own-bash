@@ -1,44 +1,6 @@
 #include "../minibash.h"
 
-static int run_builtin(t_seq *tmp_seq, t_shell *shell)
-{
-	char *tmp;
-
-	tmp = ft_low_str(tmp_seq->run);
-	if (!ft_strncmp(tmp, "echo", ft_strlen(tmp_seq->run)))
-		return (builtins_echo(shell, tmp_seq, tmp));
-	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
-		return (builtins_cd(shell, tmp_seq, tmp));
-	else if (!ft_strncmp(tmp, "pwd", ft_strlen(tmp_seq->run)))
-		return (builtins_pwd(shell, tmp_seq, tmp));
-	else if (!ft_strncmp(tmp, "env", ft_strlen(tmp_seq->run)))
-		return (builtins_env(shell, tmp_seq, tmp));
-	else if (!ft_strncmp(tmp_seq->run, "unset", ft_strlen(tmp_seq->run)))
-		return (builtins_unset_value(shell, tmp_seq, tmp, 0));
-	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
-		return (builtins_export(shell, tmp_seq, tmp, 0));
-	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
-		return (builtins_exit(shell, tmp_seq, tmp));
-	return (0);
-}
-
-static void handle_eacces(char *comm)
-{
-	struct stat s;
-
-	if (!ft_strchr(comm, '/'))
-	{
-		write(2, ": command not found\n", 20);
-		exit(127);
-	}
-	if (!stat(comm, &s) && S_ISDIR(s.st_mode))
-		write(2, ": is a directory\n", 17);
-	else
-		write(2, ": Permission denied\n", 20);
-	exit(126);
-}
-
-static void handle_errno(char *comm, int errno_save)
+static void	handle_errno(char *comm, int errno_save)
 {
 	write(2, "-minibash: ", 11);
 	write(2, comm, ft_strlen(comm));
@@ -66,18 +28,22 @@ static void handle_errno(char *comm, int errno_save)
 	}
 }
 
-static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
+static int	run_child(t_seq *tmp_seq, char **arr_env, t_shell *shell)
 {
-	int status;
+	if (tmp_seq->redirect && run_redirect(tmp_seq, shell))
+		exit(1);
+	if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)
+		handle_errno(tmp_seq->args[0], errno);
+	exit(0);
+}
+
+static int	run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, \
+					t_shell *shell)
+{
+	int	status;
 
 	if (!pid)
-	{
-		if (tmp_seq->redirect && run_redirect(tmp_seq, shell))
-			exit(1);
-		if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)
-			handle_errno(tmp_seq->args[0], errno);
-		exit(0);
-	}
+		run_child(tmp_seq, arr_env, shell);
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -94,11 +60,12 @@ static int run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, t_shell *shell)
 		else
 			return (1);
 	}
+	return (0);
 }
 
-static int run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
+static int	run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
@@ -111,7 +78,7 @@ static int run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 		return (run_execve(pid, tmp_seq, arr_env, shell));
 }
 
-int run_one(t_seq *tmp_seq, t_shell *shell)
+int	run_one(t_seq *tmp_seq, t_shell *shell)
 {
 	if (!tmp_seq->run && tmp_seq->redirect)
 		return (run_redirect(tmp_seq, shell));

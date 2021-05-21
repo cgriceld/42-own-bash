@@ -21,10 +21,10 @@ int	init_seq(t_seq **seq)
 	return (0);
 }
 
-int			is_builtin(char *s)
+int	is_builtin(char *s)
 {
-	char *tmp;
-	int len;
+	char	*tmp;
+	int		len;
 
 	tmp = ft_low_str(s);
 	len = ft_strlen(s);
@@ -46,10 +46,10 @@ int			is_builtin(char *s)
 	}
 }
 
-static void run(t_seq *tmp_seq, t_shell *shell)
+static void	run(t_seq *tmp_seq, t_shell *shell)
 {
 	if (shell->seq->info & SYNTAX_ERR)
-		return;
+		return ;
 	while (tmp_seq)
 	{
 		if (tmp_seq->pipe || (tmp_seq->info & PIPE))
@@ -59,16 +59,16 @@ static void run(t_seq *tmp_seq, t_shell *shell)
 			else
 				ret_status = run_pipe(tmp_seq, shell);
 			if (tmp_seq->info & PIPE)
-				break;
+				break ;
 			tmp_seq = tmp_seq->next;
-			continue;
+			continue ;
 		}
 		ret_status = run_one(tmp_seq, shell);
 		tmp_seq = tmp_seq->next;
 	}
 }
 
-void		parser(t_shell *shell)
+void	parser(t_shell *shell)
 {
 	t_seq	*tmp_seq;
 
@@ -76,7 +76,7 @@ void		parser(t_shell *shell)
 		free_error(strerror(errno), &shell);
 	tmp_seq = shell->seq;
 	if (precheck_syntax(shell))
-		return;
+		return ;
 	if (ft_strchr(shell->hist_curr->command, ';'))
 	{
 		if ((shell->seq->info & QUOTED) && tmp_seq->run)

@@ -12,7 +12,7 @@ int	init_quo_split(t_quo_split **new)
 
 void	free_quotes(t_quo **quo)
 {
-	t_quo_split *tmp;
+	t_quo_split	*tmp;
 
 	while ((*quo)->split)
 	{
@@ -55,7 +55,7 @@ void	fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 		error_quotes(&quo, &shell);
 	fill_args(tmp_seq, shell, quo, i);
 	if (!quo->split_len)
-		return;
+		return ;
 	tmp_s = quo->split;
 	i = 0;
 	while (tmp_s)

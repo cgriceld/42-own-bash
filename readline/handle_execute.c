@@ -2,7 +2,7 @@
 
 void	handle_execute(t_shell *shell)
 {
-	char *tmp;
+	char	*tmp;
 
 	printf("\n");
 	if (shell->hist_ptr != shell->hist_curr)

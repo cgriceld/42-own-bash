@@ -1,30 +1,9 @@
 #include "../minibash.h"
 
-int syntax_error(t_shell *shell, char sym)
-{
-	write(2, "-minibash: syntax error near unexpected token `", 47);
-	write(2, &sym, 1);
-	write(2, "'\n", 2);
-	shell->seq->info |= SYNTAX_ERR;
-	ret_status = 258;
-	return (1);
-}
-
-static void trim_or_not(char *split, t_seq *tmp_seq)
-{
-	char *sym;
-
-	sym = ft_strrchr(split, '\\');
-	if (!sym || (sym && *(sym - 1) == '\\' && even_escaped(split, ++sym)))
-		tmp_seq->run = ft_strtrim(split, " ");
-	else
-		tmp_seq->run = ft_strdup(split);;
-}
-
-static int fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)
+static int	fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)
 {
 	size_t	i;
-	char *tmp;
+	char	*tmp;
 
 	i = 0;
 	while (split[i])
@@ -37,7 +16,7 @@ static int fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)
 		if (!*tmp_seq->run)
 		{
 			syntax_error(shell, sym);
-			break;
+			break ;
 		}
 		if (split[i + 1] && init_seq(&tmp_seq->next))
 			return (1);
@@ -49,7 +28,7 @@ static int fill_lst(t_seq *tmp_seq, t_shell *shell, char **split, char sym)
 	return (0);
 }
 
-static int check_separator(t_shell *shell, char sym, size_t len, char *str)
+static int	check_separator(t_shell *shell, char sym, size_t len, char *str)
 {
 	if (sym == '|')
 	{
@@ -69,9 +48,9 @@ static int check_separator(t_shell *shell, char sym, size_t len, char *str)
 	return (0);
 }
 
-static int pipe_exist(char *str)
+static int	pipe_exist(char *str)
 {
-	char *start;
+	char	*start;
 
 	start = str;
 	while (*str)
@@ -84,7 +63,7 @@ static int pipe_exist(char *str)
 	return (0);
 }
 
-static void	parse_split1(t_seq *tmp_seq, t_shell *shell, char sym)
+static void	parse_split_loop(t_seq *tmp_seq, t_shell *shell, char sym)
 {
 	while (tmp_seq)
 	{
@@ -95,13 +74,13 @@ static void	parse_split1(t_seq *tmp_seq, t_shell *shell, char sym)
 			else
 				parse_split(tmp_seq->pipe, shell, '|', tmp_seq->run);
 			if (shell->seq->info & SYNTAX_ERR)
-				return;
+				return ;
 			tmp_seq = tmp_seq->next;
-			continue;
+			continue ;
 		}
 		parse_one(tmp_seq, shell);
 		if (shell->seq->info & SYNTAX_ERR)
-			return;
+			return ;
 		if (sym != '|' && tmp_seq->run)
 		{
 			if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
@@ -113,14 +92,14 @@ static void	parse_split1(t_seq *tmp_seq, t_shell *shell, char sym)
 	}
 }
 
-void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
+void	parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 {
-	char **split;
+	char	**split;
 
 	if (sym == ';' && str[0] == sym)
 	{
 		syntax_error(shell, sym);
-		return;
+		return ;
 	}
 	split = ft_split(str, sym);
 	if (!split)
@@ -128,12 +107,12 @@ void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str)
 	if (check_separator(shell, sym, ft_twodarr_len(split), str))
 	{
 		ft_twodarr_free(&split, ft_twodarr_len(split));
-		return;
+		return ;
 	}
 	if (fill_lst(tmp_seq, shell, split, sym))
 		free_split(&split, shell);
 	ft_twodarr_free(&split, ft_twodarr_len(split));
 	if (shell->seq->info & SYNTAX_ERR)
-		return;
-	parse_split1(tmp_seq, shell, sym);
+		return ;
+	parse_split_loop(tmp_seq, shell, sym);
 }

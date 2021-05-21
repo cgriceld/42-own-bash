@@ -1,31 +1,5 @@
 #include "../minibash.h"
 
-static int	quo_syntax_return(unsigned char f)
-{
-	if (f & DOUBLED)
-		return (1);
-	if (f & SINGLE)
-		return (2);
-	return (0);
-}
-
-int	even_escaped(char *start, char *str)
-{
-	int res;
-
-	res = 0;
-	str--;
-	while (str != start && *str == '\\')
-	{
-		res++;
-		str--;
-	}
-	if (!(res % 2))
-		return (1);
-	else
-		return (0);
-}
-
 static void	manage_quotes(char *str, unsigned char *f, t_shell *shell)
 {
 	if (*str == '"')
@@ -47,21 +21,13 @@ static void	manage_quotes(char *str, unsigned char *f, t_shell *shell)
 	}
 }
 
-static void	manage_before(char **before, t_shell *shell, size_t len)
-{
-	if (!shell->seq->run)
-		*before = ft_strdup("");
-	else
-		*before = ft_substr(shell->seq->run, 0, len);
-}
-
 static void	manage_separator(t_shell *shell, char **start, char *str, char sym)
 {
-	char *tmp;
-	char *tmp2;
-	char *after;
-	char *before;
-	static size_t len = 0;
+	char			*tmp;
+	char			*tmp2;
+	char			*after;
+	char			*before;
+	static size_t	len = 0;
 
 	manage_before(&before, shell, len);
 	tmp2 = ft_substr(shell->hist_curr->command, \
@@ -83,7 +49,7 @@ static void	manage_separator(t_shell *shell, char **start, char *str, char sym)
 		shell->sep[1]++;
 }
 
-static void	quo_syntax1(char *str, t_shell *shell)
+static void	quo_syntax_utils(char *str, t_shell *shell)
 {
 	if (*str == ';')
 		shell->sep[0]++;
@@ -113,7 +79,7 @@ static int	quo_syntax(char *str, unsigned char f, t_shell *shell, char *start)
 			else if ((f & SINGLE) || (f & DOUBLED))
 				manage_separator(shell, &start, str, '\\');
 			else
-				quo_syntax1(str, shell);
+				quo_syntax_utils(str, shell);
 		}
 		str++;
 	}
@@ -122,9 +88,9 @@ static int	quo_syntax(char *str, unsigned char f, t_shell *shell, char *start)
 
 int	precheck_syntax(t_shell *shell)
 {
-	int res;
-	unsigned char f;
-	char *start;
+	int				res;
+	unsigned char	f;
+	char			*start;
 
 	if (ft_strchrset(shell->hist_curr->command, "'\";|"))
 	{

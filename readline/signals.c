@@ -2,7 +2,7 @@
 
 int	*signal_tracker(void)
 {
-	static int was_sig = 0;
+	static int	was_sig = 0;
 
 	return (&was_sig);
 }

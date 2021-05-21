@@ -2,7 +2,7 @@
 
 void	set_mode(int type)
 {
-	struct termios term;
+	struct termios	term;
 
 	tcgetattr(0, &term);
 	if (!type)

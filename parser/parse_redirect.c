@@ -1,43 +1,9 @@
 #include "../minibash.h"
 
-static void	dollar_path(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo)
-{
-	char *start;
-
-	start = quo->end;
-	if (*start == ' ')
-		start--;
-	while (*start != ' ' && *start != '>' && *start != '<')
-		start--;
-	start++;
-	tmp_redir->path = ft_substr(start, 0, quo->end - start);
-	if (!tmp_redir->path)
-		error_quotes(&quo, &shell);
-}
-
-static void	parse_input(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo)
-{
-	if (!tmp_redir->path && (tmp_redir->type & AMBIGUOUS))
-		dollar_path(tmp_redir, shell, quo);
-	else if (!tmp_redir->path)
-		syntax_error(shell, '<');
-	tmp_redir->type |= REDIR_IN;
-}
-
-static void	parse_output(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo)
-{
-	if (!tmp_redir->path && (tmp_redir->type & AMBIGUOUS))
-		dollar_path(tmp_redir, shell, quo);
-	else if (!tmp_redir->path)
-		syntax_error(shell, '>');
-	if (!(tmp_redir->type & REDIR_APPEND))
-		tmp_redir->type |= REDIR_OUT;
-}
-
 static int	check_redirect(t_quo *quo, char sym, t_shell *shell, \
 						t_seq *tmp_seq)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (*quo->end == sym)
@@ -78,20 +44,39 @@ static void	construct_file(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 			quo->end++;
 		if (ft_strchr(" $<>\"'", *quo->end) && \
 				cancel_escape(tmp_seq, shell, quo, NULL))
-			continue;
+			continue ;
 		join_routine(tmp_seq, shell, quo, NULL);
 		if (ft_strchr(" <>", *quo->end))
-			break;
+			break ;
 		what_parse(tmp_seq, shell, quo, NULL);
-		continue;
+		continue ;
 	}
+}
+
+static void	parse_redirect_utils(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
+								t_redir_chain *tmp_redir)
+{
+	char	sym;
+	int		i;
+
+	sym = *quo->end;
+	i = check_redirect(quo, sym, shell, tmp_seq);
+	if (shell->seq->info & SYNTAX_ERR)
+		return ;
+	construct_file(tmp_seq, shell, quo);
+	if (i == 2)
+		tmp_redir->type |= REDIR_APPEND;
+	if (tmp_redir->path)
+		tmp_redir->type &= ~AMBIGUOUS;
+	if (sym == '>')
+		parse_output(tmp_redir, shell, quo);
+	else if (sym == '<')
+		parse_input(tmp_redir, shell, quo);
 }
 
 void	parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 {
 	static t_redir_chain	*tmp_redir;
-	char					sym;
-	int						i;
 
 	if (!tmp_seq->redirect)
 	{
@@ -110,17 +95,5 @@ void	parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 		quo->end++;
 		tmp_seq->tmp_redir->type |= IGNORE;
 	}
-	sym = *quo->end;
-	i = check_redirect(quo, sym, shell, tmp_seq);
-	if (shell->seq->info & SYNTAX_ERR)
-		return;
-	construct_file(tmp_seq, shell, quo);
-	if (i == 2)
-		tmp_redir->type |= REDIR_APPEND;
-	if (tmp_redir->path)
-		tmp_redir->type &= ~AMBIGUOUS;
-	if (sym == '>')
-		parse_output(tmp_redir, shell, quo);
-	else if (sym == '<')
-		parse_input(tmp_redir, shell, quo);
+	parse_redirect_utils(tmp_seq, shell, quo, tmp_redir);
 }

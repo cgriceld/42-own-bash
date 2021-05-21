@@ -2,7 +2,7 @@
 
 static void	upd_path(t_seq *tmp_seq, char *comm)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = tmp_seq->run;
 	tmp_seq->run = ft_strdup(comm);
@@ -31,7 +31,7 @@ static void	concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *t)
 			free(comm);
 			if (!tmp_seq->run || !tmp_seq->args[0])
 				free_split(&split, shell);
-			return;
+			return ;
 		}
 		free(comm);
 		i++;
@@ -40,7 +40,7 @@ static void	concat_path(t_seq *tmp_seq, t_shell *shell, char **split, char *t)
 
 static void	full_or_wrong(t_seq *tmp_seq, t_shell *shell)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = tmp_seq->run;
 	tmp_seq->run = ft_strdup(tmp_seq->args[0]);
@@ -73,7 +73,7 @@ void	parse_one(t_seq *tmp_seq, t_shell *shell)
 	{
 		parse_quotes(tmp_seq, shell);
 		if (!tmp_seq->run || (shell->seq->info & SYNTAX_ERR))
-			return;
+			return ;
 	}
 	else
 	{

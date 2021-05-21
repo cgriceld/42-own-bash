@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-static int redirect_error(char *path, int flag)
+static int	redirect_error(char *path, int flag)
 {
 	write(2, "-minibash: ", 11);
 	write(2, path, ft_strlen(path));
@@ -17,10 +17,10 @@ static int redirect_error(char *path, int flag)
 	return (1);
 }
 
-static int redirect_out(t_seq *tmp_seq, t_redir_chain *tmp_redir)
+static int	redirect_out(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 {
-	int fd;
-	
+	int	fd;
+
 	if (tmp_redir->type & REDIR_OUT)
 		fd = open(tmp_redir->path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
@@ -33,7 +33,7 @@ static int redirect_out(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 	return (0);
 }
 
-static int redirect_in(t_seq *tmp_seq, t_redir_chain *tmp_redir)
+static int	redirect_in(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 {
 	int			fd;
 	struct stat	s;
@@ -49,16 +49,17 @@ static int redirect_in(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 	return (0);
 }
 
-int run_redirect(t_seq *tmp_seq, t_shell *shell)
+int	run_redirect(t_seq *tmp_seq, t_shell *shell)
 {
-	t_redir_chain *tmp_redir;
+	t_redir_chain	*tmp_redir;
 
 	tmp_redir = tmp_seq->redirect;
 	while (tmp_redir)
 	{
 		if (tmp_redir->type & AMBIGUOUS)
 			return (redirect_error(tmp_redir->path, 2));
-		else if ((tmp_redir->type & REDIR_IN) && redirect_in(tmp_seq, tmp_redir))
+		else if ((tmp_redir->type & REDIR_IN) && \
+					redirect_in(tmp_seq, tmp_redir))
 			return (1);
 		else if (((tmp_redir->type & REDIR_OUT) || \
 		(tmp_redir->type & REDIR_APPEND)) && redirect_out(tmp_seq, tmp_redir))

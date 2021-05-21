@@ -194,9 +194,13 @@ void parser(t_shell *shell);
 void	free_split(char ***split, t_shell *shell);
 int	init_seq(t_seq **seq);
 void parse_split(t_seq *tmp_seq, t_shell *shell, char sym, char *str);
+void	trim_or_not(char *split, t_seq *tmp_seq);
 void	parse_one(t_seq *tmp_seq, t_shell *shell);
 int			is_builtin(char *s);
 void parse_redirect(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
+void	dollar_path(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo);
+void	parse_input(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo);
+void	parse_output(t_redir_chain *tmp_redir, t_shell *shell, t_quo *quo);
 int syntax_error(t_shell *shell, char sym);
 void parse_quotes(t_seq *tmp_seq, t_shell *shell);
 int init_quo_split(t_quo_split **new);
@@ -204,7 +208,11 @@ void free_quotes(t_quo **quo);
 void error_quotes(t_quo **quo, t_shell **shell);
 void fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 int precheck_syntax(t_shell *shell);
+int	quo_syntax_return(unsigned char f);
+void	manage_before(char **before, t_shell *shell, size_t len);
 void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void	shut_escape(t_seq *tmp_seq, t_quo *quo);
+void	join_args2_utils(t_quo *quo, char *tmp2, char **arg);
 void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym);
 void join_routine(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
@@ -212,6 +220,7 @@ void parse_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_s
 void parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 int even_escaped(char *start, char *str);
 void parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
+void	error_dollar(char **value, t_quo *quo, t_shell *shell);
 void redirect_join(t_seq *tmp_seq, t_shell *shell, t_quo *quo);
 void join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg);
 int cancel_escape(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
@@ -219,6 +228,8 @@ void what_parse(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_spl
 
 // executer
 int run_one(t_seq *tmp_seq, t_shell *shell);
+int	run_builtin(t_seq *tmp_seq, t_shell *shell);
+void	handle_eacces(char *comm);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
 int run_redirect(t_seq *tmp_seq, t_shell *shell);
 

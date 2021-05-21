@@ -23,7 +23,7 @@ void	parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;
 		if (*quo->end == '\'')
-			break;
+			break ;
 		else if (*quo->end == '\\')
 		{
 			parse_singleq_utils(tmp_seq, shell, quo, tmp_split);
@@ -52,7 +52,7 @@ static void	parse_doubleq_utils(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 					t_quo_split *tmp_split)
 {
 	if (*quo->end == '\\' && ft_strchr("\\$\"|;", *(quo->end + 1)))
-			parse_escape(tmp_seq, shell, quo, tmp_split);
+		parse_escape(tmp_seq, shell, quo, tmp_split);
 	else if (*quo->end == '$' && *(quo->end + 1) != '"')
 		parse_dollar(tmp_seq, shell, quo, tmp_split);
 	else
@@ -74,12 +74,12 @@ void	parse_doubleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 			quo->end++;
 		if (ft_strchr("$\"", *quo->end) && \
 					cancel_escape(tmp_seq, shell, quo, tmp_split))
-			continue;
+			continue ;
 		join_routine(tmp_seq, shell, quo, tmp_split);
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;
 		if (*quo->end == '"')
-			break;
+			break ;
 		parse_doubleq_utils(tmp_seq, shell, quo, tmp_split);
 		if (tmp_split && tmp_split->next)
 			tmp_split = tmp_split->next;

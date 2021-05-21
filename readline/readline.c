@@ -2,7 +2,7 @@
 
 static void	write_symbol(t_shell *shell, char *str, ssize_t read_len)
 {
-	char *tmp;
+	char	*tmp;
 
 	write(1, str, read_len);
 	if (shell->hist_ptr != shell->hist_curr && !shell->hist_ptr->cache)
@@ -21,7 +21,7 @@ static void	write_symbol(t_shell *shell, char *str, ssize_t read_len)
 static void	handle_read(t_shell *shell, char *str, ssize_t read_len)
 {
 	if (!ft_strncmp(str, LEFT, 10) || !ft_strncmp(str, RIGHT, 10))
-		return;
+		return ;
 	else if (!ft_strncmp(str, UP, 10))
 		handle_up(shell);
 	else if (!ft_strncmp(str, DOWN, 10))
@@ -36,7 +36,7 @@ static void	handle_read(t_shell *shell, char *str, ssize_t read_len)
 
 void	deal_cache(t_shell *shell)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = shell->hist_ptr->command;
 	shell->hist_ptr->command = ft_strdup(shell->hist_ptr->cache);
@@ -48,7 +48,7 @@ void	deal_cache(t_shell *shell)
 
 static void	ctrlc(t_shell *shell)
 {
-	char *tmp;
+	char	*tmp;
 
 	if ((shell->hist_ptr != shell->hist_curr) && shell->hist_ptr->cache)
 		deal_cache(shell);
