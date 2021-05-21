@@ -119,9 +119,9 @@ char	*find_path(t_shell *shell, char *path, char *match)
 	return (path);
 }
 
-void	update_pwd(t_shell *shell, char *path, char *old_path, t_seq *tmp_seq)
+void	update_pwd(t_shell *shell, char *path, char *old_path)
 {
-	path = pwd(shell, tmp_seq);
+	path = pwd(shell);
 	if (ft_strncmp(old_path, path, ft_strlen(old_path + 1)) != 0)
 	{
 		envp_set_value(shell, "OLDPWD", old_path);
@@ -139,13 +139,14 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	char	*old_path;
 	char	*param;
 
-	if (redir(shell, tmp_seq, &str_low, 1))
+	if (redir(tmp_seq, &str_low, 1))
 		return (1);
 	ret_status = 0;
 	param = tmp_seq->args[1];
-	old_path = pwd(shell, tmp_seq);
+	old_path = pwd(shell);
 	if (!old_path)
 		return (1);
+	path = NULL;
 	if (!param || (ft_strncmp(param, "", 1) == 0))
 		path = find_path(shell, path, "HOME");
 	else if (ft_strncmp(param, "-", 2) == 0)
@@ -164,6 +165,6 @@ int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		ret_status = 1;
 	}
 	if (ret_status == 0)
-		update_pwd(shell, path, old_path, tmp_seq);
+		update_pwd(shell, path, old_path);
 	return (ret_status);
 }

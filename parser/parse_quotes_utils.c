@@ -31,8 +31,10 @@ void	error_quotes(t_quo **quo, t_shell **shell)
 	free_error(strerror(errno), shell);
 }
 
-static void	fill_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, size_t i)
+static void	fill_args(t_seq *tmp_seq, t_quo *quo)
 {
+	size_t	i;
+
 	tmp_seq->args[quo->split_len] = NULL;
 	i = quo->split_len;
 	while (i--)
@@ -53,7 +55,7 @@ void	fill_after_quotes(t_seq *tmp_seq, t_shell *shell, t_quo *quo)
 	tmp_seq->args = (char **)malloc(sizeof(char *) * (quo->split_len + 1));
 	if (!tmp_seq->args)
 		error_quotes(&quo, &shell);
-	fill_args(tmp_seq, shell, quo, i);
+	fill_args(tmp_seq, quo);
 	if (!quo->split_len)
 		return ;
 	tmp_s = quo->split;

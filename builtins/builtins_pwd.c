@@ -12,7 +12,7 @@
 
 #include "../minibash.h"
 
-char	*pwd(t_shell *shell, t_seq *tmp_seq)
+char	*pwd(t_shell *shell)
 {
 	char		*buf;
 	size_t		size;
@@ -32,14 +32,14 @@ int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 {
 	char	*buf;
 
-	if (redir(shell, tmp_seq, &str_low, 0))
+	if (redir(tmp_seq, &str_low, 0))
 		return (2);
-	buf = pwd(shell, tmp_seq);
+	buf = pwd(shell);
 	if (!buf)
 		return (2);
 	printf("%s", buf);
 	free(buf);
 	printf("\n");
-	redir(shell, tmp_seq, &str_low, 2);
+	redir(tmp_seq, &str_low, 2);
 	return (0);
 }

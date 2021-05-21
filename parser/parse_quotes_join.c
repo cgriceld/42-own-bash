@@ -8,10 +8,10 @@ void	join_args2(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 	tmp = *arg;
 	if (quo->slashes)
 	{
-		join_args2_utils(quo, tmp2, arg);
+		join_args2_utils(quo, &tmp2, arg);
 		if (quo->slashes != -1)
 		{
-			shut_escape(tmp_seq, quo);
+			shut_escape(quo);
 			tmp2 = ft_genstr('\\', quo->slashes);
 			*arg = ft_strjoin(*arg, tmp2);
 			free(tmp2);
@@ -37,7 +37,7 @@ static void	join_args1(t_seq *tmp_seq, t_shell *shell, t_quo *quo, char **arg)
 			*arg = ft_itoa(ret_status);
 		else
 		{
-			shut_escape(tmp_seq, quo);
+			shut_escape(quo);
 			*arg = ft_genstr('\\', quo->slashes);
 		}
 	}

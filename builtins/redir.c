@@ -15,7 +15,7 @@
 // flag = 1 : open and close
 // flag = 0 : only open
 // flag = 2 : only close
-int	redir(t_shell *shell, t_seq *tmp_seq, char **str_low, int flag)
+int	redir(t_seq *tmp_seq, char **str_low, int flag)
 {
 	static int fds[2];
 	int res;
@@ -25,7 +25,7 @@ int	redir(t_shell *shell, t_seq *tmp_seq, char **str_low, int flag)
 	{
 		fds[0] = dup(0);
 		fds[1] = dup(1);
-		res = run_redirect(tmp_seq, shell);
+		res = run_redirect(tmp_seq);
 	}
 	if (flag || res)
 	{

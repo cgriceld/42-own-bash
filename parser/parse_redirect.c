@@ -1,7 +1,6 @@
 #include "../minibash.h"
 
-static int	check_redirect(t_quo *quo, char sym, t_shell *shell, \
-						t_seq *tmp_seq)
+static int	check_redirect(t_quo *quo, char sym, t_shell *shell)
 {
 	int	i;
 
@@ -60,7 +59,7 @@ static void	parse_redirect_utils(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 	int		i;
 
 	sym = *quo->end;
-	i = check_redirect(quo, sym, shell, tmp_seq);
+	i = check_redirect(quo, sym, shell);
 	if (shell->seq->info & SYNTAX_ERR)
 		return ;
 	construct_file(tmp_seq, shell, quo);

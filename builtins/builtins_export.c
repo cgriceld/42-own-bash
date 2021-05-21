@@ -117,7 +117,7 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 	char	*param;
 	int		i;
 
-	if (!flag && redir(shell, tmp_seq, &str_low, 0))
+	if (!flag && redir(tmp_seq, &str_low, 0))
 		return (2);
 	ret_status = 0;
 	if (!flag && (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n'))
@@ -145,6 +145,6 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		i++;
 	}
 	if (!flag)
-		redir(shell, tmp_seq, &str_low, 2);
+		redir(tmp_seq, &str_low, 2);
 	return (ret_status);
 }

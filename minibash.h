@@ -119,7 +119,7 @@ typedef struct	s_shell
 	t_env		*env;
 	size_t		env_size;
 	t_seq		*seq;
-	int			sep[2];
+	size_t		sep[2];
 }				t_shell;
 
 struct		s_list
@@ -211,8 +211,8 @@ int precheck_syntax(t_shell *shell);
 int	quo_syntax_return(unsigned char f);
 void	manage_before(char **before, t_shell *shell, size_t len);
 void join_args(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
-void	shut_escape(t_seq *tmp_seq, t_quo *quo);
-void	join_args2_utils(t_quo *quo, char *tmp2, char **arg);
+void	shut_escape(t_quo *quo);
+void	join_args2_utils(t_quo *quo, char **tmp2, char **arg);
 void join_one_sym(t_shell *shell, t_quo *quo, char **str, char *sym);
 void join_routine(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
 void parse_singleq(t_seq *tmp_seq, t_shell *shell, t_quo *quo, t_quo_split *tmp_split);
@@ -231,17 +231,17 @@ int run_one(t_seq *tmp_seq, t_shell *shell);
 int	run_builtin(t_seq *tmp_seq, t_shell *shell);
 void	handle_eacces(char *comm);
 int run_pipe(t_seq *tmp_seq, t_shell *shell);
-int run_redirect(t_seq *tmp_seq, t_shell *shell);
+int run_redirect(t_seq *tmp_seq);
 
 //builtins
-char	*pwd(t_shell *shell, t_seq *tmp_seq);
+char	*pwd(t_shell *shell);
 int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int	builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low);
-int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int	builtins_echo(t_seq *tmp_seq, char *str_low);
 int builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag);
 int builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag);
-int	redir(t_shell *shell, t_seq *tmp_seq, char **str_low, int flag);
+int	redir(t_seq *tmp_seq, char **str_low, int flag);
 int	check_is_valid(t_seq *tmp_seq, int i, int flag);
 #endif

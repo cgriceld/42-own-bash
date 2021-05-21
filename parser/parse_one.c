@@ -66,8 +66,6 @@ static void	find_path(t_seq *tmp_seq, t_shell *shell)
 
 void	parse_one(t_seq *tmp_seq, t_shell *shell)
 {
-	struct stat	s;
-
 	if ((tmp_seq->run && ft_strchrset(tmp_seq->run, "$<>'\"\\")) || \
 		(!tmp_seq->run && ft_strchrset(shell->hist_curr->command, "$<>'\"\\")))
 	{

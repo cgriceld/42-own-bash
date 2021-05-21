@@ -1,6 +1,8 @@
 #include "minibash.h"
 
-static void	prepare(int argc, t_shell **shell)
+// static void	prepare(int argc, t_shell **shell)
+
+static void	prepare(int __attribute__((unused)) argc, t_shell **shell)
 {
 	// if (argc != 1)
 	// 	lite_error(WRONG_ARGS);

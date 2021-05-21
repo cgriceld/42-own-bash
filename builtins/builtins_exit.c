@@ -12,11 +12,11 @@
 
 #include "../minibash.h"
 
-int	static	too_many_args(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	static	too_many_args(t_seq *tmp_seq, char *str_low)
 {
 	write(1, "exit: too many arguments\n", 25);
 	ret_status = 1;
-	redir(shell, tmp_seq, &str_low, 2);
+	redir(tmp_seq, &str_low, 2);
 	return (ret_status);
 }
 
@@ -27,7 +27,7 @@ int	static	not_num_arg(t_shell *shell, t_seq *tmp_seq, char *copy, char *str_low
 	write(1, ": numeric argument required\n", 28);
 	ret_status = 255;
 	free(copy);
-	redir(shell, tmp_seq, &str_low,2);
+	redir(tmp_seq, &str_low, 2);
 	free_error(NULL, &shell);
 	exit(ret_status);
 }
@@ -39,7 +39,7 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	char	*copy;
 	int pluses;
 
-	if (redir(shell, tmp_seq, &str_low, 1))
+	if (redir(tmp_seq, &str_low, 1))
 		return (1);
 	ret_status = 0;
 	n_args = 0;
@@ -62,8 +62,8 @@ int	builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low)
 		free(copy);
 	}
 	if ((n_args) > 2)
-		return (too_many_args(shell, tmp_seq,  str_low));
-	redir(shell, tmp_seq, &str_low, 2);
+		return (too_many_args(tmp_seq,  str_low));
+	redir(tmp_seq, &str_low, 2);
 	free_error(NULL, &shell);
 	exit(ret_status);
 }

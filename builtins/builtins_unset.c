@@ -50,7 +50,7 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag
 	int		i;
 	int		len;
 
-	if (!flag && redir(shell, tmp_seq, &str_low, 1))
+	if (!flag && redir(tmp_seq, &str_low, 1))
 		return (1);
 	i = 1;
 	ret_status = 0;
@@ -83,6 +83,6 @@ int	builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag
 		shell->env_size--;
 	}
 	if (!flag)
-		redir(shell, tmp_seq, &str_low, 2);
+		redir(tmp_seq, &str_low, 2);
 	return (ret_status);
 }

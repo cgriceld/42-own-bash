@@ -12,12 +12,12 @@
 
 #include "../minibash.h"
 
-int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low)
+int	builtins_echo(t_seq *tmp_seq, char *str_low)
 {
 	int		n;
 	int		i;
 
-	if (redir(shell, tmp_seq, &str_low, 0))
+	if (redir(tmp_seq, &str_low, 0))
 		return (2);
 	ret_status = 0;
 	n = 0;
@@ -42,6 +42,6 @@ int	builtins_echo(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	}
 	else
 		write(1, "\n", 1);
-	redir(shell, tmp_seq, &str_low, 2);
+	redir(tmp_seq, &str_low, 2);
 	return (ret_status);
 }

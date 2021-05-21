@@ -2,7 +2,7 @@ NAME = minishell
 HEADER = minibash.h
 
 CC = gcc
-CFLAGS = -g
+CFLAGS = -Wall -Wextra -Werror -g
 LIBS = -ltermcap
 
 SRC = entry_point.c error.c utils/utils.c utils/ft_split.c \

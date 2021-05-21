@@ -1,6 +1,6 @@
 #include "../minibash.h"
 
-static int	exp_dollar2(char *value, t_shell *shell, t_quo *quo, char **str)
+static int	exp_dollar2(char *value, char **str)
 {
 	char	*tmp;
 
@@ -12,11 +12,8 @@ static int	exp_dollar2(char *value, t_shell *shell, t_quo *quo, char **str)
 	return (0);
 }
 
-static int	exp_dollar(char *value, t_shell *shell, t_quo *quo, \
-						t_quo_split *tmp_split)
+static int	exp_dollar(char *value, t_quo *quo, t_quo_split *tmp_split)
 {
-	char	*tmp;
-
 	if (quo->after_space && tmp_split->arg)
 	{
 		if (init_quo_split(&tmp_split->next))
@@ -35,7 +32,7 @@ static int	exp_dollar(char *value, t_shell *shell, t_quo *quo, \
 		quo->split_len++;
 	}
 	else
-		return (exp_dollar2(value, shell, quo, &tmp_split->arg));
+		return (exp_dollar2(value, &tmp_split->arg));
 	return (0);
 }
 
@@ -68,8 +65,7 @@ static int	prepare_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 	return (0);
 }
 
-static int	exp_dollar_utils(char *value, t_shell *shell, t_quo *quo, \
-					t_seq *tmp_seq)
+static int	exp_dollar_utils(char *value, t_seq *tmp_seq)
 {
 	if (!tmp_seq->tmp_redir->path)
 	{
@@ -77,7 +73,7 @@ static int	exp_dollar_utils(char *value, t_shell *shell, t_quo *quo, \
 		if (!tmp_seq->tmp_redir->path)
 			return (1);
 	}
-	if (exp_dollar2(value, shell, quo, &tmp_seq->tmp_redir->path))
+	if (exp_dollar2(value, &tmp_seq->tmp_redir->path))
 		return (1);
 	return (0);
 }
@@ -102,10 +98,10 @@ void	parse_dollar(t_seq *tmp_seq, t_shell *shell, t_quo *quo, \
 	}
 	if (tmp_split)
 	{
-		if (exp_dollar(value, shell, quo, tmp_split))
+		if (exp_dollar(value, quo, tmp_split))
 			error_dollar(&exp, quo, shell);
 	}
-	else if (exp_dollar_utils(value, shell, quo, tmp_seq))
+	else if (exp_dollar_utils(value, tmp_seq))
 		error_dollar(&exp, quo, shell);
 	free(exp);
 }

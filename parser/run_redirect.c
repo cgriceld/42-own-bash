@@ -49,7 +49,7 @@ static int	redirect_in(t_seq *tmp_seq, t_redir_chain *tmp_redir)
 	return (0);
 }
 
-int	run_redirect(t_seq *tmp_seq, t_shell *shell)
+int	run_redirect(t_seq *tmp_seq)
 {
 	t_redir_chain	*tmp_redir;
 

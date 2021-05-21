@@ -28,9 +28,9 @@ static void	handle_errno(char *comm, int errno_save)
 	}
 }
 
-static int	run_child(t_seq *tmp_seq, char **arr_env, t_shell *shell)
+static int	run_child(t_seq *tmp_seq, char **arr_env)
 {
-	if (tmp_seq->redirect && run_redirect(tmp_seq, shell))
+	if (tmp_seq->redirect && run_redirect(tmp_seq))
 		exit(1);
 	if (execve(tmp_seq->run, tmp_seq->args, arr_env) < 0)
 		handle_errno(tmp_seq->args[0], errno);
@@ -43,7 +43,7 @@ static int	run_execve(pid_t pid, t_seq *tmp_seq, char **arr_env, \
 	int	status;
 
 	if (!pid)
-		run_child(tmp_seq, arr_env, shell);
+		run_child(tmp_seq, arr_env);
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -81,7 +81,7 @@ static int	run_external(t_seq *tmp_seq, t_shell *shell, char **arr_env)
 int	run_one(t_seq *tmp_seq, t_shell *shell)
 {
 	if (!tmp_seq->run && tmp_seq->redirect)
-		return (run_redirect(tmp_seq, shell));
+		return (run_redirect(tmp_seq));
 	if (is_builtin(tmp_seq->run))
 		return (run_builtin(tmp_seq, shell));
 	else
