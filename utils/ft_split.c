@@ -1,12 +1,12 @@
 #include "../minibash.h"
 
-static int	ft_getwords(char const *s, const char c)
+static int	ft_getwords(char *s, const char c)
 {
-	int words;
-	char *start;
+	int		words;
+	char	*start;
 
 	words = 0;
-	start = (char *)s;
+	start = s;
 	while (*s)
 	{
 		while (*s && *s == c)
@@ -16,10 +16,10 @@ static int	ft_getwords(char const *s, const char c)
 		while (*s)
 		{
 			if (*s != c || (*s == c && *(s - 1) == '\\') || \
-		(*s == '|' && *(s - 1) == '>' && even_escaped(start, (char *)(s - 1))))
+		(*s == '|' && *(s - 1) == '>' && even_escaped(start, s - 1)))
 				s++;
 			else
-				break;
+				break ;
 		}
 	}
 	return (words);
@@ -32,9 +32,9 @@ static void	ft_copyword(char *dst, const char *src, size_t letters)
 	*dst = '\0';
 }
 
-static int	ft_putwords(char const *s, char c, int words, char **split)
+static int	ft_putwords(char *s, char c, int words, char **split)
 {
-	char const	*start;
+	char		*start;
 	int			w;
 	size_t		letters;
 
@@ -47,10 +47,10 @@ static int	ft_putwords(char const *s, char c, int words, char **split)
 		while (*s)
 		{
 			if (*s != c || (*s == c && *(s - 1) == '\\') || \
-(*s == '|' && *(s - 1) == '>' && even_escaped((char *)start, (char *)(s - 1))))
+	(*s == '|' && *(s - 1) == '>' && even_escaped(start, s - 1)))
 				s++;
 			else
-				break;
+				break ;
 		}
 		letters = s - start;
 		split[w] = (char *)malloc(letters + 1);
@@ -61,7 +61,7 @@ static int	ft_putwords(char const *s, char c, int words, char **split)
 	return (0);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	int		words;
 	int		error;
@@ -69,12 +69,12 @@ char		**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	words = ft_getwords(s, c);
+	words = ft_getwords((char *)s, c);
 	split = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!split)
 		return (NULL);
 	split[words] = NULL;
-	error = ft_putwords(s, c, words, split);
+	error = ft_putwords((char *)s, c, words, split);
 	if (!error)
 		return (split);
 	while (error--)

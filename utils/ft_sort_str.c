@@ -1,9 +1,9 @@
 #include "../minibash.h"
 
-t_list *put_to_sort_list(char *content, t_list *start)
+t_list	*put_to_sort_list(char *content, t_list *start)
 {
-	t_list *prev;
-	t_list *corrent;
+	t_list	*prev;
+	t_list	*corrent;
 
 	if (!start)
 		start = ft_lstnew(content);
@@ -12,7 +12,7 @@ t_list *put_to_sort_list(char *content, t_list *start)
 	else
 	{
 		corrent = start;
-		while (corrent->next &&
+		while (corrent->next && \
 		ft_strncmp(corrent->content, content, ft_strlen(content + 1)) < 0)
 		{
 			prev = corrent;
@@ -29,5 +29,3 @@ t_list *put_to_sort_list(char *content, t_list *start)
 	}
 	return (start);
 }
-
-

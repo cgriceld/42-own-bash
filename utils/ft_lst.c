@@ -14,7 +14,7 @@
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list *i;
+	t_list	*i;
 
 	i = (t_list *)malloc(sizeof(t_list));
 	if (i != NULL)
@@ -33,10 +33,9 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *))
 	free(lst);
 }
 
-
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (!del || !lst || !*lst)
 		return ;
@@ -48,10 +47,9 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	}
 }
 
-
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	temp = NULL;
 	temp = *(lst);
