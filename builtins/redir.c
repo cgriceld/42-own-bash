@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 12:59:43 by cgriceld          #+#    #+#             */
-/*   Updated: 2021/05/16 17:48:42 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/22 09:09:16 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // flag = 2 : only close
 int	redir(t_seq *tmp_seq, char **str_low, int flag)
 {
-	static int fds[2];
-	int res;
+	static int	fds[2];
+	int			res;
 
 	res = 0;
 	if (flag != 2)
