@@ -17,7 +17,7 @@ int	builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	t_env	*tmp;
 
 	if (redir(tmp_seq, &str_low, 0))
-		return (2);
+		return (1);
 	if (envp_get_value(shell, "PATH") == NULL)
 	{
 		redir(tmp_seq, &str_low, 2);

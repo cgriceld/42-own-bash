@@ -33,7 +33,7 @@ int	builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low)
 	char	*buf;
 
 	if (redir(tmp_seq, &str_low, 0))
-		return (2);
+		return (1);
 	buf = pwd(shell);
 	if (!buf)
 		return (2);

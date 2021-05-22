@@ -153,7 +153,7 @@ void	lite_error(char *comment);
 void	free_error(char *comment, t_shell **shell);
 void	free_seq(t_seq **seq);
 
-void	ft_readline(t_shell *shell);
+void	ft_readline(t_shell *shell, ssize_t read_len);
 void	set_mode(int type);
 void	prompt(void);
 void	init_hist(t_shell *shell);
@@ -230,7 +230,8 @@ int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int		builtins_echo(t_seq *tmp_seq, char *str_low, int n, int i);
 int		builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, \
 					int flag);
-int		builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low, int n_args);
+int		builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low, \
+					int n_args);
 int		builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, \
 					int flag);
 int		redir(t_seq *tmp_seq, char **str_low, int flag);

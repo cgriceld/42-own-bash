@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 		parser(shell);
 	}
 	else
-		ft_readline(shell);
+		ft_readline(shell, 0);
 	free_error(NULL, &shell);
 	return (g_ret_status);
 }

@@ -58,20 +58,26 @@ static void	ctrlc(t_shell *shell)
 	shell->hist_ptr = shell->hist_curr;
 }
 
-void	ft_readline(t_shell *shell)
+void	ft_readline(t_shell *shell, ssize_t read_len)
 {
 	char	str[10];
-	ssize_t	read_len;
 
 	ft_bzero(str, 10);
 	prompt();
-	while (ft_strncmp(str, CTRLD, 10))
+	while (1)
 	{
 		if (!ft_strncmp(str, "\n", 10) && !*signal_tracker())
 			prompt();
 		ft_bzero(str, 10);
 		set_mode(NOT_CANON);
 		read_len = read(0, str, 10);
+		if (!ft_strncmp(str, CTRLD, 10) && shell->hist_ptr->command[0] == '\0')
+		{
+			write(1, "exit", 4);
+			break ;
+		}
+		if (!ft_strncmp(str, CTRLD, 10))
+			continue ;
 		set_mode(CANON);
 		if (*signal_tracker())
 			ctrlc(shell);

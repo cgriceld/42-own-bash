@@ -31,9 +31,8 @@ int	redir(t_seq *tmp_seq, char **str_low, int flag)
 	{
 		dup2(fds[1], 1);
 		dup2(fds[0], 0);
-		free(*str_low);
-		*str_low = NULL;
-		return (res);
 	}
+	free(*str_low);
+	*str_low = NULL;
 	return (res);
 }
