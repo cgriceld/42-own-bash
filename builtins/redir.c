@@ -12,9 +12,6 @@
 
 #include "../minibash.h"
 
-// flag = 1 : open and close
-// flag = 0 : only open
-// flag = 2 : only close
 int	redir(t_seq *tmp_seq, char **str_low, int flag)
 {
 	static int	fds[2];
