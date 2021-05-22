@@ -6,7 +6,7 @@
 /*   By: sbrenton <sbrenton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/22 10:27:54 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/22 10:42:09 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,20 @@ int	check_is_valid(t_seq *tmp_seq, int i, int flag, int	n)
 	return (0);
 }
 
+int	side_qv_export(t_shell *shell, char	*value, char *param, int i)
+{
+	if ((value == NULL && envp_get_value(shell, param) != NULL) \
+	|| (envp_set_value(shell, param, value) == 0))
+	{
+		free(value);
+		free(param);
+	}
+	else
+		envp_new_value(shell, param, value);
+	i++;
+	return (i);
+}
+
 int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 {
 	char	*value;
@@ -77,8 +91,6 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 	i = 1;
 	while (tmp_seq->args[i] != 0)
 	{
-		value = NULL;
-		param = NULL;
 		if (check_is_valid(tmp_seq, i, flag, 0) == 2)
 		{
 			g_ret_status = 1;
@@ -86,15 +98,7 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 			continue ;
 		}
 		pair_param_value(tmp_seq, i, &param, &value);
-		if ((value == NULL && envp_get_value(shell, param) != NULL)
-			|| (envp_set_value(shell, param, value) == 0))
-		{
-			free(value);
-			free(param);
-		}
-		else
-			envp_new_value(shell, param, value);
-		i++;
+		i = side_qv_export(shell, value, param, i);
 	}
 	if (!flag)
 		redir(tmp_seq, &str_low, 2);
