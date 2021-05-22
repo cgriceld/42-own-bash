@@ -6,11 +6,33 @@
 /*   By: sbrenton <sbrenton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/16 16:33:26 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/22 09:00:03 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minibash.h"
+
+void	pair_param_value(t_seq *tmp_seq, int i,  char **param, char **value)
+{
+	int	n;
+	int	len;
+
+	*value = NULL;
+	*param = NULL;
+	len = ft_strlen(tmp_seq->args[i]);
+	n = 0;
+	while (tmp_seq->args[i][n] != '=' && len > 0)
+	{
+		n++;
+		len--;
+	}
+	if (len > 0)
+	{
+		tmp_seq->args[i][n] = 0;
+		*value = ft_strdup(&(tmp_seq->args[i][n + 1]));
+	}
+	*param = ft_strdup(tmp_seq->args[i]);
+}
 
 int	check_is_valid(t_seq *tmp_seq, int i, int flag)
 {
@@ -55,7 +77,7 @@ int	builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, int flag)
 		return (2);
 	g_ret_status = 0;
 	if (!flag && (tmp_seq->args[1] == 0 || tmp_seq->args[1][0] == '\n'))
-		return (print_export(shell));
+		return (print_export(shell, NULL, NULL));
 	i = 1;
 	while (tmp_seq->args[i] != 0)
 	{
