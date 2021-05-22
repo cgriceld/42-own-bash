@@ -6,7 +6,7 @@
 /*   By: sbrenton <sbrenton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 22:39:21 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/22 09:16:46 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/22 10:55:41 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ char	*find_path(t_shell *shell, char *path, char *match)
 void	update_pwd(t_shell *shell, char *path, char *old_path)
 {
 	path = pwd(shell);
+	if (envp_get_value(shell, "OLDPWD") == NULL)
+		envp_new_value(shell, ft_strdup("OLDPWD"), NULL);
 	if (ft_strncmp(old_path, path, ft_strlen(old_path + 1)) != 0)
 	{
 		envp_set_value(shell, "OLDPWD", old_path);
 		envp_set_value(shell, "PWD", path);
 	}
-	else if (envp_get_value(shell, "OLDPWD") == NULL)
-		envp_set_value(shell, "OLDPWD", old_path);
 	free(old_path);
 	free(path);
 }
