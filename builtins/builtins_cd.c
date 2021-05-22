@@ -56,7 +56,7 @@ void	static	local_print(char *param, char *path, int local)
 	}
 }
 
-int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low, char	*param)
+int	builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low, char	*param)
 {
 	char	*path;
 	char	*old_path;
