@@ -227,14 +227,15 @@ char	*pwd(t_shell *shell);
 int		builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low, char	*param);
 int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low);
-int		builtins_echo(t_seq *tmp_seq, char *str_low);
+int		builtins_echo(t_seq *tmp_seq, char *str_low, int n, int i);
 int		builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, \
 					int flag);
-int		builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int		builtins_exit(t_shell *shell, t_seq *tmp_seq, char *str_low, int n_args);
 int		builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, \
 					int flag);
 int		redir(t_seq *tmp_seq, char **str_low, int flag);
-int		check_is_valid(t_seq *tmp_seq, int i, int flag);
-int		print_export(t_shell *shell, t_list *key_sort, t_list *sort_start);
+int		check_is_valid(t_seq *tmp_seq, int i, int flag, int n);
+int		print_export(t_shell *shell, t_list *key_sort, t_list *sort_start, \
+t_env *tmp);
 
 #endif

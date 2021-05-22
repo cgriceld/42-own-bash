@@ -6,7 +6,7 @@ int	run_builtin(t_seq *tmp_seq, t_shell *shell)
 
 	tmp = ft_low_str(tmp_seq->run);
 	if (!ft_strncmp(tmp, "echo", ft_strlen(tmp_seq->run)))
-		return (builtins_echo(tmp_seq, tmp));
+		return (builtins_echo(tmp_seq, tmp, 0, 0));
 	else if (!ft_strncmp(tmp_seq->run, "cd", ft_strlen(tmp_seq->run)))
 		return (builtins_cd(shell, tmp_seq, tmp, NULL));
 	else if (!ft_strncmp(tmp, "pwd", ft_strlen(tmp_seq->run)))
@@ -18,7 +18,7 @@ int	run_builtin(t_seq *tmp_seq, t_shell *shell)
 	else if (!ft_strncmp(tmp_seq->run, "export", ft_strlen(tmp_seq->run)))
 		return (builtins_export(shell, tmp_seq, tmp, 0));
 	else if (!ft_strncmp(tmp_seq->run, "exit", ft_strlen(tmp_seq->run)))
-		return (builtins_exit(shell, tmp_seq, tmp));
+		return (builtins_exit(shell, tmp_seq, tmp, 0));
 	return (0);
 }
 
