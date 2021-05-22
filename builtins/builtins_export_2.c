@@ -6,7 +6,7 @@
 /*   By: sbrenton <sbrenton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:39:09 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/22 09:00:03 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/22 10:22:12 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,14 @@ void	print_declations(t_list *key_sort, t_shell *shell)
 	}
 }
 
-int	print_export(t_shell *shell, t_list *key_sort, t_list *sort_start)
+int	print_export(t_shell *shell, t_list *key_sort, t_list *sort_start, \
+t_env *tmp)
 {
-	t_env		*tmp;
-
-	sort_start = NULL;
 	tmp = shell->env;
 	while (tmp)
 	{
-		sort_start = put_to_sort_list(ft_strdup(tmp->key), sort_start, NULL, NULL);
+		sort_start = put_to_sort_list(ft_strdup(tmp->key), sort_start, \
+		NULL, NULL);
 		tmp = tmp->next;
 	}
 	key_sort = sort_start;

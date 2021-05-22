@@ -6,7 +6,7 @@
 /*   By: cgriceld <cgriceld@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 13:38:46 by sbrenton          #+#    #+#             */
-/*   Updated: 2021/05/22 10:19:34 by sbrenton         ###   ########.fr       */
+/*   Updated: 2021/05/22 10:28:08 by sbrenton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char *str_low, int flag)
 	g_ret_status = 0;
 	while (tmp_seq->args[i] != 0)
 	{
-		if (check_is_valid(tmp_seq, i, flag) == 2)
+		if (check_is_valid(tmp_seq, i, flag, 0) == 2)
 		{
 			i += 1;
 			g_ret_status = 1;
