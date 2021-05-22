@@ -137,7 +137,8 @@ char	*ft_strchrset(char *s, char *set);
 char	*ft_strjoin_space(char const *s1, char const *s2);
 int		ft_strempty(char *s);
 int		ft_in_set(const char *set, char ch);
-t_list	*put_to_sort_list(char *content, t_list *start);
+t_list	*put_to_sort_list(char *content, t_list *start, \
+t_list *prev, t_list *corrent);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
@@ -224,7 +225,7 @@ int		run_redirect(t_seq *tmp_seq);
 
 char	*pwd(t_shell *shell);
 int		builtins_pwd(t_shell *shell, t_seq *tmp_seq, char *str_low);
-int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low);
+int		builtins_cd(t_shell *shell, t_seq *tmp_seq, char *str_low, char	*param);
 int		builtins_env(t_shell *shell, t_seq *tmp_seq, char *str_low);
 int		builtins_echo(t_seq *tmp_seq, char *str_low);
 int		builtins_unset_value(t_shell *shell, t_seq *tmp_seq, char *str_low, \
@@ -234,5 +235,6 @@ int		builtins_export(t_shell *shell, t_seq *tmp_seq, char *str_low, \
 					int flag);
 int		redir(t_seq *tmp_seq, char **str_low, int flag);
 int		check_is_valid(t_seq *tmp_seq, int i, int flag);
+int		print_export(t_shell *shell, t_list *key_sort, t_list *sort_start);
 
 #endif
