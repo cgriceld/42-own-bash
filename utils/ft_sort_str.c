@@ -1,10 +1,8 @@
 #include "../minibash.h"
 
-t_list	*put_to_sort_list(char *content, t_list *start)
+t_list	*put_to_sort_list(char *content, t_list *start, \
+t_list *prev, t_list *corrent)
 {
-	t_list	*prev;
-	t_list	*corrent;
-
 	if (!start)
 		start = ft_lstnew(content);
 	else if (ft_strncmp(start->content, content, ft_strlen(content + 1)) >= 0)
