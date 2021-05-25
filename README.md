@@ -3,7 +3,7 @@
 42 Unix project. The code is written in accordance with The Norm (42 coding style).\
 The project was done in a team with [Elena Kiseleva](https://github.com/Justlesia).
 
-What *`minibash`* supports:
+## what *`minibash`* supports:
 * navigate through command history using up and down arrows (done using termcap);
 * modification of current or previous commands using backspace (not supports movement with left and right arrows);
 * ctrl-C, ctrl-D and ctrl-\ signals;
@@ -13,12 +13,23 @@ What *`minibash`* supports:
 * \>, < and >> redirections (except for file descriptor aggregation);
 * semicolon;
 * single, double quotes and \\;
-* builtins command : 
+* builtins commands : 
   * `echo` with `-n` option;
   * `cd` with relative or absolute path;
-  * `pwd` without any options;
-  * `export` without any options;
-  * `unset` without any options;
+  * `pwd`, `export`, `unset` and `exit` without any options;
   * `env` without any options and any arguments;
-  * `exit` without any options
 * external commands launch through execve.
+
+##  usage
+
+In the root of repository run `make` and launch executable -- `./minishell`.
+
+## project structure
+
+`builtins` folder 
+
+***Makefile***
+* *`make`* -- compiles `minishell` executable.
+* *`clean`* -- deletes object files.
+* *`fclean`* -- deletes object files and `minishell`.
+* *`re`* -- runs `fclean` and recompiles.
