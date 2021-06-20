@@ -26,7 +26,11 @@ In the root of repository run `make` and launch executable -- `./minishell`.
 
 ## project structure
 
-`builtins` folder 
+* *`builtins` folder* -- builtins commands code.
+* *`envp` folder* -- code for manipulating envp array/list.
+* *`parser` folder* -- code for parsing and launching (where all the magic happens, basically).
+* *`readline` folder* -- read via termcap.
+* * `utils` folder* -- utils functions (some from my own [C library](https://github.com/linpoa/libft), some specific for project).
 
 ***Makefile***
 * *`make`* -- compiles `minishell` executable.
