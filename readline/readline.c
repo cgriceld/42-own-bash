@@ -74,6 +74,7 @@ void	ft_readline(t_shell *shell, ssize_t read_len)
 		if (!ft_strncmp(str, CTRLD, 10) && shell->hist_ptr->command[0] == '\0')
 		{
 			write(1, "exit", 4);
+			set_mode(CANON);
 			break ;
 		}
 		if (!ft_strncmp(str, CTRLD, 10))
